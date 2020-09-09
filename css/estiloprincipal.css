@@ -1,0 +1,27 @@
+/* Tamaño de letra de las tablas */
+@media only screen and (max-device-width: 480px) {
+    .table   {
+        font-size: 43px;
+    }
+
+    .btn   {
+        font-size: 50px;
+    }   
+
+    .glyphicon,.lead  {
+        font-size: 50px;
+    }   
+
+    h2  {
+        font-size: 48px;
+    }   
+
+    label  {
+        font-size: 42px;
+    }   
+
+    .form-control   {
+        font-size: 40px;
+        height: 54px;
+    }   
+}       

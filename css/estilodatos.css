@@ -1,0 +1,36 @@
+/* Estilo para reporte */
+td.titulo {
+  background-color: #6a89da;
+  font-weight: bold;
+}
+td.total {
+  background-color: grey;
+  font-weight: bold;
+}
+td.totalgeneral {
+  background-color: black;
+  color: white;
+  font-weight: bolder;
+}
+@media only screen and (max-device-width: 480px) {
+    h2   {
+        font-size: 40px;
+    }   
+
+    p   {
+        font-size: 35px;
+    }   
+
+    .form-group,h4 {
+        font-size: 35px;
+    }   
+
+    .form-control   {
+        font-size: 40px;
+        height: 54px;
+    }   
+
+    .btn   {
+        font-size: 40px;
+    }   
+}        
