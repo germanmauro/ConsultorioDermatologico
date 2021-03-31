@@ -1,49 +1,9 @@
---------------------------------------------------------------------------------------------------------
-MODULOS DEL SISTEMA
---------------------------------------------------------------------------------------------------------
-********************************************************************************************************
-________________________________________________________________________________________________________
---------------------------------------------------------------------------------------------------------
-ADMINISTRACIÓN
---------------------------------------------------------------------------------------------------------
-Visualizacion de pedidos
-Creacion de zonas OK
-Visualización de clientes.  OK
-Alta de productos con stock OK
-Registro de Monto Mínimo de envio OK
+Crear medicos
 
---------------------------------------------------------------------------------------------------------
-CLIENTES
---------------------------------------------------------------------------------------------------------
-Registro OK
-Creación de pedido OK
-Confimación de pedido con cálculo de fecha de entega OK
-Entrega de lunes a sábados. OK
+Crear productos OK
 
----------------------------------------------------------------------------------------------------------
-ACLARACIONES
----------------------------------------------------------------------------------------------------------
-Los productos pueden venderse por unidad o por kg: Igual el número es redondo. OK
+Crear menu medicos
 
-Ver pdf con pedidos de la zona del dia.
+Crear proveedores solo sería agenda.
 
-Cada zona elegir que días trabaja.OK
-
-Ver primero crear los pedidos OK
-    Hacer la clase pedidos.OK
-    Crear el pedido.OK
-    Calcular el día de entrega.OK
-    Confirmar y guardar el pedido. OK
-
-Despues hacer todos lo referente a los pedidos creados.
-    Ver clientes. OK
-    Ver pedidos generados e imprimirlos en pdf
-
-MODIFICACIÓN
----------------------------------------------------------------------------------------------------------
-Probar generar un pedido y ver si se guardan los comentarios. OK
-
-Probar en los reportes pdf agregar los comentarios. OK
-------------------------------------------------------------------------------------------------
-Agregar para ver la proximas tres fechas de entrega y poder elegir una. OK
-agregar para poder modificar pedidos que no estén en fecha.
+Nombre,Contacto, Email, Telefono, Dirección, Datos bancarios, Comentarios

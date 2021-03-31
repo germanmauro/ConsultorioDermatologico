@@ -16,7 +16,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$codigo = $nombre = $categoria = $precio = $imagen = $tipo = $habilitado = $stock = "";
+$codigo = $denominacion = $stock = $marca = $preciocompra = $preciolista = $precioefectivo = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["actualizar"])) {
@@ -24,36 +24,28 @@ if (isset($_POST["actualizar"])) {
 
     $id = $_POST["id"];
     $codigo = $_POST["codigo"];
-    $categoria = $_POST["categoria"];
-    $nombre = $_POST["nombre"];
-    $precio = $_POST["precio"];
-    $tipo = $_POST["tipo"];
-    $habilitado = $_POST["habilitado"];
+    $denominacion = $_POST["denominacion"];
+    $marca = $_POST["marca"];
     $stock = $_POST["stock"];
-    $precio = $_POST["precio"];
-    if ($_FILES["imagen"]["name"] != "") {
-        $imagen = "images/" . $_FILES["imagen"]["name"];
-        $ruta = $_FILES["imagen"]["tmp_name"];
-        copy($ruta, $imagen);
-    } else {
-        $imagen = $_POST["imganterior"];
-    }
+    $preciocompra = $_POST["preciocompra"];
+    $preciolista = $_POST["preciolista"];
+    $precioefectivo = $_POST["precioefectivo"];
 
-    $sql = "UPDATE producto SET Nombre=?, Categoria=?, Precio=?, Imagen = ?, Tipo = ?, Habilitado = ?, Stock = ?, Codigo = ?  WHERE Id=?";
+    $sql = "UPDATE productos SET codigo=?, denominacion=?, marca=?, stock = ?, preciocompra = ?,
+     preciolista = ?, precioefectivo = ?  WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sssssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7, $p8, $param_id);
+        mysqli_stmt_bind_param($stmt, "ssssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7, $param_id);
 
         // Set parameters
-        $p1 = $nombre;
-        $p2 = $categoria;
-        $p3 = $precio;
-        $p4 = $imagen;
-        $p5 = $tipo;
-        $p6 = $habilitado;
-        $p7 = $stock;
-        $p8 = $codigo;
+        $p1 = $codigo;
+        $p2 = $denominacion;
+        $p3 = $marca;
+        $p4 = $stock;
+        $p5 = $preciocompra;
+        $p6 = $preciolista;
+        $p7 = $precioefectivo;
 
         $param_id = $id;
 
@@ -79,7 +71,7 @@ if (isset($_POST["actualizar"])) {
         $id =  trim($_GET["id"]);
 
         // Prepare a select statement
-        $sql = "SELECT * FROM producto WHERE Id = ? ";
+        $sql = "SELECT * FROM productos WHERE id = ? ";
         //echo $sql;
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
@@ -98,14 +90,13 @@ if (isset($_POST["actualizar"])) {
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                     // Retrieve individual field value
-                    $nombre = $row["Nombre"];
-                    $categoria = $row["Categoria"];
-                    $imagen = $row["Imagen"];
-                    $precio = $row["Precio"];
-                    $tipo = $row["Tipo"];
-                    $habilitado = $row["Habilitado"];
-                    $stock = $row["Stock"];
-                    $codigo = $row["Codigo"];
+                    $codigo = $row["codigo"];
+                    $denominacion = $row["denominacion"];
+                    $marca = $row["marca"];
+                    $stock = $row["stock"];
+                    $preciocompra = $row["preciocompra"];
+                    $preciolista = $row["preciolista"];
+                    $precioefectivo = $row["precioefectivo"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -150,82 +141,41 @@ if (isset($_POST["actualizar"])) {
                     </div>
                     <p>Ingrese los datos a actualizar.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label>Código</label>
-                            <input type="text" name="codigo" required maxlength=10 class="form-control" value="<?php echo $codigo; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" name="nombre" required maxlength=100 class="form-control" value="<?php echo $nombre; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Categoría</label>
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>Código</label>
+                                <input type="text" name="codigo" required maxlength=10 class="form-control" value="<?php echo $codigo; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Denominación</label>
+                                <input type="text" name="denominacion" required maxlength=200 class="form-control" value="<?php echo $denominacion; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Marca</label>
+                                <input type="text" name="marca" required maxlength=100 class="form-control" value="<?php echo $marca; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Stock</label>
+                                <input type="number" required min=0 max=100000000 name="stock" maxlength=50 class="form-control" value="<?php echo $stock; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Precio Compra (Decimales separados por .)</label>
+                                <input type="number" step="any" required min=1 max=100000000 name="preciocompra" maxlength=50 class="form-control" value="<?php echo $preciocompra; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Precio Lista (Decimales separados por .)</label>
+                                <input type="number" step="any" required min=1 max=100000000 name="preciolista" maxlength=50 class="form-control" value="<?php echo $preciolista; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Precio Efectivo (Decimales separados por .)</label>
+                                <input type="number" step="any" required min=1 max=100000000 name="precioefectivo" maxlength=50 class="form-control" value="<?php echo $precioefectivo; ?>">
+                            </div>
 
-                            <select id="categoria" name="categoria" class="form-control" required>
-                                <?php
-                                $sql1 = "SELECT *
-                                    FROM categoria
-                                    where Baja='False'
-                                    order by Nombre";
-                                if ($result1 = mysqli_query($link, $sql1)) {
-                                    if (mysqli_num_rows($result1) > 0) {
-                                        while ($row = mysqli_fetch_array($result1)) {
-                                            if ($row["Id"] == $categoria) {
-                                                $sel = "selected";
-                                            } else {
-                                                $sel = "";
-                                            }
-                                            echo "<option " . $sel . " value='" . $row["Id"] . "'>" . $row["Nombre"] . "</option>";
-                                        }
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Precio (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="precio" maxlength=50 class="form-control" value="<?php echo $precio; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Stock</label>
-                            <input type="number" required min=1 max=100000000 name="stock" maxlength=50 class="form-control" value="<?php echo $stock; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo</label>
-                            <select id="tipo" name="tipo" class="form-control" required>
-                                <option <?php echo ($tipo == 'Kilo') ? 'selected' : ''; ?> value='Kilo'>Por Kilo 0.5</option>
-                                <option <?php echo ($tipo == 'Kilo25') ? 'selected' : ''; ?> value='Kilo25'>Por Kilo 0.25</option>
-                                <option <?php echo ($tipo == 'Unidad') ? 'selected' : ''; ?> value='Unidad'>Por Unidad</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Imagen (No cargar archivo para matener la imagen actual)</label>
-                            <table width="100%">
-                                <tr>
-                                    <td>
-                                        <input type="file" name="imagen" id="imagen" accept="image/*" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="<?php echo $imagen; ?>" width="200px" height="200px" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="form-group">
-                            <label>Habilitado</label>
-                            <select id="habilitado" name="habilitado" class="form-control" required>
-                                <option <?php echo ($habilitado == 'Si') ? 'selected' : ''; ?> value='Si'>Sí</option>
-                                <option <?php echo ($habilitado == 'No') ? 'selected' : ''; ?> value='No'>No</option>
-                            </select>
-                        </div>
-
-                        <input type="hidden" name="id" value="<?php echo $id; ?>" />
-                        <input type="hidden" name="imganterior" value="<?php echo $imagen; ?>" />
-                        <input type="submit" name="actualizar" class="btn btn-primary" value="Actualizar">
-                        <a href="index.php" class="btn btn-default">Cancelar</a>
-                    </form>
+                            <input type="hidden" name="id" value="<?php echo $id; ?>" />
+                            <input type="hidden" name="imganterior" value="<?php echo $imagen; ?>" />
+                            <input type="submit" name="actualizar" class="btn btn-primary" value="Actualizar">
+                            <a href="index.php" class="btn btn-default">Cancelar</a>
+                        </form>
                 </div>
             </div>
         </div>

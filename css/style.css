@@ -5,26 +5,20 @@
   padding: 8% 0 0;
   margin: auto;
 }
-body{
-  font-size: 20px;
-}
-
-a{
-  font-size:22px;
-  margin-top: 10px;
-  font-weight: 600;
-  color:black;
-}
-
 .mensaje{
   color: white;
   font-style: oblique;
 }
+.form a:hover {
+ color: black;
+ font-weight: bold;
+ text-decoration: none;
+}
 .form {
   position: relative;
   z-index: 1;
-  background: #9CC549DA;
-  max-width: 450px;
+  background: #024b94;
+  max-width: 360px;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
@@ -33,32 +27,35 @@ a{
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
-  background: #f2f2f2;
+  background: white;
   width: 100%;
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
   box-sizing: border-box;
-  font-size: 20px;
+  font-size: 14px;
 }
+::placeholder {
+  color:black;
+}
+
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #ED6B1C;
+  background: #5199db;
   width: 100%;
   border: 0;
   padding: 15px;
   color: #FFFFFF;
-  font-size: 20px;
-  margin-bottom: 30px;
+  font-size: 14px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
   margin-top: 10px;
 }
 .form button:hover,.form button:active,.form button:focus {
-  background: #D5E5B1;
+  background: #FFFFFF;
   color:#4e584f;
   font-weight: bolder;
 }
@@ -73,6 +70,10 @@ a{
 }
 .form .register-form {
   display: none;
+}
+label {
+  color:white !important;
+  font-size: medium;
 }
 .container {
   position: relative;
@@ -109,11 +110,11 @@ a{
 }
 body {
   height: 100%; 
-  background: url('../images/logo.png');
-  background-color: #9CC549;
+  /* background: url('../images/fondo.jpg'); */
+  background-color: #1a211a;
   background-position: center;
-  /* background-repeat: no-repeat; */
-  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
@@ -123,9 +124,9 @@ body {
     .login-page {
       width: 90%;
   }   
-    .form button {
+    /* .form button {
       font-size: 45px;
-      background: #ED6B1C;
+      background: #1053e8;
   }   
     .form input {
     margin: 0 0 60px;
@@ -135,9 +136,5 @@ body {
  
    .mensaje{
      font-size:35px;
-  }
-  a{
-  font-size:40px;
-  margin-top: 10px;
-}
+  } */
 }    

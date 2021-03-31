@@ -6,13 +6,13 @@ server with default setting (user 'root' with no password) */
 define('DB_SERVER', '127.0.0.1');
 define('DB_USERNAME', 'ger');
 define('DB_PASSWORD', '123');
-define('DB_NAME', 'verduleria');
-/*PROD
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'mygsyste_ger');
-define('DB_PASSWORD', 'Melany001');
-define('DB_NAME', 'mygsyste_verduleria');
-*/
+define('DB_NAME', 'consultorio');
+/*PROD*/
+// define('DB_SERVER', 'localhost');
+// define('DB_USERNAME', 'c1701132_derma');
+// define('DB_PASSWORD', 'fesotuRI27');
+// define('DB_NAME', 'c1701132_derma');
+
 /* Attempt to connect to MySQL database */
 $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 

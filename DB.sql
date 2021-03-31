@@ -1,68 +1,72 @@
 /*BASE DE DATOS SISTEMA VERDULERÍA*/
-Create database verduleria;
+Create database consultorio;
 
-CREATE TABLE zona(
-Id int AUTO_INCREMENT not null,
-Nombre varchar(20),
-Ubicacion varchar(20),
-CantidadPedidos int default 1,
-Lunes varchar(2) default 'No',
-Martes varchar(2) default 'No',
-Miercoles varchar(2) default 'No',
-Jueves varchar(2) default 'No',
-Viernes varchar(2) default 'No',
-Sabado varchar(2) default 'No',
-Domingo varchar(2) default 'No',
-
-Baja varchar(10) default 'False',
-
-primary key(Id)
+CREATE TABLE usuarios(
+id int AUTO_INCREMENT,
+nombre varchar(40) not null,
+apellido varchar(40) not null,
+dni varchar(20), 
+especialidad varchar(100),
+matriculanacional varchar(100),
+matriculaprovincial varchar(100),
+user varchar(20) not null,
+pass varchar(200) not null,
+perfil varchar(20) not null,/*Admin o mozo*/
+ultimoingreso datetime not null default CURRENT_TIMESTAMP,
+baja varchar(10) default 'False',
+primary key(id)
 );
 
-CREATE TABLE usuario(
-Nombre varchar(40) not null,
-Apellido varchar(40) not null,
-Telefono varchar(20) not null,
-Direccion varchar(200) not null,
-DNI varchar(20), /*DNI CUIT*/
-User varchar(100) not null,
-Email varchar(100),
-Pass varchar(200) not null,
-Perfil varchar(20) not null,/*Admin o mozo*/
-UltimoIngreso datetime not null default CURRENT_TIMESTAMP,
-Zona int,
-Baja varchar(10) default 'False',
-primary key(User),
-foreign key(Zona) References zona(Id)
-);
-/*Perfiles
-admin
-cliente
-*/
-INSERT INTO usuario(User,Pass,Perfil,Nombre,Apellido,Telefono) values('admin','$2y$10$UkJVr/OvxPrJ4NjHcd4D1eFY.rCaGm/A60/8Wst9rpwI53skL7d.C','admin','Diego','Administrador','00');
+INSERT INTO usuarios(user,pass,perfil,nombre,apellido) values('admin','$2y$10$UkJVr/OvxPrJ4NjHcd4D1eFY.rCaGm/A60/8Wst9rpwI53skL7d.C','admin','Federico','Rocchetti');
 
 
-CREATE table categoria
+CREATE table obrassociales
 (
-    Id int AUTO_INCREMENT not null,
-    Nombre varchar(100) not null,
-    Prioridad SMALLINT(6) default 0,
-    Baja varchar(10) default 'False',
+    id int AUTO_INCREMENT not null,
+    nombre varchar(100) not null,
+    baja varchar(10) default 'False',
     primary key (Id) );
 
-CREATE table producto(
-    Id int AUTO_INCREMENT,
-    Codigo varchar(10) not null,
-    Nombre varchar(50) not null,
-    Precio double(10,2) not null,
-    Stock double(10,2) not null,
-    Tipo varchar(20) not null,
-    Categoria int not null,
-    Imagen varchar(3000) default '',
-    Habilitado varchar(2) default 'Si',
-    Baja varchar(10) default 'False',
+CREATE table formaspago
+(
+    id int AUTO_INCREMENT not null,
+    nombre varchar(100) not null,
+    baja varchar(10) default 'False',
+    primary key (Id) );
 
-    foreign key (Categoria) References categoria(Id),
+Create table tratamientos(
+    id int AUTO_INCREMENT,
+    nombre varchar(200),
+    precio double(8,2),
+    porcentajemedico double(8,2),
+    baja varchar(10) default 'False',
+    primary key(Id)
+);
+
+CREATE table productos(
+    id int AUTO_INCREMENT,
+    codigo varchar(10) not null,
+    denominacion varchar(200) not null,
+    marca varchar(50) not null,
+    stock int not null,
+    preciolista double(10,2) not null,
+    precioefectivo double(10,2) not null,
+    preciocompra double(10,2) not null,
+    baja varchar(10) default 'False',
+
+    primary key(Id));
+
+CREATE table proveedores(
+    id int AUTO_INCREMENT,
+    nombre varchar(100) not null,
+    contacto varchar(100) not null,
+    email varchar(200) not null,
+    telefono varchar(20) not null,
+    direccion varchar(300) not null,
+    datosbancarios varchar(200) not null,
+    comentarios varchar(2000) not null,
+    baja varchar(10) default 'False',
+
     primary key(Id));
 
 

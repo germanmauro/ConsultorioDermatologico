@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $pass = trim($_POST["pass"]);
 
   // Prepare a select statement
-  $sql = "SELECT User, Pass,Perfil,Nombre,Apellido,UltimoIngreso FROM usuario WHERE Baja='False' AND User ='" . $username . "'";
+  $sql = "SELECT user, pass,perfil,nombre,apellido,ultimoingreso FROM usuarios WHERE baja='False' AND user ='" . $username . "'";
 
   if ($result = mysqli_query($link, $sql) or die($link)) {
     if (mysqli_num_rows($result) > 0) {
@@ -30,17 +30,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       $_SESSION['Usuario'] = $username;
       while ($row = mysqli_fetch_array($result)) {
-        $_SESSION['Perfil'] = $row['Perfil'];
-        $_SESSION['Nombre'] = $row['Nombre'];
-        $_SESSION['Apellido'] = $row['Apellido'];
-        $_SESSION['UltimoIngreso'] = $row['UltimoIngreso'];
-        $_SESSION['Alarma'] = 0;
-        $hash = $row["Pass"];
+        $_SESSION['Perfil'] = $row['perfil'];
+        $_SESSION['Nombre'] = $row['nombre'];
+        $_SESSION['Apellido'] = $row['apellido'];
+        $_SESSION['UltimoIngreso'] = $row['ultimoingreso'];
+        $hash = $row["pass"];
       }
       if (password_verify($pass, $hash)) {
         date_default_timezone_set('America/Argentina/Buenos_Aires');
         $fecha = date('Y-m-d H:i:s');
-        $link->query("Update usuario set UltimoIngreso ='" . $fecha . "' where Baja='False' AND Mail='" . $username . "'");
+        $link->query("Update usuarios set ultimoingreso ='" . $fecha . "' where baja='false'");
 
         header("location: index.php");
       } else {
@@ -81,7 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button>ingresar</button>
 
       </form>
-      <a href="resetpass.php">Olvide mi contraseña</a>
     </div>
 
   </div>

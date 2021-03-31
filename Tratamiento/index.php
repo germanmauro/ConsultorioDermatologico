@@ -22,13 +22,14 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Productos</title>
+    <title>Gestión de Tratamientos</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/estiloprincipal.css">
     <script src="../js/jquery.min.js"></script>
     <link rel="stylesheet" href="../Tables/jquery.dataTables.css">
     <script src="../Tables/jquery.dataTables.js"></script>
     <script src=" ../js/bootstrap.min.js"> </script>
+ 
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tabla').DataTable({
@@ -47,8 +48,8 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                 <a href="../index.php" class="btn btn-success">Volver</a>
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Listado de productos</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Registrar Producto</a>
+                        <h2 class="pull-left">Tratamientos</h2>
+                        <a href="create.php" class="btn btn-success pull-right">Registrar Tratamiento</a>
                     </div>
 
                     <br>
@@ -57,9 +58,9 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                     require_once '../config.php';
 
                     $sql = "SELECT *
-                     FROM productos
+                     FROM tratamientos
                       where baja='False' 
-                    order by codigo,denominacion";
+                    order by nombre";
                     // echo $sql;
                     if ($result = mysqli_query($link, $sql)) {
                         if (mysqli_num_rows($result) > 0) {
@@ -67,13 +68,9 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                             echo "<thead>";
                             echo "<tr>";
 
-                            echo "<th>Código</th>";
-                            echo "<th>Denominación</th>";
-                            echo "<th>Marca</th>";
-                            echo "<th>Stock</th>";
-                            echo "<th>Precio Compra</th>";
-                            echo "<th>Precio Lista</th>";
-                            echo "<th>Precio Efectivo</th>";
+                            echo "<th>Nombre</th>";
+                            echo "<th>Precio</th>";
+                            echo "<th>Porcentaje Médico %</th>";
 
                             echo "<th width='135px'>Acciones</th>";
                             echo "</tr>";
@@ -82,13 +79,9 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                             while ($row = mysqli_fetch_array($result)) {
                                 echo "<tr>";
 
-                                echo "<td>" . $row['codigo'] . "</td>";
-                                echo "<td>" . $row['denominacion'] . "</td>";
-                                echo "<td>" . $row['marca'] . "</td>";
-                                echo "<td>" . $row['stock'] . "</td>";
-                                echo "<td>" . $row['preciocompra'] . "</td>";
-                                echo "<td>" . $row['preciolista'] . "</td>";
-                                echo "<td>" . $row['precioefectivo'] . "</td>";
+                                echo "<td>" . $row['nombre'] . "</td>";
+                                echo "<td>" . $row['precio'] . "</td>";
+                                echo "<td>" . $row['porcentajemedico'] . " %</td>";
                                 
                                 echo "<td>";
                                 echo "<a href='update.php?id=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

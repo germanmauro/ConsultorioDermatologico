@@ -3,6 +3,7 @@
 require_once 'config.php';
 // Initialize the session
 session_start();
+
 if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     echo "<script>
     location.reload();
@@ -16,32 +17,32 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
 }
 
 //Definición de variables
-$nombre = $apellido = $pass = $passrepeat = $direccion = $zona = $dni = $email = $telefono = "";
+$nombre = $apellido = $pass = $passrepeat = $dni = $especialidad = $matriculaprovincial = $matriculanacional = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
-    $direccion = $_POST["direccion"];
-    $zona = $_POST["zona"];
-    // $email = $_POST["email"];
-    $telefono = $_POST["telefono"];
-    $pass = $_POST["pass"];
+    $dni = $_POST["dni"];
+    $espcialidad = $_POST["especialidad"];
+    $matriculanacional = $_POST["matriculanacional"];
+    $matriculaprovincial = $_POST["matriculaprovincial"];
 
     // Prepare an insert statement
-    $sql = "UPDATE  usuario set Nombre=?, Apellido=?, Direccion = ?, Zona = ?, Telefono = ? where User=?";
+    $sql = "UPDATE  usuarios set nombre=?, apellido=?, dni = ?, especialidad = ?,
+     matriculanacional = ?, matriculaprovincial = ? where user=?";
 
     if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ssssss", $p1, $p2, $p3, $p4, $p5, $p6);
+        mysqli_stmt_bind_param($stmt, "sssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7);
 
         // Set parameters
         $p1 = $nombre;
         $p2 = $apellido;
-        $p3 = $direccion;
-        $p4 = $zona;
-        // $p5 = $email;
-        $p5 = $telefono;
-        $p6 = $_SESSION["Usuario"];
+        $p3 = $dni;
+        $p4 = $espcialidad;
+        $p5 = $matriculanacional;
+        $p6 = $matriculaprovincial;
+        $p7 = $_SESSION["Usuario"];
 
         // Attempt to execute the prepared statement
         if (mysqli_stmt_execute($stmt)) {
@@ -72,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get URL parameter
 
     // Prepare a select statement
-    $sql = "SELECT * FROM usuario WHERE User = ? ";
+    $sql = "SELECT * FROM usuarios WHERE user = ? ";
     //echo $sql;
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
@@ -91,12 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                 // Retrieve individual field value
-                $nombre = $row["Nombre"];
-                $apellido = $row["Apellido"];
-                $direccion = $row["Direccion"];
-                $telefono = $row["Telefono"];
-                $email = $row["Email"];
-                $zona = $row["Zona"];
+                $nombre = $row["nombre"];
+                $apellido = $row["apellido"];
+                $matriculanacional = $row["matriculanacional"];
+                $matriculaprovincial = $row["matriculaprovincial"];
+                $dni = $row["dni"];
+                $especialidad = $row["especialidad"];
                 // $dni = $row["DNI"];
             } else {
                 // URL doesn't contain valid id. Redirect to error page
@@ -130,43 +131,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="text" required class="form-control" id="apellido" name="apellido" maxlength="20" placeholder="Apellido" value='<?php echo $apellido; ?>'>
                             </div>
                             <div class="form-group">
-                                <label>Dirección o Barrio Privado</label>
-                                <input type="text" required class="form-control" id="direccion" name="direccion" maxlength="200" placeholder="Dirección o Barrio Privado" value='<?php echo $direccion; ?>'>
+                                <label>Especialidad</label>
+                                <input type="text" required class="form-control" id="especialidad" name="especialidad" maxlength="50" placeholder="Especialidad" value='<?php echo $especialidad; ?>'>
                             </div>
                             <div class="form-group">
-                                <label>Zona de Entrega</label>
-
-                                <select id="zona" name="zona" class="form-control" required>
-                                    <?php
-                                    $sql1 = "SELECT *
-                                    FROM zona
-                                    where Baja='False'
-                                    order by Nombre";
-                                    if ($result1 = mysqli_query($link, $sql1)) {
-                                        if (mysqli_num_rows($result1) > 0) {
-                                            while ($row = mysqli_fetch_array($result1)) {
-                                                $sel = "";
-                                                if ($row["Id"] == $zona) {
-                                                    $sel = "selected";
-                                                }
-                                                echo "<option " . $sel . "  value='" . $row["Id"] . "'>" . $row["Nombre"] . " - " . $row["Ubicacion"] . "</option>";
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label>DNI (Necesario para ingresar al sistema)</label>
-                                <input type="text" required class="form-control" id="dni" name="dni" minlength="6" disabled="true" maxlength="15" value='<?php echo $dni; ?>'>
-                            </div> -->
-                            <div class="form-group">
-                                <label>Teléfono</label>
-                                <input type="text" required class="form-control" id="telefono" name="telefono" maxlength="20" placeholder="Telefono" value='<?php echo $telefono; ?>'>
+                                <label>DNI</label>
+                                <input type="text" required class="form-control" id="dni" name="dni" minlength="6" maxlength="15" value='<?php echo $dni; ?>'>
                             </div>
                             <div class="form-group">
-                                <label>E-Mail (Necesario para ingresar al sistema)</label>
-                                <input type="email" class="form-control" disabled="true" name="email" id="email" maxlength="60" placeholder="E-Mail" value='<?php echo $email; ?>'>
+                                <label>Matricula Nacional</label>
+                                <input type="text" class="form-control" id="matriculanacional" name="matriculanacional" minlength="6" maxlength="15" value='<?php echo $matriculanacional; ?>'>
+                            </div>
+                            <div class="form-group">
+                                <label>Matricula Provincial</label>
+                                <input type="text" class="form-control" id="matriculaprovincial" name="matriculaprovincial" minlength="6" maxlength="15" value='<?php echo $matriculaprovincial; ?>'>
                             </div>
                             <div class="form-group">
                                 <label>Contraseña(Vacío para matener la misma)</label>
