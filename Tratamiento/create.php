@@ -17,27 +17,29 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$nombre = $precio = $porcentajemedico = "";
+$denominacion = $precio = $porcentajemedico = "";
 
 //Cargar filtro
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = $_POST["nombre"];
-    $precio = $_POST["precio"];
+    $denominacion = $_POST["denominacion"];
+    $preciolista = $_POST["preciolista"];
+    $precioefectivo = $_POST["precioefectivo"];
     $porcentajemedico = $_POST["porcentajemedico"];
 
     // Prepare an insert statement
-    $sql = "INSERT INTO tratamientos (nombre,precio,porcentajemedico) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO tratamientos (denominacion,preciolista,precioefectivo,porcentajemedico) VALUES (?, ?, ?,?)";
 
     if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sss", $p1, $p2, $p3);
+        mysqli_stmt_bind_param($stmt, "ssss", $p1, $p2, $p3, $p4);
 
         // Set parameters
-        $p1 = $nombre;
-        $p2 = $precio;
-        $p3 = $porcentajemedico;
+        $p1 = $denominacion;
+        $p2 = $preciolista;
+        $p3 = $precioefectivo;
+        $p4 = $porcentajemedico;
 
         // Attempt to execute the prepared statement
         if (mysqli_stmt_execute($stmt)) {
@@ -86,12 +88,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p> Ingrese los datos del nuevo tratamiento</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" name="nombre" required maxlength=100 class="form-control" value="<?php echo $nombre; ?>">
+                            <label>Denominación</label>
+                            <input type="text" name="denominacion" required maxlength=100 class="form-control" value="<?php echo $denominacion; ?>">
                         </div>
                         <div class="form-group">
-                            <label>Precio (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="precio" maxlength=50 class="form-control">
+                            <label>Precio Lista (Decimales separados por .)</label>
+                            <input type="number" step="any" required min=0 max=100000000 name="preciolista" maxlength=50 class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Precio Efectivo (Decimales separados por .)</label>
+                            <input type="number" step="any" required min=0 max=100000000 name="precioefectivo" maxlength=50 class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Porcentaje Médico % (Decimales separados por .)</label>

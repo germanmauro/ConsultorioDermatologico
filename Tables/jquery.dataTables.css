@@ -427,6 +427,11 @@ table.dataTable td {
   height: 0;
 }
 
+.tablagrande {
+  display: -webkit-box;
+  overflow: auto;
+}
+
 @media screen and (max-width: 767px) {
   .dataTables_wrapper .dataTables_info,
   .dataTables_wrapper .dataTables_paginate {

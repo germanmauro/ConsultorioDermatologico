@@ -36,8 +36,10 @@ CREATE table formaspago
 
 Create table tratamientos(
     id int AUTO_INCREMENT,
-    nombre varchar(200),
-    precio double(8,2),
+    codigo varchar(10),
+    deniminacion varchar(200),
+    preciolista double(8,2),
+    precioefectivo double(8,2),
     porcentajemedico double(8,2),
     baja varchar(10) default 'False',
     primary key(Id)
@@ -58,12 +60,17 @@ CREATE table productos(
 
 CREATE table proveedores(
     id int AUTO_INCREMENT,
-    nombre varchar(100) not null,
-    contacto varchar(100) not null,
+    empresa varchar(100) not null,
     email varchar(200) not null,
     telefono varchar(20) not null,
     direccion varchar(300) not null,
-    datosbancarios varchar(200) not null,
+    contacto1 varchar(100) not null,
+    email1 varchar(200) not null,
+    telefono1 varchar(20) not null,
+    contacto2 varchar(100) not null,
+    email2 varchar(200) not null,
+    telefono2 varchar(20) not null,
+    datosbancarios varchar(2000) not null,
     comentarios varchar(2000) not null,
     baja varchar(10) default 'False',
 

@@ -16,27 +16,29 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$nombre = $precio = $porcentajemedico = "";
+$denominacion = $preciolista = $precioefectivo = $porcentajemedico = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["actualizar"])) {
     // Get hidden input value
 
     $id = $_POST["id"];
-    $nombre = $_POST["nombre"];
-    $precio = $_POST["precio"];
+    $denominacion = $_POST["denominacion"];
+    $preciolista = $_POST["preciolista"];
+    $precioefectivo = $_POST["precioefectivo"];
     $porcentajemedico = $_POST["porcentajemedico"];
 
-    $sql = "UPDATE tratamientos SET nombre=?, precio=?, porcentajemedico=?  WHERE id=?";
+    $sql = "UPDATE tratamientos SET denominacion=?, preciolista=?, precioefectivo=?, porcentajemedico=?  WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ssss", $p1, $p2, $p3, $param_id);
+        mysqli_stmt_bind_param($stmt, "sssss", $p1, $p2, $p3, $p4, $param_id);
 
         // Set parameters
-        $p1 = $nombre;
-        $p2 = $precio;
-        $p3 = $porcentajemedico;
+        $p1 = $denominacion;
+        $p2 = $preciolista;
+        $p3 = $precioefectivo;
+        $p4 = $porcentajemedico;
 
         $param_id = $id;
 
@@ -81,8 +83,9 @@ if (isset($_POST["actualizar"])) {
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                     // Retrieve individual field value
-                    $nombre = $row["nombre"];
-                    $precio = $row["precio"];
+                    $denominacion = $row["denominacion"];
+                    $preciolista = $row["preciolista"];
+                    $precioefectivo = $row["precioefectivo"];
                     $porcentajemedico = $row["porcentajemedico"];
                   
                 } else {
@@ -130,12 +133,16 @@ if (isset($_POST["actualizar"])) {
                     <p>Ingrese los datos a actualizar.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" name="nombre" required maxlength=100 class="form-control" value="<?php echo $nombre; ?>">
+                            <label>Denominación</label>
+                            <input type="text" name="denominacion" required maxlength=100 class="form-control" value="<?php echo $denominacion; ?>">
                         </div>
                         <div class="form-group">
-                            <label>Precio (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="precio" maxlength=50 class="form-control" value="<?php echo $precio; ?>">
+                            <label>Precio Lista (Decimales separados por .)</label>
+                            <input type="number" step="any" required min=0 max=100000000 name="preciolista" maxlength=50 class="form-control" value="<?php echo $preciolista; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Precio Efectivo (Decimales separados por .)</label>
+                            <input type="number" step="any" required min=0 max=100000000 name="precioefectivo" maxlength=50 class="form-control" value="<?php echo $precioefectivo; ?>">
                         </div>
                         <div class="form-group">
                             <label>Porcentaje Médico % (Decimales separados por .)</label>

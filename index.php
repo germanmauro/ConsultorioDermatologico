@@ -118,12 +118,12 @@ require_once 'config.php';
                             <a href='#'><i class='fas fa-user-md'></i> MÉDICOS <span class='fas fa-angle-double-right'></span></a>
                             <ul class='nav nav-second-level'>
                                 <li>
-                                    <a href='Medicos/index.php'> <i class='fas fa-user-cog'></i> Administración de Médicos</a>
+                                    <a href='Medico/index.php'> <i class='fas fa-user-cog'></i> Administración de Médicos</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href='#'><i class='fas fa-briefcase-medical'></i></i> TRATAMIENTOS <span class='fas fa-angle-double-right'></span></a>
+                            <a href='#'><i class='fas fa-briefcase-medical'></i> TRATAMIENTOS <span class='fas fa-angle-double-right'></span></a>
                             <ul class='nav nav-second-level'>
                                 <li>
                                     <a href='Tratamiento/index.php'> <i class='fas fa-folder'></i> Administración de tratamientos</a>
@@ -134,16 +134,16 @@ require_once 'config.php';
                             <a href='#'><i class='fas fa-pills'></i> PRODUCTOS <span class='fas fa-angle-double-right'></span></a>
                             <ul class='nav nav-second-level'>
                                 <li>
-                                    <a href='/Pagos/Recibidos'> <i class='fas fa-truck'></i> Administración de proveedores</a>
+                                    <a href='Proveedor/index.php'> <i class='fas fa-truck'></i> Administración de proveedores</a>
                                 </li>
                                 <li>
                                     <a href='Producto/index.php'> <i class='fas fa-folder'></i> Administración de productos</a>
                                 </li>
                                 <li>
-                                    <a href=''> <i class='fas fa-cart-plus'></i> Registro de compras</a>
+                                    <a href='Producto/index.php'> <i class='fas fa-cart-plus'></i> Registro de compras</a>
                                 </li>
                                 <li>
-                                    <a href=''> <i class='fas fa-clipboard-list'></i> Control de stock</a>
+                                    <a href='Producto/index.php'> <i class='fas fa-clipboard-list'></i> Control de stock</a>
                                 </li>
                             </ul>
                         </li>";

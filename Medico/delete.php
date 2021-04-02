@@ -20,7 +20,7 @@ require_once '../config.php';
 if (isset($_POST["id"])) {
 
     // Prepare a select statement
-    $sql = "UPDATE productos set baja ='true' WHERE id = ?";
+    $sql = "UPDATE usuarios set baja ='true' WHERE id = ?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters

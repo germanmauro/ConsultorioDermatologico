@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="form">
 
       <form class="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <input name="user" required type="text" maxlength=100 placeholder="Usuario (E-Mail)" />
+        <input name="user" required type="text" maxlength=100 placeholder="Usuario" />
         <input name="pass" required type="password" maxlength=15 placeholder="Contraseña" />
         <input name="formulario" value="ingreso" type="hidden" />
         <?php echo "<span class='mensaje'>" . $password_err . "</span>"; ?>

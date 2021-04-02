@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $espcialidad = $_POST["especialidad"];
     $matriculanacional = $_POST["matriculanacional"];
     $matriculaprovincial = $_POST["matriculaprovincial"];
-
+    $pass = $_POST["pass"];
     // Prepare an insert statement
     $sql = "UPDATE  usuarios set nombre=?, apellido=?, dni = ?, especialidad = ?,
      matriculanacional = ?, matriculaprovincial = ? where user=?";
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['Apellido'] = $apellido;
             if ($pass != "") {
                 $pass = password_hash($pass, PASSWORD_DEFAULT);
-                if ($link->query("update usuario set Pass='" . $pass . "' where User='" . $_SESSION["Usuario"] . "'")) {
+                if ($link->query("update usuarios set pass='".$pass."' where user='" . $_SESSION["Usuario"] . "'")) {
                     header("location:index.php");
                 } else {
                     echo "Ocurrio un error.";
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get URL parameter
 
     // Prepare a select statement
-    $sql = "SELECT * FROM usuarios WHERE user = ? ";
+    $sql = "SELECT * FROM usuarios WHERE user = ? and baja='False' ";
     //echo $sql;
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters

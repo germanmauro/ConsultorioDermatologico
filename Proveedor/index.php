@@ -22,14 +22,13 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Tratamientos</title>
+    <title>Gestión de Proveedores</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/estiloprincipal.css">
     <script src="../js/jquery.min.js"></script>
     <link rel="stylesheet" href="../Tables/jquery.dataTables.css">
     <script src="../Tables/jquery.dataTables.js"></script>
     <script src=" ../js/bootstrap.min.js"> </script>
- 
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tabla').DataTable({
@@ -48,8 +47,8 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                 <a href="../index.php" class="btn btn-success">Volver</a>
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Tratamientos</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Registrar Tratamiento</a>
+                        <h2 class="pull-left">Listado de proveedores</h2>
+                        <a href="create.php" class="btn btn-success pull-right">Registrar proveedor</a>
                     </div>
 
                     <br>
@@ -58,20 +57,28 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                     require_once '../config.php';
 
                     $sql = "SELECT *
-                     FROM tratamientos
+                     FROM proveedores
                       where baja='False' 
-                    order by denominacion";
+                    order by empresa";
                     // echo $sql;
                     if ($result = mysqli_query($link, $sql)) {
                         if (mysqli_num_rows($result) > 0) {
-                            echo "<table id='tabla' class='display menutable'>";
+                            echo "<table id='tabla' class='display tablagrande'>";
                             echo "<thead>";
                             echo "<tr>";
 
-                            echo "<th>Denominación</th>";
-                            echo "<th>Precio Lista</th>";
-                            echo "<th>Precio Efectivo</th>";
-                            echo "<th>Porcentaje Médico %</th>";
+                            echo "<th>Empresa</th>";
+                            echo "<th>Dirección</th>";
+                            echo "<th>Teléfono</th>";
+                            echo "<th>E-mail</th>";
+                            echo "<th>Datos Bancarios</th>";
+                            echo "<th>Contacto 1</th>";
+                            echo "<th>Teléfono 1</th>";
+                            echo "<th>E-mail 2</th>";
+                            echo "<th>Contacto 2</th>";
+                            echo "<th>Teléfono 2</th>";
+                            echo "<th>E-mail 1</th>";
+                            echo "<th>Comentarios</th>";
 
                             echo "<th width='135px'>Acciones</th>";
                             echo "</tr>";
@@ -80,10 +87,18 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                             while ($row = mysqli_fetch_array($result)) {
                                 echo "<tr>";
 
-                                echo "<td>" . $row['denominacion'] . "</td>";
-                                echo "<td>" . $row['preciolista'] . "</td>";
-                                echo "<td>" . $row['precioefectivo'] . "</td>";
-                                echo "<td>" . $row['porcentajemedico'] . " %</td>";
+                                echo "<td>" . $row['empresa'] . "</td>";
+                                echo "<td>" . $row['direccion'] . "</td>";
+                                echo "<td>" . $row['telefono'] . "</td>";
+                                echo "<td>" . $row['email'] . "</td>";
+                                echo "<td>" . $row['datosbancarios'] . "</td>";
+                                echo "<td>" . $row['contacto1'] . "</td>";
+                                echo "<td>" . $row['telefono1'] . "</td>";
+                                echo "<td>" . $row['email1'] . "</td>";
+                                echo "<td>" . $row['contacto2'] . "</td>";
+                                echo "<td>" . $row['telefono2'] . "</td>";
+                                echo "<td>" . $row['email2'] . "</td>";
+                                echo "<td>" . $row['comentarios'] . "</td>";
                                 
                                 echo "<td>";
                                 echo "<a href='update.php?id=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
