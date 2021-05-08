@@ -23,9 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $dni = $_POST["dni"];
-    $espcialidad = $_POST["especialidad"];
-    $matriculanacional = $_POST["matriculanacional"];
-    $matriculaprovincial = $_POST["matriculaprovincial"];
+    if($_SESSION["Perfil"] == "medico")
+    {
+        $espcialidad = $_POST["especialidad"];
+        $matriculanacional = $_POST["matriculanacional"];
+        $matriculaprovincial = $_POST["matriculaprovincial"];
+    }
     $pass = $_POST["pass"];
     // Prepare an insert statement
     $sql = "UPDATE  usuarios set nombre=?, apellido=?, dni = ?, especialidad = ?,
@@ -51,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['Apellido'] = $apellido;
             if ($pass != "") {
                 $pass = password_hash($pass, PASSWORD_DEFAULT);
-                if ($link->query("update usuarios set pass='".$pass."' where user='" . $_SESSION["Usuario"] . "'")) {
+                if ($link->query("update usuarios set pass='" . $pass . "' where user='" . $_SESSION["Usuario"] . "'")) {
                     header("location:index.php");
                 } else {
                     echo "Ocurrio un error.";
@@ -131,21 +134,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="text" required class="form-control" id="apellido" name="apellido" maxlength="20" placeholder="Apellido" value='<?php echo $apellido; ?>'>
                             </div>
                             <div class="form-group">
-                                <label>Especialidad</label>
-                                <input type="text" required class="form-control" id="especialidad" name="especialidad" maxlength="50" placeholder="Especialidad" value='<?php echo $especialidad; ?>'>
-                            </div>
-                            <div class="form-group">
                                 <label>DNI</label>
                                 <input type="text" required class="form-control" id="dni" name="dni" minlength="6" maxlength="15" value='<?php echo $dni; ?>'>
                             </div>
-                            <div class="form-group">
+                            <?php
+                            if($_SESSION["Perfil"]=="medico")
+                            {
+                                echo "
+                            <div class='form-group'>
+                                <label>Especialidad</label>
+                                <input type='text' required class='form-control' id='especialidad' name='especialidad' maxlength='50' placeholder='Especialidad' value='<?php echo $especialidad; ?>'>
+                            </div>
+                            <div class='form-group'>
                                 <label>Matricula Nacional</label>
-                                <input type="text" class="form-control" id="matriculanacional" name="matriculanacional" minlength="6" maxlength="15" value='<?php echo $matriculanacional; ?>'>
+                                <input type='text' class='form-control' id='matriculanacional' name='matriculanacional' minlength='6' maxlength='15' value='<?php echo $matriculanacional; ?>'>
                             </div>
-                            <div class="form-group">
+                            <div class='form-group'>
                                 <label>Matricula Provincial</label>
-                                <input type="text" class="form-control" id="matriculaprovincial" name="matriculaprovincial" minlength="6" maxlength="15" value='<?php echo $matriculaprovincial; ?>'>
+                                <input type='text' class='form-control' id='matriculaprovincial' name='matriculaprovincial' minlength='6' maxlength='15' value='<?php echo $matriculaprovincial; ?>'>
                             </div>
+                            ";
+                            }
+                            ?>
                             <div class="form-group">
                                 <label>Contraseña(Vacío para matener la misma)</label>
                                 <input class="form-control" id="pass" name="pass" minlength="8" maxlength="30" placeholder="Contraseña">

@@ -6,7 +6,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || 
+!in_array($_SESSION['Perfil'],['medico','admin'])) {
     header("location: index.php");
     exit;
 }
@@ -17,6 +18,8 @@ require_once '../config.php';
 
 // Define variables and initialize with empty values
 $nombre = "";
+$porcentajeproducto = "";
+$porcentajetratamiento = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["actualizar"])) {
@@ -24,15 +27,19 @@ if (isset($_POST["actualizar"])) {
 
     $id = $_POST["id"];
     $nombre = $_POST["nombre"];
+    $porcentajeproducto = $_POST["porcentajeproducto"];
+    $porcentajetratamiento = $_POST["porcentajetratamiento"];
 
-    $sql = "UPDATE formaspago SET nombre=? WHERE id=?";
+    $sql = "UPDATE formaspago SET nombre=?, porcentajeproducto = ?, porcentajetratamiento = ? WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ss", $p1, $param_id);
+        mysqli_stmt_bind_param($stmt, "ssss", $p1,$p2,$p3, $param_id);
 
         // Set parameters
         $p1 = $nombre;
+        $p2 = $porcentajeproducto;
+        $p3 = $porcentajetratamiento;
 
         $param_id = $id;
 
@@ -78,6 +85,8 @@ if (isset($_POST["actualizar"])) {
 
                     // Retrieve individual field value
                     $nombre = $row["nombre"];
+                    $porcentajeproducto = $row["porcentajeproducto"];
+                    $porcentajetratamiento   = $row["porcentajetratamiento"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -125,6 +134,14 @@ if (isset($_POST["actualizar"])) {
                         <div class="form-group">
                             <label>Nombre</label>
                             <input type="text" maxlength="100" name="nombre" required class="form-control" value="<?php echo $nombre; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Porcentaje del precio productos (Decimales separados por .) Ej: 100 = precio total, 10 = 10% del precio, 120 = 20% más del precio</label>
+                            <input type="number" step="any" required min=0 max=300 name="porcentajeproducto" maxlength=50 class="form-control" value="<?php echo $porcentajeproducto; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Porcentaje del precio tratamientos (Decimales separados por .) Ej: 100 = precio total, 10 = 10% del precio, 120 = 20% más del precio</label>
+                            <input type="number" step="any" required min=0 max=300 name="porcentajetratamiento" maxlength=50 class="form-control" value="<?php echo $porcentajetratamiento; ?>">
                         </div>
 
                         <input type="hidden" name="id" value="<?php echo $id; ?>" />

@@ -10,7 +10,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
     header("location: ../index.php");
     exit;
 }
@@ -68,10 +69,11 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                             echo "<thead>";
                             echo "<tr>";
 
+                            echo "<th>Código</th>";
                             echo "<th>Denominación</th>";
                             echo "<th>Precio Lista</th>";
-                            echo "<th>Precio Efectivo</th>";
                             echo "<th>Porcentaje Médico %</th>";
+                            echo "<th>Fijo</th>";
 
                             echo "<th width='135px'>Acciones</th>";
                             echo "</tr>";
@@ -80,10 +82,13 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                             while ($row = mysqli_fetch_array($result)) {
                                 echo "<tr>";
 
+                                echo "<td>" . $row['codigo'] . "</td>";
                                 echo "<td>" . $row['denominacion'] . "</td>";
-                                echo "<td>" . $row['preciolista'] . "</td>";
-                                echo "<td>" . $row['precioefectivo'] . "</td>";
+                                echo "<td>" . $row['precioventa'] . "</td>";
                                 echo "<td>" . $row['porcentajemedico'] . " %</td>";
+                                echo "<td>"; 
+                                echo $row['fijo'] ?"Si":"No"; 
+                                echo "</td>";
                                 
                                 echo "<td>";
                                 echo "<a href='update.php?id=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

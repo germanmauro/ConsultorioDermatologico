@@ -107,15 +107,15 @@ function sizeOfText( $texte, $largeur )
 }
 
 // Agregar titulo
-function addTitulo()
+function addTitulo($titulo)
 {
-	$x1 = 10;
-	$y1 = 35;
+	$x1 = 36;
+	$y1 = 17;
 	//Positionnement en bas
 	$this->SetXY( $x1, $y1 );
 	$this->SetFont('Arial','B',15);
-	$length = $this->GetStringWidth( "Listado de alquileres y total de productos para la fecha" );
-	$this->Cell( $length, 2, utf8_decode("Listado de alquileres y total de productos para la fecha"));
+	$length = $this->GetStringWidth($titulo);
+	$this->Cell( $length, 2, utf8_decode($titulo));
 }
 // Agregar subtitulo
 function addSubTitulo($cliente)

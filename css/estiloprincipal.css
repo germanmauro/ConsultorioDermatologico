@@ -1,3 +1,51 @@
+@font-face {
+  font-family: TenerSans;
+  src: url(../fonts/TenorSans-Regular.ttf);
+}
+@font-face {
+  font-family: OpenSans;
+  src: url(../fonts/OpenSans-Light.ttf);
+}
+:root {
+    --marronclaro:#ddc1a7;
+    --marronmedio:#8b7c70;
+    --rosapastel: rgb(251, 215, 189);
+    --dorado:rgb(214, 175, 74);
+    --marronoscuro: #5b4f47;
+}
+body {
+    font-family: OpenSans;
+}
+
+/* HC */
+#hc {
+    background-color: var(--rosapastel);
+    font-family: OpenSans;
+}
+.item-hc
+{
+    border: solid black 2px;
+    margin: 5px;
+    padding: 5px;
+}
+.titulo {
+ padding: 5px;
+ background-color: var(--marronmedio);
+ color: #fff;
+ text-align: center;
+ margin-top: 0;
+}
+.subtitulo {
+    font-weight: bold;
+    color:#024b94;
+}
+.nombre {
+ font-weight: bold;
+}
+
+h4.detalle {
+
+}
 /* Tamaño de letra de las tablas */
 @media only screen and (max-device-width: 480px) {
     .table   {

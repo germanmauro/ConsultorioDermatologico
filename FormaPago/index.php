@@ -10,7 +10,7 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
   header("location: ../../login.php");
   exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || !in_array($_SESSION['Perfil'],['medico','admin'])) {
   header("location: ../index.php");
   exit;
 }
@@ -56,7 +56,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 
           <?php
 
-          $sql = "Select id, nombre
+          $sql = "Select id, nombre,porcentajeproducto, porcentajetratamiento
           from formaspago
           where baja='False'
           order by nombre";
@@ -68,6 +68,8 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
               echo "<tr>";
 
               echo "<th>Nombre</th>";
+              echo "<th>Porcentaje Productos</th>";
+              echo "<th>Porcentaje Tratamientos</th>";
 
               echo "<th>Acciones</th>";
               echo "</tr>";
@@ -77,6 +79,8 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                 echo "<tr>";
 
                 echo "<td>" . $row['nombre'] . "</td>";
+                echo "<td>" . $row['porcentajeproducto'] . "</td>";
+                echo "<td>" . $row['porcentajetratamiento'] . "</td>";
 
                 echo "<td>";
                 echo "<a href='update.php?id=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

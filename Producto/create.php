@@ -7,7 +7,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
     header("location: index.php");
     exit;
 }
@@ -17,7 +18,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$codigo = $denominacion = $stock = $marca = $preciocompra = $preciolista = $precioefectivo = "";
+$codigo = $denominacion = $stock = $marca = $preciocompra = $precioventa = $precioefectivo = $fijo = "";
 
 //Cargar filtro
 
@@ -28,42 +29,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $marca = $_POST["marca"];
     $stock = $_POST["stock"];
     $preciocompra = $_POST["preciocompra"];
-    $preciolista = $_POST["preciolista"];
-    $precioefectivo = $_POST["precioefectivo"];
-
-    // Prepare an insert statement
-    $sql = "INSERT INTO productos (codigo,denominacion,marca,stock,preciocompra,preciolista,precioefectivo)
+    $precioventa = $_POST["precioventa"];
+    $fijo = isset($_POST["fijo"]);
+    if (mysqli_num_rows($link->query("select * from productos where codigo='" . $codigo . "' and baja = 'False'")) > 0) {
+        echo "
+            <div class='alert alert-warning' role='alert'>
+            El código <b>" . $codigo . "</b> ya está utilizado
+            </div>  ";
+    } else {
+        // Prepare an insert statement
+        $sql = "INSERT INTO productos (codigo,denominacion,marca,stock,preciocompra,precioventa,fijo)
      VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7);
+        if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "sssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7);
 
-        // Set parameters
-        $p1 = $codigo;
-        $p2 = $denominacion;
-        $p3 = $marca;
-        $p4 = $stock;
-        $p5 = $preciocompra;
-        $p6 = $preciolista;
-        $p7 = $precioefectivo;
+            // Set parameters
+            $p1 = $codigo;
+            $p2 = $denominacion;
+            $p3 = $marca;
+            $p4 = $stock;
+            $p5 = $preciocompra;
+            $p6 = $precioventa;
+            $p7 = $fijo;
 
-        // Attempt to execute the prepared statement
-        if (mysqli_stmt_execute($stmt)) {
-            // Records created successfully. Redirect to landing page
-            header("location: index.php");
-            exit();
-        } else {
-            echo "Ocurrio un error.";
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                // Records created successfully. Redirect to landing page
+                header("location: index.php");
+                exit();
+            } else {
+                echo "Ocurrio un error.";
+            }
         }
+
+        // Close statement
+        mysqli_stmt_close($stmt);
+
+
+        // Close connection
+        mysqli_close($link);
     }
-
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-
-    // Close connection
-    mysqli_close($link);
 }
 
 ?>
@@ -103,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="text" name="denominacion" required maxlength=200 class="form-control" value="<?php echo $denominacion; ?>">
                         </div>
                         <div class="form-group">
-                            <label>Marca</label>
+                            <label>Proveedor</label>
                             <input type="text" name="marca" required maxlength=100 class="form-control" value="<?php echo $marca; ?>">
                         </div>
                         <div class="form-group">
@@ -111,16 +118,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="number" required min=0 max=100000000 name="stock" maxlength=50 class="form-control" value="<?php echo $stock; ?>">
                         </div>
                         <div class="form-group">
-                            <label>Precio Compra (Decimales separados por .)</label>
+                            <label>Precio Compra + Imp. (Decimales separados por .)</label>
                             <input type="number" step="any" required min=1 max=100000000 name="preciocompra" maxlength=50 class="form-control" value="<?php echo $preciocompra; ?>">
                         </div>
                         <div class="form-group">
                             <label>Precio Lista (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=1 max=100000000 name="preciolista" maxlength=50 class="form-control" value="<?php echo $preciolista; ?>">
+                            <input type="number" step="any" required min=1 max=100000000 name="precioventa" maxlength=50 class="form-control" value="<?php echo $precioventa; ?>">
                         </div>
                         <div class="form-group">
-                            <label>Precio Efectivo (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=1 max=100000000 name="precioefectivo" maxlength=50 class="form-control" value="<?php echo $precioefectivo; ?>">
+                            <label>
+                                <input type="checkbox" name="fijo" <?= $fijo ? ' checked' : '' ?>>
+                                Precio Fijo
+                            </label>
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Crear">

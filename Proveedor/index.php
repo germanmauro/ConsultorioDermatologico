@@ -10,7 +10,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
     header("location: ../index.php");
     exit;
 }
@@ -80,7 +81,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                             echo "<th>E-mail 1</th>";
                             echo "<th>Comentarios</th>";
 
-                            echo "<th width='135px'>Acciones</th>";
+                            echo "<th>Acciones</th>";
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
@@ -91,7 +92,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
                                 echo "<td>" . $row['direccion'] . "</td>";
                                 echo "<td>" . $row['telefono'] . "</td>";
                                 echo "<td>" . $row['email'] . "</td>";
-                                echo "<td>" . $row['datosbancarios'] . "</td>";
+                                echo "<td>" . str_replace("\n","<br>",$row['datosbancarios']) . "</td>";
                                 echo "<td>" . $row['contacto1'] . "</td>";
                                 echo "<td>" . $row['telefono1'] . "</td>";
                                 echo "<td>" . $row['email1'] . "</td>";

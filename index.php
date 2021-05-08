@@ -17,10 +17,10 @@ require_once 'config.php';
     <meta name="description" content="Capacitación en español, todos los cursos que buscas">
     <meta name="author" content="mygsystems">
 
-    <title>Consulorio Dermatológico</title>
+    <title>Clínica Dematológica</title>
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css?v=12" rel="stylesheet">
-    <link href="css/sb-admin-2.css?v=39" rel="stylesheet">
+    <link href="css/bootstrap.min.css?v=13" rel="stylesheet">
+    <link href="css/sb-admin-2.css?v=42" rel="stylesheet">
     <link rel="shortcut icon" href="image/logo.png" />
     <link href="css/font-awesome/css/all.css" rel="stylesheet" type="text/css">
     <!-- Slide Categorías -->
@@ -35,7 +35,7 @@ require_once 'config.php';
         <div id="banner">
             <div class="textobanner">
                 <h1>
-                    CONSULTORIO DERMATOLÓGICO
+                    CLÍNICA DERMATOLÓGICA
                 </h1>
                 <p>
                     Dra. Melina Lois
@@ -101,8 +101,10 @@ require_once 'config.php';
                     <ul class="nav" id="side-menu">
                     <?php
                         if (isset($_SESSION['Usuario']) || !empty($_SESSION['Usuario'])) {
-                        if ($_SESSION["Perfil"] == "admin") {
-                            echo "
+                            switch ($_SESSION["Perfil"]) {
+                                case 'admin':
+                                case 'medico':
+                                echo "
                         <li>
                             <a href='#'><i class='fas fa-cogs'></i> CONFIGURACIÓN <span class='fas fa-angle-double-right'></span></a>
                             <ul class='nav nav-second-level'>
@@ -115,10 +117,13 @@ require_once 'config.php';
                             </ul>
                         </li>
                         <li>
-                            <a href='#'><i class='fas fa-user-md'></i> MÉDICOS <span class='fas fa-angle-double-right'></span></a>
+                            <a href='#'><i class='fas fa-user-cog'></i> PERSONAL <span class='fas fa-angle-double-right'></span></a>
                             <ul class='nav nav-second-level'>
                                 <li>
-                                    <a href='Medico/index.php'> <i class='fas fa-user-cog'></i> Administración de Médicos</a>
+                                    <a href='Medico/index.php'> <i class='fas fa-user-md'></i> Administración de Médicos</a>
+                                </li>
+                                <li>
+                                    <a href='Secretaria/index.php'> <i class='fas fa-user'></i> Administración de Secretarias</a>
                                 </li>
                             </ul>
                         </li>
@@ -140,19 +145,111 @@ require_once 'config.php';
                                     <a href='Producto/index.php'> <i class='fas fa-folder'></i> Administración de productos</a>
                                 </li>
                                 <li>
-                                    <a href='Producto/index.php'> <i class='fas fa-cart-plus'></i> Registro de compras</a>
+                                    <a href='Compra/index.php'> <i class='fas fa-cart-plus'></i> Registro de compras</a>
                                 </li>
                                 <li>
-                                    <a href='Producto/index.php'> <i class='fas fa-clipboard-list'></i> Control de stock</a>
+                                    <a href='Producto/stock.php'> <i class='fas fa-clipboard-list'></i> Control de stock</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            <a href='#'><i class='fas fa-user-cog'></i> PACIENTES <span class='fas fa-angle-double-right'></span></a>
+                            <ul class='nav nav-second-level'>
+                                <li>
+                                    <a href='Paciente/index.php'> <i class='fas fa-user-injured'></i> Administración de pacientes</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href='#'><i class='fas fa-clock'></i> TURNOS <span class='fas fa-angle-double-right'></span></a>
+                            <ul class='nav nav-second-level'>
+                                <li>
+                                    <a href='Horarios/index.php'><i class='fas fa-user-clock'></i> Administración de horarios </span></a>
+                                </li>
+                                <li>
+                                    <a onclick=paginaPrincipal('turnos.php')><i class='fas fa-plus'></i> Nuevo Turno </span></a>
+                                </li>
+                                    <li>
+                                    <a href='Turno/index.php'><i class='fas fa-calendar'></i> Agenda de turnos </span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href='#'><i class='fas fa-file-invoice-dollar'></i> REGISTRO <span class='fas fa-angle-double-right'></span></a>
+                            <ul class='nav nav-second-level'>
+                             
+                                <li>
+                                    <a onclick=nuevaVenta()><i class='fas fa-plus'></i> Venta </span></a>
+                                </li>
+                                <li>
+                                    <a onclick=paginaPrincipal('ventas.php')><i class='fas fa-folder'></i> Listado </span></a>
+                                </li>
+                                <li>
+                                    <a href='Planilla/index.php'><i class='fas fa-list'></i> Planilla </span></a>
+                                </li>
+                                
+                            </ul>
                         </li>";
-                        }
-                    } else {
+                        break;
+                            case 'secretaria':
+                                echo "
+                                <li>
+                                    <a href='#'><i class='fas fa-pills'></i> PRODUCTOS <span class='fas fa-angle-double-right'></span></a>
+                                    <ul class='nav nav-second-level'>
+                                        <li>
+                                            <a href='Producto/stock.php'> <i class='fas fa-clipboard-list'></i> Control de stock</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href='#'><i class='fas fa-user-cog'></i> PACIENTES <span class='fas fa-angle-double-right'></span></a>
+                                    <ul class='nav nav-second-level'>
+                                        <li>
+                                            <a href='Paciente/index.php'> <i class='fas fa-user-injured'></i> Administración de pacientes</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href='#'><i class='fas fa-clock'></i> TURNOS <span class='fas fa-angle-double-right'></span></a>
+                                    <ul class='nav nav-second-level'>
+                                        <li>
+                                            <a href='Horarios/index.php'><i class='fas fa-user-clock'></i> Administración de horarios </span></a>
+                                        </li>
+                                        <li>
+                                            <a onclick=paginaPrincipal('turnos.php')><i class='fas fa-plus'></i> Nuevo Turno </span></a>
+                                        </li>
+                                         <li>
+                                            <a href='Turno/index.php'><i class='fas fa-calendar'></i> Agenda de turnos </span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href='#'><i class='fas fa-file-invoice-dollar'></i> REGISTRO <span class='fas fa-angle-double-right'></span></a>
+                                    <ul class='nav nav-second-level'>
+                                    
+                                        <li>
+                                            <a onclick=nuevaVenta()><i class='fas fa-plus'></i> Venta </span></a>
+                                        </li>
+                                        <li>
+                                            <a onclick=paginaPrincipal('ventas.php')><i class='fas fa-folder'></i> Listado </span></a>
+                                        </li>
+                                        
+                                    </ul>
+                                </li>
+                                ";
+                                break;
+                    
+                        default:
+                            # code...
+                            break;
+                        }//switch perfiles
+                            } else {
                         echo "<li>
                             <a href='login.php'><i class='fas fa-exchange-alt'></i> INGRESAR</a>
                         </li>";
                     }
+                        
+                           
                         ?>
 
                     </ul>
@@ -168,8 +265,6 @@ require_once 'config.php';
         <!-- /#page-wrapper -->
         <div class="footer">
             Desarrollado por <a href="https://www.mygsystems.com">M&G Systems.com</a>
-            - <a href="/PoliticaPrivacidad">Política de privacidad</a>
-            - <a href="/Registro/Terminos">Términos y condiciones</a>
         </div>
     </div>
     <!-- /#wrapper -->
@@ -186,6 +281,9 @@ require_once 'config.php';
 
         function paginaPrincipal(pag, param = "") {
             $("#page-wrapper").load(pag, param);
+            var element = document.querySelector("#page-wrapper");
+        // scroll to element
+            element.scrollIntoView();
         }
 
         //Funcion para no cambiar de página
@@ -212,7 +310,7 @@ require_once 'config.php';
     <!-- jQuery -->
     <script src="js/jquery.min.js"></script>
     <!-- Acciones para pedidos -->
-    <script src="js/Acciones/acciones.js?v=6"></script>
+    <script src="js/Acciones/acciones.js?v=15"></script>
     <script src="Tables/jquery.dataTables.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

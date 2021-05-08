@@ -1,11 +1,34 @@
-Crear medicos
+Crear medicos OK
 
 Crear productos OK
 
-Crear menu medicos
+Crear menu medicos Ok
 
-Crear proveedores solo sería agenda.
+Crear proveedores solo sería agenda. OK
 
-Nombre,Contacto, Email, Telefono, Dirección, Datos bancarios, Comentarios
+Nombre,Contacto, Email, Telefono, Dirección, Datos bancarios, Comentarios OK
 
 Para la comisión de los médicos tomar el precio efectivo por mas que pague con otro medio
+
+Carga de pacientes lo hace la secretaria y la esposa OK
+
+Ver la parte de gestión de turnos OK
+    Elegir médico Ok
+        Elegir paciente Ok
+    Carga días disponibles de c/médico Ok
+    Agregar tratamiento OK
+    Mostrar días con y sin turnos disponibles (verde y rojo). OK
+
+    Ver cargar pacientes, codigo automatico (mayor + 1) si se deja vacío OK
+    No repetir codigos en pacientes, productos y tratamientos OK
+
+    Agregar tratamiento al turnos OK
+
+    Falta crear las consultas y eliminarlas. OK
+
+    Registro de compras: OK
+    
+    Crear los registros de tratamientos y ventas de productos
+        Seleccion d paciente.
+        Seleccion tratamientos y productos.
+        seleccion forma de pago

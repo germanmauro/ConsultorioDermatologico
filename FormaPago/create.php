@@ -18,6 +18,8 @@ require_once '../config.php';
 
 // Define variables and initialize with empty values
 $nombre = "";
+$porcentajeproducto = "";
+$porcentajetratamiento = "";
 $retorno = "";
 
 if (isset($_GET["Retorno"])) {
@@ -30,16 +32,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $retorno = $_POST["retorno"];
 
     $nombre = $_POST["nombre"];
+    $porcentajeproducto = $_POST["porcentajeproducto"];
+    $porcentajetratamiento = $_POST["porcentajetratamiento"];
 
     // Prepare an insert statement
-    $sql = "INSERT INTO formaspago (Nombre) VALUES (?)";
+    $sql = "INSERT INTO formaspago (nombre,porcentajeproducto,porcentajetratamiento) VALUES (?,?,?)";
 
     if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "s", $p1);
+        mysqli_stmt_bind_param($stmt, "sss", $p1, $p2, $p3);
 
         // Set parameters
         $p1 = $nombre;
+        $p2 = $porcentajeproducto;
+        $p3 = $porcentajetratamiento;
 
         // Attempt to execute the prepared statement
         if (mysqli_stmt_execute($stmt)) {
@@ -95,7 +101,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label>Nombre</label>
                             <input type="text" name="nombre" required maxlength=100 class="form-control" value="<?php echo $nombre; ?>">
                         </div>
-                        
+                        <div class="form-group">
+                            <label>Porcentaje del precio productos (Decimales separados por .) Ej: 100 = precio total, 10 = 10% del precio, 120 = 20% más del precio</label>
+                            <input type="number" step="any" required min=0 max=300 name="porcentajeproducto" maxlength=50 class="form-control" value="<?php echo $porcentajeproducto; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Porcentaje del precio tratamientos (Decimales separados por .) Ej: 100 = precio total, 10 = 10% del precio, 120 = 20% más del precio</label>
+                            <input type="number" step="any" required min=0 max=300 name="porcentajetratamiento" maxlength=50 class="form-control" value="<?php echo $porcentajetratamiento; ?>">
+                        </div>
+
                         <input type="hidden" name=retorno value="<?php echo $retorno ?>">
                         <input type="submit" class="btn btn-primary" value="Crear">
 

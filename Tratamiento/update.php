@@ -6,7 +6,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
     header("location: index.php");
     exit;
 }
@@ -16,29 +17,32 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$denominacion = $preciolista = $precioefectivo = $porcentajemedico = "";
+$denominacion = $codigo = $precioventa = $precioefectivo = $porcentajemedico = $fijo = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["actualizar"])) {
     // Get hidden input value
 
     $id = $_POST["id"];
+    $codigo = $_POST["codigo"];
     $denominacion = $_POST["denominacion"];
-    $preciolista = $_POST["preciolista"];
-    $precioefectivo = $_POST["precioefectivo"];
+    $precioventa = $_POST["precioventa"];
     $porcentajemedico = $_POST["porcentajemedico"];
+    $fijo = isset($_POST["fijo"]);
 
-    $sql = "UPDATE tratamientos SET denominacion=?, preciolista=?, precioefectivo=?, porcentajemedico=?  WHERE id=?";
+    $sql = "UPDATE tratamientos SET codigo = ?, denominacion=?, precioventa=?, porcentajemedico=?, fijo = ?
+      WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sssss", $p1, $p2, $p3, $p4, $param_id);
+        mysqli_stmt_bind_param($stmt, "ssssss", $p1, $p2, $p3, $p4, $p5, $param_id);
 
         // Set parameters
-        $p1 = $denominacion;
-        $p2 = $preciolista;
-        $p3 = $precioefectivo;
+        $p1 = $codigo;
+        $p2 = $denominacion;
+        $p3 = $precioventa;
         $p4 = $porcentajemedico;
+        $p5 = $fijo;
 
         $param_id = $id;
 
@@ -83,11 +87,11 @@ if (isset($_POST["actualizar"])) {
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                     // Retrieve individual field value
+                    $codigo = $row["codigo"];
                     $denominacion = $row["denominacion"];
-                    $preciolista = $row["preciolista"];
-                    $precioefectivo = $row["precioefectivo"];
+                    $precioventa = $row["precioventa"];
                     $porcentajemedico = $row["porcentajemedico"];
-                  
+                    $fijo = $row["fijo"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -133,22 +137,28 @@ if (isset($_POST["actualizar"])) {
                     <p>Ingrese los datos a actualizar.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group">
+                            <label>Código</label>
+                            <input type="text" name="codigo" required maxlength=10 class="form-control" value="<?php echo $codigo; ?>">
+                        </div>
+                        <div class="form-group">
                             <label>Denominación</label>
                             <input type="text" name="denominacion" required maxlength=100 class="form-control" value="<?php echo $denominacion; ?>">
                         </div>
                         <div class="form-group">
                             <label>Precio Lista (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="preciolista" maxlength=50 class="form-control" value="<?php echo $preciolista; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Precio Efectivo (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="precioefectivo" maxlength=50 class="form-control" value="<?php echo $precioefectivo; ?>">
+                            <input type="number" step="any" required min=0 max=100000000 name="precioventa" maxlength=50 class="form-control" value="<?php echo $precioventa; ?>">
                         </div>
                         <div class="form-group">
                             <label>Porcentaje Médico % (Decimales separados por .)</label>
                             <input type="number" step="any" required min=0 max=100 name="porcentajemedico" maxlength=50 class="form-control" value="<?php echo $porcentajemedico; ?>">
                         </div>
-                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="fijo" <?= $fijo ? ' checked' : '' ?>>
+                                Precio Fijo
+                            </label>
+                        </div>
+
                         <input type="hidden" name="id" value="<?php echo $id; ?>" />
                         <input type="submit" name="actualizar" class="btn btn-primary" value="Actualizar">
                         <a href="index.php" class="btn btn-default">Cancelar</a>

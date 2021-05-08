@@ -6,7 +6,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
     header("location: index.php");
     exit;
 }
@@ -16,7 +17,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$codigo = $denominacion = $stock = $marca = $preciocompra = $preciolista = $precioefectivo = "";
+$codigo = $denominacion = $stock = $marca = $preciocompra = $precioventa = $precioefectivo = $fijo = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["actualizar"])) {
@@ -28,11 +29,11 @@ if (isset($_POST["actualizar"])) {
     $marca = $_POST["marca"];
     $stock = $_POST["stock"];
     $preciocompra = $_POST["preciocompra"];
-    $preciolista = $_POST["preciolista"];
-    $precioefectivo = $_POST["precioefectivo"];
+    $precioventa = $_POST["precioventa"];
+    $fijo = isset($_POST["fijo"]);
 
     $sql = "UPDATE productos SET codigo=?, denominacion=?, marca=?, stock = ?, preciocompra = ?,
-     preciolista = ?, precioefectivo = ?  WHERE id=?";
+     precioventa = ?, fijo = ?  WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
@@ -44,8 +45,8 @@ if (isset($_POST["actualizar"])) {
         $p3 = $marca;
         $p4 = $stock;
         $p5 = $preciocompra;
-        $p6 = $preciolista;
-        $p7 = $precioefectivo;
+        $p6 = $precioventa;
+        $p7 = $fijo;
 
         $param_id = $id;
 
@@ -95,8 +96,8 @@ if (isset($_POST["actualizar"])) {
                     $marca = $row["marca"];
                     $stock = $row["stock"];
                     $preciocompra = $row["preciocompra"];
-                    $preciolista = $row["preciolista"];
-                    $precioefectivo = $row["precioefectivo"];
+                    $precioventa = $row["precioventa"];
+                    $fijo = $row["fijo"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -151,7 +152,7 @@ if (isset($_POST["actualizar"])) {
                                 <input type="text" name="denominacion" required maxlength=200 class="form-control" value="<?php echo $denominacion; ?>">
                             </div>
                             <div class="form-group">
-                                <label>Marca</label>
+                                <label>Proveedor</label>
                                 <input type="text" name="marca" required maxlength=100 class="form-control" value="<?php echo $marca; ?>">
                             </div>
                             <div class="form-group">
@@ -159,16 +160,18 @@ if (isset($_POST["actualizar"])) {
                                 <input type="number" required min=0 max=100000000 name="stock" maxlength=50 class="form-control" value="<?php echo $stock; ?>">
                             </div>
                             <div class="form-group">
-                                <label>Precio Compra (Decimales separados por .)</label>
+                                <label>Precio Compra + Imp. (Decimales separados por .)</label>
                                 <input type="number" step="any" required min=1 max=100000000 name="preciocompra" maxlength=50 class="form-control" value="<?php echo $preciocompra; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Precio Lista (Decimales separados por .)</label>
-                                <input type="number" step="any" required min=1 max=100000000 name="preciolista" maxlength=50 class="form-control" value="<?php echo $preciolista; ?>">
+                                <input type="number" step="any" required min=1 max=100000000 name="precioventa" maxlength=50 class="form-control" value="<?php echo $precioventa; ?>">
                             </div>
                             <div class="form-group">
-                                <label>Precio Efectivo (Decimales separados por .)</label>
-                                <input type="number" step="any" required min=1 max=100000000 name="precioefectivo" maxlength=50 class="form-control" value="<?php echo $precioefectivo; ?>">
+                            <label>
+                                <input type="checkbox" name="fijo" <?= $fijo ? ' checked' : '' ?>>
+                                Precio Fijo
+                            </label>
                             </div>
 
                             <input type="hidden" name="id" value="<?php echo $id; ?>" />

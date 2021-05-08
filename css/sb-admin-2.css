@@ -6,32 +6,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
-
+@font-face {
+  font-family: TenerSans;
+  src: url(../fonts/TenorSans-Regular.ttf);
+}
+@font-face {
+  font-family: OpenSans;
+  src: url(../fonts/OpenSans-Light.ttf);
+}
+:root {
+    --marronclaro:#ddc1a7;
+    --marronmedio:#8b7c70;
+    --rosapastel: rgb(251, 215, 189);
+    --dorado:rgb(214, 175, 74);
+    --marronoscuro: #5b4f47;
+}
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #024b94;
-  border: #5199db solid 3px;
-  font-family: 'Josefin Sans', sans-serif;
+  background-color: var(--marronoscuro);
+  border:var(--marronoscuro) solid 3px;
+  font-family: OpenSans;
   font-size:16px
 }
 
-strong { font-weight: bold; }
-
-#wrapper {
+ #wrapper {
   margin:10px;
-  background-color: white;
-}
-a.marca {
-  font-family: 'Philosopher', sans-serif;
-  font-size: larger;
 }
 
-a.marca:hover,a.marca:active {
- color:thistle;
- text-decoration: none;
+#tablapedido {
+  display: block;
+  overflow: auto;
 }
 
 .loader {
@@ -44,19 +51,56 @@ a.marca:hover,a.marca:active {
   background-color: rgba(0,0,0,.4);
   z-index: 10000;
 }
-.circulo {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  display: inline-block;
-  animation: spin 2s linear infinite;
-  margin-top: 200px;
-  width: 200px;
-  height: 200px;
+/*Horarios*/
+.horario {
+  padding: 30px;
+  margin: 10px 0px;
+  width: 100%;
+  background-color: #024b94;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  font-size: 16px;
 }
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.horarioocupado {
+  padding: 30px;
+  margin: 10px 0px;
+  width: 100%;
+  background-color: #424446;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  font-size: 16px;
+}
+
+.horario:hover {
+  border: black 4px solid;
+  background-color: #0db453;
+  cursor: pointer;
+}
+.horarioocupado:hover {
+  border: black 4px solid;
+  cursor: pointer;
+}
+
+.menu-text
+{
+  padding:0 10px;
+}
+/*Horarios*/
+.Highlighted a{
+   background-color : Green !important;
+   background-image :none !important;
+   color: White !important;
+   font-weight:bold !important;
+   font-size: 12pt;
+}
+.Full a{
+   background-color : Red !important;
+   background-image :none !important;
+   color: White !important;
+   font-weight:bold !important;
+   font-size: 12pt;
 }
 
 #banner {
@@ -64,7 +108,7 @@ a.marca:hover,a.marca:active {
   margin: 0!important;
   display:grid;
   /* padding:10px; */
-  background-color:white;
+  background-color: var(--rosapastel);
 }
 
 #banner img {
@@ -78,7 +122,7 @@ a.marca:hover,a.marca:active {
 }
 
  .textobanner {
-  font-family: 'Philosopher', sans-serif;
+  font-weight: bold;
   text-align: center;
   padding: 0px 5px;
    display: table-cell;
@@ -87,40 +131,17 @@ a.marca:hover,a.marca:active {
 }
 
 #banner h1 {
+  font-family: TenorSans;
   font-size: 48px;
   text-align: center;
-  color: #024b94;
+  color: var(--marronoscuro);
 }
 
 #banner p {
+  font-family: OpenSans;
   font-size: 36px;
   text-align: center;
-  color: #0c3a63;
-}
-
-#banner-buscador {
-  width: 100%;
-  padding: 10px 25px;
-  display: table;
-  height: 600px;
-  background: url('../image/fondogrande.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-#banner-buscador h2 {
-  font-family: 'Philosopher', sans-serif;
-  color:white;
-  margin:130px;
-  text-align: center;
-  text-shadow: 0 3px 8px rgb(0 0 0 / 50%);
-  font-size: 45px;
-  font-weight: 700;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
+  color:var(--marronmedio);
 }
 
 #menu-secundario {
@@ -189,7 +210,7 @@ p.referencia {
 #page-wrapper {
   padding: 0 15px;
   min-height: 568px;
-  background-color: white;
+  background-color: rgb(251,215,189);
   /* background-position: center;
   background-repeat: no-repeat;
   background-size: contain; */
@@ -357,110 +378,6 @@ p.detalle {
   /* background-color: #391fce; */
   /* padding: 5px; */
 }
-/* Nosotros */
-  .nosotros {
-    padding-top: 10px;
-    font-family:'Philosopher', sans-serif;
-    text-align: center;
-    background-color: white;
-    color: white;
-  }
-  .nosotros p {
-    font-size: 22px;
-    text-align: left;
-  }
-  .nosotros h2 {
-    text-align: left;
-  }
-  .imagen-nosotros{
-    display: block;
-  }
-  .nosotros img{
-    border-radius: 12%;
-  }
-  .item-nosotros {
-    margin: 20px 15px 0 15px;
-    padding: 15px 30px;
-    /* border:solid #024b94 2px; */
-    border-radius: 5%;
-    background-color: #024b94;
-    min-height: 330px;
-    vertical-align: middle;
-    /* display: table-cell; */
-  }
-/* Fin nosotros */
-
-/* Notificaciones */
-.notificacion {
-  padding: 30px;
-}
-.item-notificacion {
-  background-color: #024b94ab;
-  padding:15px;
-  border: 2px solid black;
-  margin:5px;
-}
-.item-notificacion .fecha {
-  font-size: 15px;
-  font-style: oblique;
-}
-.item-notificacion .texto {
-  font-size: 20px;
-}
-/* Fin Notificaciones */
-/* Info Clases */
-.info-clases {
-  padding: 30px;
-}
-.info-clases p{
-  font-size: 20px;;
-}
-.info-clases-item {
-  border: #000 solid 2px;
-  border-radius: 5%;
-  padding: 25px;
-  margin: 5px;
-}
-.info-clases h1 {
-  font-size:24px;
-  color:#024b94;
-}
-.info-clases .profesor {
-  font-size:22px;
-  color:rgb(59, 58, 58);
-}
-/* Info Clases */
-/* Contacto */
-.contact-info {
-  font-family: 'Philosopher', sans-serif;
-  color: #024b94;
-}
-
-.contact-info .fas, .contact-info .fab {
-    background: #024b94;
-    border-radius: 100%;
-    color: #ffffff;
-    font-size: 15px;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    margin-right: 5px;
-    margin-bottom: 2px;
-}
-
-.contact-info a{
-  color: #024b94;
-}
-.contact-info ::placeholder {
-  color: #024b94b9;
-}
-.contact-info h1 {
-  color: #024b94;
-  font-size: 36px;
-}
-/* Fin Contacto */
-
 
 .footer {
   left: 0;
@@ -478,210 +395,6 @@ p.detalle {
   font-weight: bolder;
 }
 
-/* Vista de cursos */
-/* * {
-  box-sizing: border-box;
-} */
-
-form.buscador input[type=text] {
-  box-sizing: border-box;
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1ab;
-}
-
-form.buscador button {
-  box-sizing: border-box;
-  float: left;
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
-
-form.buscador {
-  margin: 0 150px;
-}
-
-form.buscador ::placeholder {
-  color:rgba(49, 47, 47, 0.541);
-}
-
-form.buscador button:hover {
-  box-sizing: border-box;
-  background: #0b7dda;
-}
-
-form.buscador::after {
-  content: "";
-  box-sizing: border-box;
-  clear: both;
-  display: table;
-}
-.busqueda-izquierda {
-  box-sizing: border-box;
-  width: 8%;
-  padding:5px;
-  text-align: center;
-  float: right;
-  border:white solid 3px;
-}
-.busqueda-derecha {
-  box-sizing: border-box;
-  width: 92%;
-  float:left;
-  border:white solid 3px;
-}
-.curso-encabezado {
-    margin-top: 10px;
-    margin-bottom: 2px;
-    font-family: 'Philosopher', sans-serif;
-    font-size: 30px;
-    color: #010204;
-    background-color: #ffffff;
-    padding: 10px;
-    text-align: center;
-    border:#3b3f3b1e solid 4px;
-}
-
-#curso-wrapper {
-  background-color: rgba(255, 255, 255, 0.37);
-  text-align: center;
-  padding: 15px;
-}
-
-.curso-item {
-    box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
-    border-radius: 12px;
-    padding: 8px;
-    margin-bottom: 10px;
-}
-.curso-item:hover {
-    /* border: #181817a2 5px solid; */
-    /* border-radius: 15px; */
-    background-color: #f5efef;
-}
-
-.curso-item input[type="radio"] {
-    padding: 6px;
-    height: 20px;
-    width: 20px;
-    background-color: #024b94;
-    color: white;
-    text-align-last:left; 
-    font-weight: 600;
-    border: black solid 2px;
-}
-
-.curso-info-profesor {
-  box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
-  border-radius: 12px;
-  font-size: 22px;
-  padding: 8px;
-  margin:10px 0 10px 0;;
-}
-.curso-titulo {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 22px;
-  color:#04355f;
-  font-weight: bold;
-}
-
-.curso-detalle {
-  /* font-family: 'Courgette'; */
-  font-size: 16px;
-  text-align: left;
-  color:#2e332e;
-  font-weight: normal;
-}
-
-.curso-requisito {
-  /* font-family: 'Courgette'; */
-  margin: 25px 0 25px 0;
-  font-size: 18px;
-  text-align: left;
-  color:#2e332e;
-  font-weight: normal;
-}
-
-.curso-icono {
-  color:#024b94;
-}
-.curso-profesor {
-  /* font-family: 'Courgette'; */
-  font-size: 15px;
-  text-align: left;
-  color:#3d3792;
-  font-weight: normal;
-  margin-top: -10px;
-}
-
-.curso-profesor-img
-{
-  box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
-  border-radius: 50%;
-  /* display: block; */
-  width: 130px;
-  height: 130px;
-}
-
-h3.curso-info{
-  font-size:22px;
-  margin-top: 15px;
-  text-align: left;
-  font-weight: normal;
-}
-
-h3.curso-info-center{
-  font-size:22px;
-  margin-top: 15px;
-  text-align: center;
-  font-weight: normal;
-}
-.curso-descripcion{
-  font-family: 'Josefin Sans', sans-serif;
-  text-align: left;
-  font-size: 20px;
-  color:black;
-}
-a.curso-descripcion{
-  font-family: 'Josefin Sans', sans-serif;
-  text-align: left;
-  font-size: 18px;
-  color:black;
-}
-img.curso-image {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-
-
-img.curso-image:hover {
-  animation: roll 3s infinite;
-}
-
-@keyframes roll{
-  0% { transform: scale(1) }
-  50% { transform: scale(1.05) }
-  100% { transform: scale(1) }
-}
-
-img.curso-image-compra {
-  max-width: 100%;
-  max-height: 200px;
-  height: auto;
-  border: 2px solid rgba(20, 20, 20, 0.589);
-  border-radius: 4px;
-  padding: 5px;
-}
 .btn-comprar {
     margin-top:10px;
     width: 80%;
@@ -696,84 +409,8 @@ img.curso-image-compra {
     border-color: #101010;
 }
 
-a.curso-link,a.curso-link:hover  {
-  text-decoration: none;
-}
-
-.curso-share {
-  text-align: left;
-  padding: 5px 40px 0px 40px;
-  margin-top: 5px;
-  font-size:x-large;
-  font-weight: bolder;
-}
-
-.curso-favorite, .curso-favorite-added {
-  font-size: 20px;
-}
-
-.curso-favorite, .curso-favorite-added:hover {
-  color: #5a5454;
-}
-
-.curso-favorite:hover, .curso-favorite-added {
-    color: #ca0202;
-}
-.favorites {
-  color:#ff0;
-}
-.curso-compartir {
-  padding-left: 10px;
-}
-
-.whatsapp {
-    color: #15c515;
-}
-.whatsapp:hover {
-    color: rgb(19, 148, 25);
-}
-
-.correo {
-    color: #2727dd;
-}
-.correo:hover {
-    color: #1919c2;
-}
-
-
 /* fin vista curso */
 
-/*Calificacion de curso*/
-.ec-stars-wrapper {
-
-	font-size: 0;
-	display: inline-block;
-}
-
-.ec-stars-wrapper a {
-	text-decoration: none;
-	display: inline-block;
-	/* Volver a dar tamaño al texto */
-	font-size: 40px;
-	/* font-size: 2rem; */
-	
-	color: #888;
-}
-
-.ec-stars-wrapper:hover a {
-	color: rgb(39, 130, 228);
-}
-
-.estrellas {
-  color: rgb(39, 130, 228);
-}
-/*
- * El selector de hijo, es necesario para aumentar la especifidad
- */
-.ec-stars-wrapper > a:hover ~ a {
-	color: #888;
-}
-/*Fin calificacion de curso*/
 
 .open>.dropdown-user,.open>.dropdown-menu {
     display: block;
@@ -950,198 +587,6 @@ a.curso-link,a.curso-link:hover  {
   background-color: #eee !important;
 }
 
-/*Como funciona*/
-.comofunciona{
-  font-family:'Philosopher', sans-serif;
-  text-align: center;
-  color: black;
-}
-
-.comofunciona h1{
-  color:#024b94;
-  font-size:36px;
-}
-
-.comofunciona-item {
-  display: table;
-  margin-top:50px;
-}
-
-.comofunciona-split, .comofunciona-split-right, .comofunciona-split-left {
-  display: table-cell;
-  vertical-align: middle;
-}
-.comofunciona h2{
-  /* padding:20px 10px; */
-  color:#024b94;
-  font-weight: bold;
-  /* text-decoration: underline; */
-  font-size: 26px;
-}
-
-.comofunciona p{
-  margin-bottom: 30px;
-  padding:20px 20px;
-  font-size: 20px;
-  text-align: justify;
-}
-
-.comofunciona img {
-  margin:10px;
-  border-radius: 10%;
-  border:rgb(148, 146, 146) solid 3px;
-  width:440px;
-}
-/*Fin Como funciona*/
-
-/*Categoria info*/
-.categoriainfo{
-  font-family:'Philosopher', sans-serif;
-  text-align: center;
-  background-color: #5199db;
-  color: white;
-  margin:-51px -46px 0px -46px;
-}
-
-.categoriainfo h1{
-  color: white;
-  font-size:36px;
-}
-
-.categoriainfo-item {
-  display: table;
-  margin-top:50px;
-}
-
-.categoriainfo-split, .categoriainfo-split-right, .categoriainfo-split-left {
-  display: table-cell;
-  vertical-align: middle;
-}
-.categoriainfo h2{
-  /* padding:20px 10px; */
-  color:#0c3a63;
-  font-weight: bold;
-  /* text-decoration: underline; */
-  font-size: 40px;
-}
-
-.categoriainfo p{
-  margin-bottom: 30px;
-  padding:20px 20px;
-  font-weight: normal;
-  font-size: 20px;
-  text-align: justify;
-}
-
-.categoriainfo img {
-  margin:10px;
-  border-radius: 10%;
-  border:rgb(148, 146, 146) solid 3px;
-  width:500px;
-}
-/*Categoria Info*/
-
-/* Category styles */
-#categorias {
- display: flex;
- /* overflow: auto; */
-}
-
-.categoria-item {
-  color:black;
-  /* border: 3px solid rgba(0, 0, 0, 0.541); */
-  font-size: 24px;
-  margin: 5px;
-  /* background-color: #0c3a63da; */
-  display: inline-table;
-  width: 250px;
-  padding: 10px;
-  /* border-radius: 15px; */
-  margin-bottom: 10px;
-}
-
-.categoria-item img {
-  width: 100%;
-
-  border-radius: 10%;
-}
-
-/* .categoria-item:hover {
-  border:3px solid#0c3a63cc;
-  border-radius: 15px;
-  color: black;
-  font-weight: bolder;
-  font-family: Philosopher;
-  background-color: #5198dbec;
-} */
-
-/* Fin Category styles */
-
-/* Listado Profesores */
-.profesor-item {
-  font-size: 24px;
-  margin: 5px;
-  padding: 10px;
-  border-radius: 15px;
-  margin-bottom: 10px;
-  border:1px solid#0c3a63;
-  border-radius: 15px;
-  color: white;
-  font-weight: bolder;
-  font-family: Philosopher;
-  background-color: #0c3a63ad;
-}
-
-.profesor-item img {
-  border-radius: 50%;
-  border:#0c3a63bb solid 5px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100px;
-  height: 100px;
-  text-align: center;
-}
-/* Fin listado profesores */
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-.app {
-  /* width: 375px;
-  height: 667px; */
-  background: #ddd8d8;
-  /* overflow-y: scroll; */
-}
-
-.hs > li,
-.item {
-  scroll-snap-align: center;
-  font-size: 18px;
-  /* writing-mode: vertical-rl;  */
-  padding: calc(var(--gutter) / 2 * 1.5);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #4CAF50;
-  color:white;
-  border-radius: 8px;
-  margin-top: 12px;
-
-}
-.item:hover {
-
-  background: rgb(7, 99, 22);
-  cursor: pointer;
-}
-.item:active {
-
-  background: rgb(7, 96, 99);
-  cursor: pointer;
-}
 
 h1.menutext {
   text-align: center;
@@ -1156,15 +601,15 @@ h1.menutext {
 }
 
 .btnmenu{
-  font-size: 25px;
+  font-size: 18px;
 }
 
 .btnmenu:active {
-  background-color:#46aa22;
+  background-color:#024b94;
 }
 
 .btnmenu:hover {
-  background-color:#237406;
+  background-color:#024b94;
 }
 
 table.menutable th, table.menutable td {
@@ -1213,82 +658,6 @@ table.menutable th, table.menutable td {
       font-size: large;
     }
 
-    #banner-buscador {
-      padding: 0;
-      background: url('../image/fondo.jpg');
-      height: 270px;
-      display: grid;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    #banner-buscador h2 {
-      margin:0px 0px;
-      font-size: 30px;
-    }
-    #menu-secundario {
-      display: block;
-      padding: 0;
-    }
-
-    #menu-secundario a{
-      display: grid;
-      border-bottom: white 1px solid;
-    }
-
-    form.buscador {
-      margin: 0 14px;
-    }
-
-    form.buscador ::placeholder {
-      font-size: 12px;
-    }
-   .content-fluid {
-     padding: 0;
-   }
-
-    #categorias {
-      display: inline-block;
-    }
-  .comofunciona-item,.comofunciona-split  {
-    display: block;
-  }
-  
-  .comofunciona-split-right {
-    display:table-header-group;
-  }
-
-  .comofunciona img {
-    margin:5px 0px;
-    max-width:100%;
-    max-height:100%;
-  }
-  
-  .categoriainfo {
-    margin: -52px -15px 0px -15px;
-  }
-
-  .categoriainfo-item,.categoiainfo-split  {
-    display: block;
-  }
-  
-  .categoriainfo-split-right {
-    display:table-header-group;
-  }
-
-  .categoriainfo img {
-    margin:5px 0px;
-    max-width:95%;
-    max-height:100%;
-  }
-
-   .nosotros img {
-    width: 100%;
-  }
-
-  .curso-item input[type="radio"] {
-    font-size: 10px;
-}
 
 }
 /* Pantallas muy anchas */

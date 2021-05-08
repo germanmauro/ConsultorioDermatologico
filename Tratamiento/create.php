@@ -7,7 +7,8 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Perfil']) != 'admin') {
+if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
     header("location: index.php");
     exit;
 }
@@ -17,46 +18,55 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) || ($_SESSION['Per
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$denominacion = $precio = $porcentajemedico = "";
+$denominacion = $codigo = $precioventa = $porcentajemedico = $fijo = "";
 
 //Cargar filtro
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $denominacion = $_POST["denominacion"];
-    $preciolista = $_POST["preciolista"];
-    $precioefectivo = $_POST["precioefectivo"];
+    $precioventa = $_POST["precioventa"];
     $porcentajemedico = $_POST["porcentajemedico"];
+    $codigo = trim($_POST["codigo"]);
+    $fijo = isset($_POST["fijo"]);
+    if (mysqli_num_rows($link->query("select * from tratamientos where codigo='" . $codigo . "' and baja = 'False'")) > 0) {
+        echo "
+            <div class='alert alert-warning' role='alert'>
+            El código <b>" . $codigo . "</b> ya está utilizado
+            </div>  ";
+    } else 
+    {
+        // Prepare an insert statement
+        $sql = "INSERT INTO tratamientos (codigo, denominacion,precioventa,porcentajemedico,fijo) VALUES (?, ?, ?, ?,?)";
 
-    // Prepare an insert statement
-    $sql = "INSERT INTO tratamientos (denominacion,preciolista,precioefectivo,porcentajemedico) VALUES (?, ?, ?,?)";
+        if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "sssss", $p1, $p2, $p3, $p4, $p5);
 
-    if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ssss", $p1, $p2, $p3, $p4);
+            // Set parameters
+            $p1 = $codigo;
+            $p2 = $denominacion;
+            $p3 = $precioventa;
+            $p4 = $porcentajemedico;
+            $p5 = $fijo;
 
-        // Set parameters
-        $p1 = $denominacion;
-        $p2 = $preciolista;
-        $p3 = $precioefectivo;
-        $p4 = $porcentajemedico;
-
-        // Attempt to execute the prepared statement
-        if (mysqli_stmt_execute($stmt)) {
-            // Records created successfully. Redirect to landing page
-            header("location: index.php");
-            exit();
-        } else {
-            echo "Ocurrio un error.";
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                // Records created successfully. Redirect to landing page
+                header("location: index.php");
+                exit();
+            } else {
+                echo "Ocurrio un error.";
+            }
         }
+
+        // Close statement
+        mysqli_stmt_close($stmt);
+
+
+        // Close connection
+        mysqli_close($link);
     }
-
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-
-    // Close connection
-    mysqli_close($link);
 }
 
 ?>
@@ -88,22 +98,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p> Ingrese los datos del nuevo tratamiento</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group">
+                            <label>Código</label>
+                            <input type="text" name="codigo" required maxlength=10 class="form-control" value="<?php echo $codigo; ?>">
+                        </div>
+                        <div class="form-group">
                             <label>Denominación</label>
                             <input type="text" name="denominacion" required maxlength=100 class="form-control" value="<?php echo $denominacion; ?>">
                         </div>
                         <div class="form-group">
                             <label>Precio Lista (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="preciolista" maxlength=50 class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Precio Efectivo (Decimales separados por .)</label>
-                            <input type="number" step="any" required min=0 max=100000000 name="precioefectivo" maxlength=50 class="form-control">
+                            <input type="number" step="any" required min=0 max=100000000 name="precioventa" maxlength=50 class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Porcentaje Médico % (Decimales separados por .)</label>
                             <input type="number" step="any" required min=0 max=100 name="porcentajemedico" maxlength=50 class="form-control">
                         </div>
-                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="fijo" <?= $fijo ? ' checked' : '' ?>>
+                                Precio Fijo
+                            </label>
+                        </div>
+
                         <input type="submit" class="btn btn-primary" value="Crear">
 
                         <a href="index.php" class="btn btn-default">Cancelar</a>
