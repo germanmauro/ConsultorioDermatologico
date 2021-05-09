@@ -28,7 +28,13 @@ Ver la parte de gestión de turnos OK
 
     Registro de compras: OK
     
-    Crear los registros de tratamientos y ventas de productos
-        Seleccion d paciente.
-        Seleccion tratamientos y productos.
-        seleccion forma de pago
+    Crear los registros de tratamientos y ventas de productos ok
+        Seleccion d paciente. ok
+        Seleccion tratamientos y productos.ok
+        seleccion forma de pago ok
+
+    Descontar del stock en las ventas. OK
+
+    Agregar el nuevo formulario a HC.
+        Exportarlo PDF
+        Exportar HC

@@ -8,42 +8,34 @@ require_once 'devolucion.php';
 class Rutina
 {
   //variables
-    public $neurologico = "";
-    public $cardiovascular = "";
-    public $endocrinologico = "";
-    public $pulmonar = "";
-    public $digestivo = "";
-    public $renal = "";
-    public $dermatologico = "";
-    public $hematologicas = "";
-    public $antecedentesotros = "";
+    public $fecha = "";
+    public $tipopiel = "";
 
-    public $antigangrenantes = "";
-    public $anticoagulantes = "";
-    public $analgesicos = "";
-    public $suplementosvitaminicos = "";
-    public $antidepresivos = "";
-    public $medicamentosotros = "";
-    
-    public $alergiafarmaco = "";
-    public $alergiaanestesicolocal = "";
+    public $diahigiene1 = "";
+    public $diahigiene2 = "";
+    public $diacontornoojos = "";
+    public $diabarreracutanea = "";
+    public $diavitaminac = "";
+    public $diaacido = "";
+    public $diahumectante = "";
+    public $diacuello = "";
+    public $diaprotectorsolar = "";
+    public $diamaquillaje = "";
 
-    public $tabaco = "";
-    public $alcohol = "";
-    public $actividadfisica = "";
-    public $exposicionsolar = "";
-    
-    public $toxinabotulinica = "";
-    public $acidohialuronico = "";
-    public $antecedentesquirurgicos = "";
-    
-    public $antecedentestraumaticos = "";
-    public $cicatrizacion = "";
-    public $reaccionesvagales = "";
-    public $dismorfofobia = "";
-    public $vacunacionantitetanica = "";
-    public $fragilidadcapilar = "";
-    public $tratamientoodontologico = "";
+    public $nochehigiene1 = "";
+    public $nochehigiene2 = "";
+    public $nochehigiene3 = "";
+    public $nochecontornoojos = "";
+    public $nocheserum = "";
+    public $nocheacido = "";
+    public $nochehumectante = "";
+    public $nochecuello = "";
+
+    public $cuidadohigiene = "";
+    public $cuidadohumectacion = "";
+    public $cuidadoespecial = "";
+
+    public $suplementacionviaoral;
     public $paciente = "";
 
   function __construct($id)
@@ -56,47 +48,39 @@ class Rutina
     global $link;
     $this->paciente = $id;
     $result = $link->query("select *
-    from historias
+    from rutinas
     where paciente_id = ".$id);
     if(mysqli_num_rows($result)>0)
     {
       $row = mysqli_fetch_array($result);
-      $this->neurologico = $row["neurologico"];
-      $this->cardiovascular = $row["cardiovascular"];
-      $this->endocrinologico = $row["endocrinologico"];
-      $this->pulmonar = $row["pulmonar"];
-      $this->digestivo = $row["digestivo"];
-      $this->renal = $row["renal"];
-      $this->dermatologico = $row["dermatologico"];
-      $this->hematologicas = $row["hematologicas"];
-      $this->antecedentesotros = $row["antecedentesotros"];
+      $this->fecha = $row["fecha"];
+      $this->tipopiel = $row["tipopiel"];
 
-      $this->antigangrenantes = $row["antigangrenantes"];
-      $this->anticoagulantes = $row["anticoagulantes"];
-      $this->analgesicos = $row["analgesicos"];
-      $this->suplementosvitaminicos = $row["suplementosvitaminicos"];
-      $this->antidepresivos = $row["antidepresivos"];
-      $this->medicamentosotros = $row["medicamentosotros"];
+      $this->diahigiene1 = $row["diahigiene1"];
+      $this->diahigiene2 = $row["diahigiene2"];
+      $this->diacontornoojos = $row["diacontornoojos"];
+      $this->diabarreracutanea = $row["diabarreracutanea"];
+      $this->diavitaminac = $row["diavitaminac"];
+      $this->diaacido = $row["diaacido"];
+      $this->diahumectante = $row["diahumectante"];
+      $this->diacuello = $row["diacuello"];
+      $this->diaprotectorsolar = $row["diaprotectorsolar"];
+      $this->diamaquillaje = $row["diamaquillaje"];
 
-      $this->alergiafarmaco = $row["alergiafarmaco"];
-      $this->alergiaanestesicolocal = $row["alergiaanestesicolocal"];
+      $this->nochehigiene1 = $row["nochehigiene1"];
+      $this->nochehigiene2 = $row["nochehigiene2"];
+      $this->nochehigiene3 = $row["nochehigiene3"];
+      $this->nochecontornoojos = $row["nochecontornoojos"];
+      $this->nocheserum = $row["nocheserum"];
+      $this->nocheacido = $row["nocheacido"];
+      $this->nochehumectante = $row["nochehumectante"];
+      $this->nochecuello = $row["nochecuello"];
 
-      $this->tabaco = $row["tabaco"];
-      $this->alcohol = $row["alcohol"];
-      $this->actividadfisica = $row["actividadfisica"];
-      $this->exposicionsolar = $row["exposicionsolar"];
-
-      $this->toxinabotulinica = $row["toxinabotulinica"];
-      $this->acidohialuronico = $row["acidohialuronico"];
-      $this->antecedentesquirurgicos = $row["antecedentesquirurgicos"];
-
-      $this->antecedentestraumaticos = $row["antecedentestraumaticos"];
-      $this->cicatrizacion = $row["cicatrizacion"];
-      $this->reaccionesvagales = $row["reaccionesvagales"];
-      $this->dismorfofobia = $row["dismorfofobia"];
-      $this->vacunacionantitetanica = $row["vacunacionantitetanica"];
-      $this->fragilidadcapilar = $row["fragilidadcapilar"];
-      $this->tratamientoodontologico = $row["tratamientoodontologico"];
+      $this->cuidadohigiene = $row["cuidadohigiene"];
+      $this->cuidadohumectacion = $row["cuidadohumectacion"];
+      $this->cuidadoespecial = $row["cuidadoespecial"];
+    
+      $this->suplementacionviaoral = $row["suplementacionviaoral"];
     }
     
   }
@@ -106,33 +90,30 @@ class Rutina
     $dev = new Devolucion();
     $link->autocommit(false);
     try {
-      if (!$link->query("delete from historias where paciente_id =" . $this->paciente)) {
-        $dev->mensaje = "Error al registrar HC";
+      if (!$link->query("delete from rutinas where paciente_id =" . $this->paciente)) {
+        $dev->mensaje = "Error al registrar Rutina";
         $dev->flag = 1;
-        throw new Exception("Error al registrar HC");
+        throw new Exception("Error al registrar Rutina");
       } else {
-        if ($link->query("insert into historias (paciente_id, neurologico, cardiovascular, endocrinologico, pulmonar, digestivo,
-       renal,dermatologico, hematologicas, antecedentesotros, antigangrenantes, anticoagulantes, analgesicos,
-      suplementosvitaminicos, antidepresivos, medicamentosotros,alergiafarmaco, alergiaanestesicolocal,
-      tabaco, alcohol, actividadfisica, exposicionsolar, toxinabotulinica, acidohialuronico,
-      antecedentesquirurgicos, antecedentestraumaticos, cicatrizacion, reaccionesvagales,
-      dismorfofobia, vacunacionantitetanica, fragilidadcapilar, tratamientoodontologico)
-      values(" . $this->paciente . ",'" . $this->neurologico . "','" . $this->cardiovascular . "','" . $this->endocrinologico . "','" . $this->pulmonar . "','" . $this->digestivo . "','" .
-        $this->renal . "','" . $this->dermatologico . "','" . $this->hematologicas . "','" . $this->antecedentesotros . "','" .
-        $this->antigangrenantes . "','" . $this->anticoagulantes . "','" . $this->analgesicos . "','" . $this->suplementosvitaminicos . "','" .
-        $this->antidepresivos . "','" . $this->medicamentosotros . "','" .
-        $this->alergiafarmaco . "','" .  $this->alergiaanestesicolocal . "','" .
-        $this->tabaco . "','" . $this->alcohol . "','" . $this->actividadfisica . "','" . $this->exposicionsolar . "','" .
-        $this->toxinabotulinica . "','" . $this->acidohialuronico . "','" . $this->antecedentesquirurgicos . "','" .
-        $this->antecedentestraumaticos . "','" . $this->cicatrizacion . "','" . $this->reaccionesvagales . "','" .
-        $this->dismorfofobia . "','" . $this->vacunacionantitetanica . "','" . $this->fragilidadcapilar . "','" .
-        $this->tratamientoodontologico . "')")) {
+        if ($link->query("insert into rutinas (paciente_id, fecha, tipopiel, diahigiene1, diahigiene2,
+       diacontornoojos,diabarreracutanea, diavitaminac, diaacido, diahumectante, diacuello, diaprotectorsolar,
+      diamaquillaje, nochehigiene1, nochehigiene2, nochehigiene3, nochecontornoojos, nocheserum, nocheacido,
+      nochehumectante, nochecuello, cuidadohigiene, cuidadohumectacion, cuidadoespecial,
+      suplementacionviaoral)
+      values(" . $this->paciente . ",'" . $this->fecha . "','" . $this->tipopiel . "','" . $this->diahigiene1 . "'
+      ,'" . $this->diahigiene2 . "','" . $this->diacontornoojos . "','" .
+        $this->diabarreracutanea . "','" . $this->diavitaminac . "','" . $this->diaacido . "','" . $this->diahumectante . "','" .
+        $this->diacuello . "','" . $this->diaprotectorsolar . "','" . $this->diamaquillaje . "','" . $this->nochehigiene1 . "','" .
+        $this->nochehigiene2 . "','" . $this->nochehigiene3 . "','" .$this->nochecontornoojos . "','" .  
+        $this->nocheserum . "','" .$this->nocheacido . "','" . $this->nochehumectante . "','" . 
+        $this->nochecuello . "','" . $this->cuidadohigiene . "','" .$this->cuidadohumectacion . "','" . 
+        $this->cuidadoespecial . "','" . $this->suplementacionviaoral . "')")) {
           $link->commit();
           return $dev;
         } else {
-          $dev->mensaje = "Error al registrar HC";
+          $dev->mensaje = "Error al registrar Rutina";
           $dev->flag = 1;
-          throw new Exception("Error al registrar HC");
+          throw new Exception("Error al registrar Rutina");
         }
       }
     } catch (\Throwable $th) {

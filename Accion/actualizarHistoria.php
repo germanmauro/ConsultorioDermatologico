@@ -15,6 +15,7 @@ if(isset($_POST["neurologico"])){
     $paciente->historia->renal = $_POST["renal"];
     $paciente->historia->dermatologico = $_POST["dermatologico"];
     $paciente->historia->hematologicas = $_POST["hematologicas"];
+    $paciente->historia->ginecologicas = $_POST["ginecologicas"];
     $paciente->historia->antecedentesotros = $_POST["antecedentesotros"];
 
     $paciente->historia->antigangrenantes = $_POST["antigangrenantes"];
@@ -22,6 +23,7 @@ if(isset($_POST["neurologico"])){
     $paciente->historia->analgesicos = $_POST["analgesicos"];
     $paciente->historia->suplementosvitaminicos = $_POST["suplementosvitaminicos"];
     $paciente->historia->antidepresivos = $_POST["antidepresivos"];
+    $paciente->historia->controlnatalidad = $_POST["controlnatalidad"];
     $paciente->historia->medicamentosotros = $_POST["medicamentosotros"];
 
     $paciente->historia->alergiafarmaco = $_POST["alergiafarmaco"];
@@ -35,6 +37,7 @@ if(isset($_POST["neurologico"])){
     $paciente->historia->toxinabotulinica = $_POST["toxinabotulinica"];
     $paciente->historia->acidohialuronico = $_POST["acidohialuronico"];
     $paciente->historia->antecedentesquirurgicos = $_POST["antecedentesquirurgicos"];
+    $paciente->historia->tratamientosotros = $_POST["tratamientosotros"];
 
     $paciente->historia->antecedentestraumaticos = $_POST["antecedentestraumaticos"];
     $paciente->historia->cicatrizacion = $_POST["cicatrizacion"];

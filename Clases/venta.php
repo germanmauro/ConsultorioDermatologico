@@ -271,7 +271,7 @@ class Venta
     $porcentajeEfectivo = $row["porcentajetratamiento"];
     //tratamiento
     foreach ($this->listaTratamientos as $item) {
-      $item->comision = $item->precioLista * $item->cantidad * $porcentajeEfectivo * $item->porcentaje /10000;
+      $item->comision = round($item->precioLista * $item->cantidad * $porcentajeEfectivo * $item->porcentaje /10000);
     }
   }
 

@@ -163,12 +163,14 @@ CREATE table historias(
     renal text,
     dermatologico text,
     hematologicas text,
+    ginecologicas text,
     antecedentesotros text,
     antigangrenantes varchar(300),
     anticoagulantes varchar(300),
     analgesicos varchar(300),
     suplementosvitaminicos varchar(300),
     antidepresivos varchar(300),
+    controlnatalidad varchar(300),
     medicamentosotros text,
     alergiafarmaco varchar(300),
     alergiaanestesicolocal varchar(300),
@@ -179,6 +181,7 @@ CREATE table historias(
     toxinabotulinica varchar(100),
     acidohialuronico varchar(100),
     antecedentesquirurgicos varchar(500),
+    tratamientosotros text,
     antecedentestraumaticos text,
     cicatrizacion text,
     reaccionesvagales text,
@@ -205,8 +208,6 @@ CREATE table compras(
     cantidad int not null,
     foreign key(producto_id) REFERENCES productos(id), 
     primary key(id));
-
-    
 
     CREATE table ventas(
     id int AUTO_INCREMENT,
@@ -259,3 +260,33 @@ CREATE table archivos(
     archivo text,
     foreign key(paciente_id) REFERENCES pacientes(id), 
     primary key(id));
+
+    CREATE table rutinas(
+    paciente_id int not null,
+    fecha date not null,
+    tipopiel varchar(100),
+    diahigiene1 varchar(100),
+    diahigiene2 varchar(100),
+    diacontornoojos varchar(100),
+    diabarreracutanea varchar(100),
+    diavitaminac varchar(100),
+    diaacido varchar(100),
+    diahumectante varchar(100),
+    diacuello varchar(100),
+    diaprotectorsolar varchar(100),
+    diamaquillaje varchar(100),
+    nochehigiene1 varchar(100),
+    nochehigiene2 varchar(100),
+    nochehigiene3 varchar(100),
+    nochehigiene3 varchar(100),
+    nochecontornoojos varchar(100),
+    nocheserum varchar(100),
+    nocheacido varchar(100),
+    nochehumectante varchar(100),
+    nochecuello varchar(100),
+    cuidadohigiene varchar(100),
+    cuidadohumectacion varchar(100),
+    cuidadoespecial varchar(100),
+    suplementacionviaoral varchar(100),
+    foreign key(paciente_id) REFERENCES pacientes(id)
+);

@@ -84,7 +84,7 @@ if (isset($_GET["id"])) {
                                                                                             $hoy = new DateTime();
                                                                                             echo $fecha->format("d/m/Y"); ?> <span class="nombre">Edad:</span> <?= date_diff($fecha, $hoy)->y ?></h4>
                                         <h4><span class="nombre">Tel/Cel:</span> <?= $paciente->telefono ?> <span class="nombre">E-mail:</span> <?= $paciente->email ?></h4>
-                                        <h4><span class="nombre">Profesión:</span> <?= $paciente->profesion ?></h4>
+                                        <h4><span class="nombre">Profesión:</span> <?= $paciente->profesion . "<span class='nombre'> Referido:</span> " . $paciente->referido ?></h4>
                                         <h4><span class="nombre">Alta:</span> <?= date_format(date_create($paciente->alta), "d/m/Y") ?></h4>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@ if (isset($_GET["id"])) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="col-md-12">
-                                                        <h4 class="subtitulo">Enfermedades Sistemáticas</h3>
+                                                        <h4 class="subtitulo">Enfermedades Sistémicas</h3>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
@@ -152,6 +152,12 @@ if (isset($_GET["id"])) {
                                                             <textarea maxlength="2000" class="form-control" name="hematologicas" cols="30" rows="1"><?= $paciente->historia->hematologicas ?></textarea>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Ginecológicas</label>
+                                                            <textarea maxlength="2000" class="form-control" name="ginecologicas" cols="30" rows="1"><?= $paciente->historia->ginecologicas ?></textarea>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label>Otras</label>
@@ -190,6 +196,12 @@ if (isset($_GET["id"])) {
                                                         <div class="form-group">
                                                             <label>Antidepresivos</label>
                                                             <textarea class="form-control" name="antidepresivos" cols="30" rows="1"><?= $paciente->historia->antidepresivos ?></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Control natalidad</label>
+                                                            <textarea class="form-control" name="controlnatalidad" cols="30" rows="1"><?= $paciente->historia->controlnatalidad ?></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -241,7 +253,7 @@ if (isset($_GET["id"])) {
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
-                                                        <h4 class="subtitulo">Tratamiento estéticos previos</h4>
+                                                        <h4 class="subtitulo">Tratamientos estéticos previos</h4>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
@@ -259,6 +271,12 @@ if (isset($_GET["id"])) {
                                                         <div class="form-group">
                                                             <label>Antecedentes quirúrgicos</label>
                                                             <input type="text" maxlength="500" class="form-control" name="antecedentesquirurgicos" value="<?= $paciente->historia->antecedentesquirurgicos ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Otros</label>
+                                                            <textarea maxlength="2000" class="form-control" name="tratamientosotros" cols="30" rows="1"><?= $paciente->historia->tratamientosotros ?></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -325,6 +343,273 @@ if (isset($_GET["id"])) {
 
                         <div class="accordion__item">
                             <div class="accordion__item__header">
+                                <h3 class="titulo">RUTINA DE CUIDADO FACIAL</h3>
+                            </div>
+                            <div class="accordion__item__content">
+                                <div class="col-md-12">
+                                    <div class="item-hc">
+
+                                        <form name="rutina" id="rutina" role="form" action="" autocomplete="off">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-12">
+                                                        <h4 class="titulo"> Orden de aplicación y pasos a seguir</h4>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class='form-group'>
+                                                            <label>Fecha</label>
+                                                            <input type='date' class='form-control' name='fecha' value="<?= $paciente->rutina->fecha ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class='form-group'>
+                                                            <label>Tipo de piel</label>
+                                                            <input type='text' maxlength="100" class='form-control' name='tipopiel' value="<?= $paciente->rutina->tipopiel ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="subitem-hc">
+                                                            <h4 class="titulo"> DÍA</h4>
+                                                            <h4 class="subtitulo">Higiene</h4>
+                                                            <div class="form-group">
+                                                                <table width="100%">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>1</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diahigiene1' value="<?= $paciente->rutina->diahigiene1 ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>2</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diahigiene2' value="<?= $paciente->rutina->diahigiene2 ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">
+                                                                            <hr>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Contorno de ojos</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diacontornoojos' value="<?= $paciente->rutina->diacontornoojos ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Reforzar barrera cutánea</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diabarreracutanea' value="<?= $paciente->rutina->diabarreracutanea ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Vitamina C</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diavitaminac' value="<?= $paciente->rutina->diavitaminac ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Ácido</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diaacido' value="<?= $paciente->rutina->diaacido ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Humectante</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diahumectante' value="<?= $paciente->rutina->diahumectante ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Cuello</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diacuello' value="<?= $paciente->rutina->diacuello ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Protector solar</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diaprotectorsolar' value="<?= $paciente->rutina->diaprotectorsolar ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Maquillaje</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='diamaquillaje' value="<?= $paciente->rutina->diamaquillaje ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="subitem-hc">
+                                                            <h4 class="titulo"> NOCHE</h4>
+                                                            <h4 class="subtitulo">Higiene</h4>
+                                                            <div class="form-group">
+                                                                <table width="100%">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>1</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nochehigiene1' value="<?= $paciente->rutina->nochehigiene1 ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>2</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nochehigiene2' value="<?= $paciente->rutina->nochehigiene2 ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>3</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nochehigiene3' value="<?= $paciente->rutina->nochehigiene3 ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">
+                                                                            <hr>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Contorno de ojos</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nochecontornoojos' value="<?= $paciente->rutina->nochecontornoojos ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Serum</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nocheserum' value="<?= $paciente->rutina->nocheserum ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Ácido</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nocheacido' value="<?= $paciente->rutina->nocheacido ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Humectante</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nochehumectante' value="<?= $paciente->rutina->nochehumectante ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Cuello</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='nochecuello' value="<?= $paciente->rutina->nochecuello ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="subitem-hc">
+                                                            <h4 class="titulo"> Cuidado Corporal</h4>
+                                                            <div class="form-group">
+                                                                <table width="100%">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Higiene</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='cuidadohigiene' value="<?= $paciente->rutina->cuidadohigiene ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Humectación</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='cuidadohumectacion' value="<?= $paciente->rutina->cuidadohigiene ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Cuidado especial</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='cuidadoespecial' value="<?= $paciente->rutina->cuidadoespecial ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="subitem-hc">
+                                                            <div class="form-group">
+                                                                <table width="100%">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label>Suplementacion via oral</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type='text' maxlength="100" class='form-control' name='suplementacionviaoral' value="<?= $paciente->rutina->suplementacionviaoral ?>">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <?php
+                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin"])) {
+                                                        echo "
+                                                        <div class='col-md-12'>
+                                                            <button type='submit' id='SendRut' name='SendRut' class='btn btn-success'>Guardar</button>
+                                                        </div>";
+                                                    }
+                                                    ?>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion__item">
+                            <div class="accordion__item__header">
                                 <h3 class="titulo">CONSULTAS</h3>
                             </div>
                             <div class="accordion__item__content collapse in">
@@ -345,7 +630,7 @@ if (isset($_GET["id"])) {
                                                 $result = $link->query("SELECT id,DATE_FORMAT(fecha,'%d/%m/%Y') as fecha,
                                                     motivo,detalle
                                                     FROM consultas
-                                                    WHERE paciente_id =".$paciente->id."
+                                                    WHERE paciente_id =" . $paciente->id . "
                                                     order by consultas.fecha desc,id desc");
 
                                                 while ($row = mysqli_fetch_array($result)) {
@@ -410,7 +695,7 @@ if (isset($_GET["id"])) {
                             <div class="accordion__item__header">
                                 <h3 class="titulo">ARCHIVOS</h3>
                             </div>
-                            <div class="accordion__item__content">
+                            <div class="accordion__item__content collapse in">
                                 <div class="col-md-12">
                                     <!-- <div class="item-hc"> -->
                                     <div class='col-lg-6'>
@@ -428,24 +713,24 @@ if (isset($_GET["id"])) {
                                                 $result = $link->query("SELECT id,DATE_FORMAT(fecha,'%d/%m/%Y') as fecha,
                                                     descripcion,archivo
                                                     FROM archivos
-                                                    WHERE paciente_id = ".$paciente->id."
+                                                    WHERE paciente_id = " . $paciente->id . "
                                                     order by archivos.fecha desc,id desc");
 
 
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     echo "<tr>";
                                                     echo "<td>";
-                                                    echo "<button id='" . $row["id"] . "'  onclick='eliminarConsulta(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-trash'></i></button>";
+                                                    echo "<button id='" . $row["id"] . "'  onclick='eliminarArchivo(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-trash'></i></button>";
                                                     echo "</td>";
                                                     echo "<td>";
                                                     echo $row["fecha"];
                                                     echo "</td>";
                                                     echo "<td>";
-                                                    echo $row["motivo"];
+                                                    echo $row["descripcion"];
                                                     echo "</td>";
-                                                    echo "<td>";
-                                                    echo $row["detalle"];
-                                                    echo "</td>";
+                                                    echo "<td>
+                                                    <a target='_blank' class='btn btn-danger' href='archivo/" . $row["archivo"] . "'> Abir archivo</a>
+                                                    </td>";
 
                                                     echo "</tr>";
                                                 }
@@ -460,7 +745,7 @@ if (isset($_GET["id"])) {
                                     <div class='col-lg-6'>
                                         <form name='formarchivo' id='formarchivo' role='form' action='' autocomplete='off' enctype='multipart/form-data'>
 
-                                            <h4 class='subtitulo'>Nueva consulta</h3>";
+                                            <h4 class='subtitulo'>Nuevo archivo</h3>";
 
 
                                         $hoy = new DateTime("now", new DateTimeZone("America/Argentina/Buenos_Aires"));
@@ -468,17 +753,17 @@ if (isset($_GET["id"])) {
                                         echo "
                                                 <div class='form-group'>
                                                     <label>Fecha</label>
-                                                    <input type='date' class='form-control' name='fecha' value='" . $hoy . "'>
+                                                    <input required type='date' class='form-control' name='fecha' value='" . $hoy . "'>
                                                 </div>
                                                 <div class='form-group'>
                                                     <label>Descripción</label>
-                                                    <input type='text' class='form-control' name='descripcion' maxlength=100>
+                                                    <input required type='text' class='form-control' name='descripcion' maxlength=100>
                                                 </div>
                                                 <div class='form-group'>
                                                     <label>Archivo</label>
-                                                    <input type='file' name='archivo' id='archivo' accept='.pdf,image/*' class='form-control'>
+                                                    <input required type='file' name='archivo' id='archivo' accept='.pdf,image/*' class='form-control'>
                                                 </div>
-                                                <button type='submit' id='Send2' name='Send' class='btn btn-success'>Guardar consulta</button>
+                                                <button type='submit' id='Send2' name='Send' class='btn btn-success'>Guardar archivo</button>
                                         </form>
 
                                         <!-- </div> -->
@@ -508,6 +793,7 @@ if (isset($_GET["id"])) {
         var renal = document.envio.renal.value;
         var dermatologico = document.envio.dermatologico.value;
         var hematologicas = document.envio.hematologicas.value;
+        var ginecologicas = document.envio.ginecologicas.value;
         var antecedentesotros = document.envio.antecedentesotros.value;
 
         var antigangrenantes = document.envio.antigangrenantes.value;
@@ -515,6 +801,7 @@ if (isset($_GET["id"])) {
         var analgesicos = document.envio.analgesicos.value;
         var suplementosvitaminicos = document.envio.suplementosvitaminicos.value;
         var antidepresivos = document.envio.antidepresivos.value;
+        var controlnatalidad = document.envio.controlnatalidad.value;
         var medicamentosotros = document.envio.medicamentosotros.value;
 
         var alergiafarmaco = document.envio.alergiafarmaco.value;
@@ -528,6 +815,7 @@ if (isset($_GET["id"])) {
         var toxinabotulinica = document.envio.toxinabotulinica.value;
         var acidohialuronico = document.envio.acidohialuronico.value;
         var antecedentesquirurgicos = document.envio.antecedentesquirurgicos.value;
+        var tratamientosotros = document.envio.tratamientosotros.value;
 
         var antecedentestraumaticos = document.envio.antecedentestraumaticos.value;
         var cicatrizacion = document.envio.cicatrizacion.value;
@@ -546,6 +834,7 @@ if (isset($_GET["id"])) {
             "renal": renal,
             "dermatologico": dermatologico,
             "hematologicas": hematologicas,
+            "ginecologicas": ginecologicas,
             "antecedentesotros": antecedentesotros,
 
             "antigangrenantes": antigangrenantes,
@@ -553,6 +842,7 @@ if (isset($_GET["id"])) {
             "analgesicos": analgesicos,
             "suplementosvitaminicos": suplementosvitaminicos,
             "antidepresivos": antidepresivos,
+            "controlnatalidad": controlnatalidad,
             "medicamentosotros": medicamentosotros,
 
             "alergiafarmaco": alergiafarmaco,
@@ -566,6 +856,7 @@ if (isset($_GET["id"])) {
             "toxinabotulinica": toxinabotulinica,
             "acidohialuronico": acidohialuronico,
             "antecedentesquirurgicos": antecedentesquirurgicos,
+            "tratamientosotros": tratamientosotros,
 
             "antecedentestraumaticos": antecedentestraumaticos,
             "cicatrizacion": cicatrizacion,
@@ -606,6 +897,113 @@ if (isset($_GET["id"])) {
                                     });
                                     //return r;
                                     $('#Send').attr("disabled", false);
+                                } else {
+                                    swal("Datos actualizados correctamente", {
+                                        buttons: false,
+                                        icon: "success",
+                                        timer: 4000,
+                                    });
+
+                                }
+                            }
+                        });
+                        break;
+
+                }
+            });
+    });
+
+    $("#rutina").on("submit", function(e) {
+        $('#SendRut').attr("disabled", true);
+        e.preventDefault();
+        var fecha = document.rutina.fecha.value;
+        var tipopiel = document.rutina.tipopiel.value;
+
+        var diahigiene1 = document.rutina.diahigiene1.value;
+        var diahigiene2 = document.rutina.diahigiene2.value;
+        var diacontornoojos = document.rutina.diacontornoojos.value;
+        var diabarreracutanea = document.rutina.diabarreracutanea.value;
+        var diavitaminac = document.rutina.diavitaminac.value;
+        var diaacido = document.rutina.diaacido.value;
+        var diahumectante = document.rutina.diahumectante.value;
+        var diacuello = document.rutina.diacuello.value;
+        var diaprotectorsolar = document.rutina.diaprotectorsolar.value;
+        var diamaquillaje = document.rutina.diamaquillaje.value;
+
+        var nochehigiene1 = document.rutina.nochehigiene1.value;
+        var nochehigiene2 = document.rutina.nochehigiene2.value;
+        var nochehigiene3 = document.rutina.nochehigiene3.value;
+        var nochecontornoojos = document.rutina.nochecontornoojos.value;
+        var nocheserum = document.rutina.nocheserum.value;
+        var nocheacido = document.rutina.nocheacido.value;
+        var nochehumectante = document.rutina.nochehumectante.value;
+        var nochecuello = document.rutina.nochecuello.value;
+
+        var cuidadohigiene = document.rutina.cuidadohigiene.value;
+        var cuidadohumectacion = document.rutina.cuidadohumectacion.value;
+        var cuidadoespecial = document.rutina.cuidadoespecial.value;
+
+        var suplementacionviaoral = document.rutina.suplementacionviaoral.value;
+
+        var parametros = {
+            "fecha": fecha,
+            "tipopiel": tipopiel,
+
+            "diahigiene1": diahigiene1,
+            "diahigiene2": diahigiene2,
+            "diacontornoojos": diacontornoojos,
+            "diabarreracutanea": diabarreracutanea,
+            "diavitaminac": diavitaminac,
+            "diaacido": diaacido,
+            "diahumectante": diahumectante,
+            "diacuello": diacuello,
+            "diaprotectorsolar": diaprotectorsolar,
+            "diamaquillaje": diamaquillaje,
+
+            "nochehigiene1": nochehigiene1,
+            "nochehigiene2": nochehigiene2,
+            "nochehigiene3": nochehigiene3,
+            "nochecontornoojos": nochecontornoojos,
+            "nocheserum": nocheserum,
+            "nocheacido": nocheacido,
+            "nochehumectante": nochehumectante,
+            "nochecuello": nochecuello,
+
+            "cuidadohigiene": cuidadohigiene,
+            "cuidadohumectacion": cuidadohumectacion,
+            "cuidadoespecial": cuidadoespecial,
+
+            "suplementacionviaoral": suplementacionviaoral
+        };
+        swal("¿Desea actualizar la información de rutina facial?", {
+                icon: "warning",
+                buttons: {
+                    catch: {
+                        text: "SÍ",
+                        value: "catch",
+                    },
+                    cancel: "NO",
+
+                },
+            })
+            .then((value) => {
+                switch (value) {
+
+                    case "catch":
+                        $.ajax({
+                            url: '../Accion/actualizarRutina.php',
+                            type: 'POST',
+                            data: parametros,
+                            cache: false,
+                            success: function(r) {
+                                if (r != "") {
+                                    swal(r, {
+                                        buttons: false,
+                                        icon: "error",
+                                        timer: 3000,
+                                    });
+                                    //return r;
+                                    $('#SendRut').attr("disabled", false);
                                 } else {
                                     swal("Datos actualizados correctamente", {
                                         buttons: false,
@@ -735,17 +1133,18 @@ if (isset($_GET["id"])) {
     $("#formarchivo").on("submit", function(e) {
         // $('#Send2').attr("disabled", true);
         e.preventDefault();
-        alert(archivo);
         var file_data = $('#archivo').prop('files')[0];
         var form_data = new FormData();
         form_data.append('file', file_data);
-        var fecha = document.formarchivo.fecha.value;
-        var descripcion = document.formarchivo.descripcion.value;
-        var parametros = {
-            "fecha": fecha,
-            "descripcion": descripcion,
-            form_data
-        };
+        form_data.append('fecha', document.formarchivo.fecha.value);
+        form_data.append('descripcion', document.formarchivo.descripcion.value);
+        // var fecha = document.formarchivo.fecha.value;
+        // var descripcion = document.formarchivo.descripcion.value;
+        // var parametros = {
+        //     "fecha": fecha,
+        //     "descripcion": descripcion,
+        //     form_data
+        // };
         swal("¿Desea registrar el archivo?", {
                 icon: "warning",
                 buttons: {
@@ -764,8 +1163,11 @@ if (isset($_GET["id"])) {
                         $.ajax({
                             url: '../Accion/registrarArchivo.php',
                             type: 'POST',
-                            data: parametros,
+                            data: form_data,
                             cache: false,
+                            dataType: 'text',
+                            contentType: false,
+                            processData: false,
                             success: function(r) {
                                 if (r != "") {
                                     swal(r, {

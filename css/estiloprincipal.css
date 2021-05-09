@@ -24,9 +24,16 @@ body {
 }
 .item-hc
 {
-    border: solid black 2px;
+    border: solid var(--marronoscuro) 2px;
     margin: 5px;
     padding: 5px;
+}
+
+.subitem-hc
+{
+    border: solid var(--marronoscuro) 2px;
+    margin: 5px;
+    padding: 5px 5px 0px 5px;
 }
 .titulo {
  padding: 5px;
@@ -37,7 +44,7 @@ body {
 }
 .subtitulo {
     font-weight: bold;
-    color:#024b94;
+    color:var(--marronmedio);
 }
 .nombre {
  font-weight: bold;

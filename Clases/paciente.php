@@ -1,5 +1,6 @@
 <?php
 require_once 'historia.php';
+require_once 'rutina.php';
 
 
 /********************
@@ -50,6 +51,7 @@ class Paciente
     $this->alta = $row["alta"];
     $this->id = $id;
     $this->historia = new Historia($id);
+    $this->rutina = new Rutina($id);
   }
 
   function guardar()

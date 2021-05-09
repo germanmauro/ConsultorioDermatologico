@@ -16,6 +16,7 @@ class Historia
     public $renal = "";
     public $dermatologico = "";
     public $hematologicas = "";
+    public $ginecologicas = "";
     public $antecedentesotros = "";
 
     public $antigangrenantes = "";
@@ -23,6 +24,7 @@ class Historia
     public $analgesicos = "";
     public $suplementosvitaminicos = "";
     public $antidepresivos = "";
+    public $controlnatalidad = "";
     public $medicamentosotros = "";
     
     public $alergiafarmaco = "";
@@ -36,6 +38,7 @@ class Historia
     public $toxinabotulinica = "";
     public $acidohialuronico = "";
     public $antecedentesquirurgicos = "";
+    public $tratamientosotros = "";
     
     public $antecedentestraumaticos = "";
     public $cicatrizacion = "";
@@ -69,6 +72,7 @@ class Historia
       $this->renal = $row["renal"];
       $this->dermatologico = $row["dermatologico"];
       $this->hematologicas = $row["hematologicas"];
+      $this->ginecologicas = $row["ginecologicas"];
       $this->antecedentesotros = $row["antecedentesotros"];
 
       $this->antigangrenantes = $row["antigangrenantes"];
@@ -76,6 +80,7 @@ class Historia
       $this->analgesicos = $row["analgesicos"];
       $this->suplementosvitaminicos = $row["suplementosvitaminicos"];
       $this->antidepresivos = $row["antidepresivos"];
+      $this->controlnatalidad = $row["controlnatalidad"];
       $this->medicamentosotros = $row["medicamentosotros"];
 
       $this->alergiafarmaco = $row["alergiafarmaco"];
@@ -89,6 +94,7 @@ class Historia
       $this->toxinabotulinica = $row["toxinabotulinica"];
       $this->acidohialuronico = $row["acidohialuronico"];
       $this->antecedentesquirurgicos = $row["antecedentesquirurgicos"];
+      $this->tratamientosotros = $row["tratamientosotros"];
 
       $this->antecedentestraumaticos = $row["antecedentestraumaticos"];
       $this->cicatrizacion = $row["cicatrizacion"];
@@ -112,30 +118,46 @@ class Historia
         throw new Exception("Error al registrar HC");
       } else {
         if ($link->query("insert into historias (paciente_id, neurologico, cardiovascular, endocrinologico, pulmonar, digestivo,
-       renal,dermatologico, hematologicas, antecedentesotros, antigangrenantes, anticoagulantes, analgesicos,
-      suplementosvitaminicos, antidepresivos, medicamentosotros,alergiafarmaco, alergiaanestesicolocal,
+       renal,dermatologico, hematologicas,ginecologicas, antecedentesotros, antigangrenantes, anticoagulantes, analgesicos,
+      suplementosvitaminicos, antidepresivos, controlnatalidad, medicamentosotros,alergiafarmaco, alergiaanestesicolocal,
       tabaco, alcohol, actividadfisica, exposicionsolar, toxinabotulinica, acidohialuronico,
-      antecedentesquirurgicos, antecedentestraumaticos, cicatrizacion, reaccionesvagales,
+      antecedentesquirurgicos, tratamientosotros, antecedentestraumaticos, cicatrizacion, reaccionesvagales,
       dismorfofobia, vacunacionantitetanica, fragilidadcapilar, tratamientoodontologico)
       values(" . $this->paciente . ",'" . $this->neurologico . "','" . $this->cardiovascular . "','" . $this->endocrinologico . "','" . $this->pulmonar . "','" . $this->digestivo . "','" .
-        $this->renal . "','" . $this->dermatologico . "','" . $this->hematologicas . "','" . $this->antecedentesotros . "','" .
+        $this->renal . "','" . $this->dermatologico . "','" . $this->hematologicas . "','".$this->ginecologicas."','" . $this->antecedentesotros . "','" .
         $this->antigangrenantes . "','" . $this->anticoagulantes . "','" . $this->analgesicos . "','" . $this->suplementosvitaminicos . "','" .
-        $this->antidepresivos . "','" . $this->medicamentosotros . "','" .
+        $this->antidepresivos . "','" . $this->medicamentosotros . "','" .$this->controlnatalidad."','".
         $this->alergiafarmaco . "','" .  $this->alergiaanestesicolocal . "','" .
         $this->tabaco . "','" . $this->alcohol . "','" . $this->actividadfisica . "','" . $this->exposicionsolar . "','" .
-        $this->toxinabotulinica . "','" . $this->acidohialuronico . "','" . $this->antecedentesquirurgicos . "','" .
+        $this->toxinabotulinica . "','" . $this->acidohialuronico . "','" . $this->antecedentesquirurgicos . "','" .$this->tratamientosotros."','".
         $this->antecedentestraumaticos . "','" . $this->cicatrizacion . "','" . $this->reaccionesvagales . "','" .
         $this->dismorfofobia . "','" . $this->vacunacionantitetanica . "','" . $this->fragilidadcapilar . "','" .
         $this->tratamientoodontologico . "')")) {
           $link->commit();
           return $dev;
         } else {
-          $dev->mensaje = "Error al registrar HC";
+          $dev->mensaje = "insert into historias (paciente_id, neurologico, cardiovascular, endocrinologico, pulmonar, digestivo,
+       renal,dermatologico, hematologicas,ginecologicas, antecedentesotros, antigangrenantes, anticoagulantes, analgesicos,
+      suplementosvitaminicos, antidepresivos, controlnatalidad, medicamentosotros,alergiafarmaco, alergiaanestesicolocal,
+      tabaco, alcohol, actividadfisica, exposicionsolar, toxinabotulinica, acidohialuronico,
+      antecedentesquirurgicos, antecedentestratamientosotros, antecedentestraumaticos, cicatrizacion, reaccionesvagales,
+      dismorfofobia, vacunacionantitetanica, fragilidadcapilar, tratamientoodontologico)
+      values(" . $this->paciente . ",'" . $this->neurologico . "','" . $this->cardiovascular . "','" . $this->endocrinologico . "','" . $this->pulmonar . "','" . $this->digestivo . "','" .
+            $this->renal . "','" . $this->dermatologico . "','" . $this->hematologicas . "','" . $this->ginecologicas . "','" . $this->antecedentesotros . "','" .
+            $this->antigangrenantes . "','" . $this->anticoagulantes . "','" . $this->analgesicos . "','" . $this->suplementosvitaminicos . "','" .
+            $this->antidepresivos . "','" . $this->medicamentosotros . "','" . $this->controlnatalidad . "','" .
+            $this->alergiafarmaco . "','" .  $this->alergiaanestesicolocal . "','" .
+            $this->tabaco . "','" . $this->alcohol . "','" . $this->actividadfisica . "','" . $this->exposicionsolar . "','" .
+            $this->toxinabotulinica . "','" . $this->acidohialuronico . "','" . $this->antecedentesquirurgicos . "','" . $this->tratamientosotros . "','" .
+            $this->antecedentestraumaticos . "','" . $this->cicatrizacion . "','" . $this->reaccionesvagales . "','" .
+            $this->dismorfofobia . "','" . $this->vacunacionantitetanica . "','" . $this->fragilidadcapilar . "','" .
+            $this->tratamientoodontologico . "')";
           $dev->flag = 1;
           throw new Exception("Error al registrar HC");
         }
       }
     } catch (\Throwable $th) {
+      // $dev->mensaje = $th->getMessage();
       $link->rollback();
       return $dev;
     }    
