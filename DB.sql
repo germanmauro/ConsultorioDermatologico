@@ -229,6 +229,7 @@ CREATE table compras(
     producto_id int not null,
     cantidad int not null,
     preciounitario double(8,2),
+    preciolista double(8,2),
     total double(8,2),
     foreign key(producto_id) REFERENCES productos(id), 
     foreign key(venta_id) REFERENCES ventas(id)
@@ -242,6 +243,7 @@ CREATE table compras(
     cantidad int not null,
     medico_id int not null,
     preciounitario double(8,2),
+    preciolista double(8,2),
     total double(8,2),
     porcentaje double(8,2),
     comision double(8,2),
@@ -277,7 +279,6 @@ CREATE table archivos(
     diamaquillaje varchar(100),
     nochehigiene1 varchar(100),
     nochehigiene2 varchar(100),
-    nochehigiene3 varchar(100),
     nochehigiene3 varchar(100),
     nochecontornoojos varchar(100),
     nocheserum varchar(100),

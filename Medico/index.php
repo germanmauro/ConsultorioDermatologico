@@ -59,7 +59,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
 
                     $sql = "SELECT *
                      FROM usuarios
-                      where perfil = 'medico' and baja='False' 
+                      where (perfil = 'medico' or perfil = 'submedico') and baja='False' 
                     order by apellido";
                     // echo $sql;
                     if ($result = mysqli_query($link, $sql)) {

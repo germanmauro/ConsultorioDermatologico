@@ -27,6 +27,7 @@ class Paciente
   public $historia = "";
   public $rutina = "";
 
+  public $consulta = "";
   function cargar($id)
   {
     global $link;
@@ -85,11 +86,17 @@ class Paciente
     }
   }
 
-  function registrarConsulta($fecha,$motivo,$detalle)
+  function registrarConsulta($id,$fecha,$motivo,$detalle)
   {
     global $link;
-    $link->query("insert into consultas (fecha,motivo,detalle,paciente_id)
-    values ('".$fecha."','".$motivo."','".$detalle."',".$this->id.")");
+    if($id == "") {
+      $link->query("insert into consultas (fecha,motivo,detalle,paciente_id)
+    values ('" . $fecha . "','" . $motivo . "','" . $detalle . "'," . $this->id . ")");
+    } else {
+      $link->query("update consultas  set fecha ='".$fecha."',motivo='".$motivo."',detalle='".$detalle."'
+      where id=".$id);
+    }
+    
   }
 
   function eliminarConsulta($id)
@@ -110,6 +117,30 @@ class Paciente
     global $link;
     $link->query("delete from archivos where id=".$id);
   }
+}
 
+class Consulta
+{
+  public $id = "";
+  public $fecha = "";
+  public $motivo = "";
+  public $detalle = "";
+
+  function __construct()
+  {
+    $hoy = new DateTime("now", new DateTimeZone("America/Argentina/Buenos_Aires"));
+    $this->fecha = $hoy->format("Y-m-d");
+  }
+
+  function cargar($id)
+  {
+    $this->id = $id;
+    global $link;
+    $result = $link->query("select * from consultas where id=".$id);
+    $row = mysqli_fetch_array($result);
+    $this->fecha = $row["fecha"];
+    $this->detalle = $row["detalle"];
+    $this->motivo = $row["motivo"];
+  }
 }
  ?>

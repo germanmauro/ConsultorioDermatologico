@@ -8,12 +8,15 @@
        <div class='col-lg-12'>
 
            <div class='panel panel-default'>
-                   <h3 class="menu-text">Listado de ventas</h3>
+               <h3 class="menu-text">Listado de ventas
+                   <button onclick='cierreCaja()'><i class='fas fa-money-bill-alt' title='Ver cierre de caja'></i></button>
+               </h3>
+
                <!-- /.panel-heading -->
                <div class='panel-body'>
                    <div class='row'>
 
-                       <div class='col-lg-6'>
+                       <div class='col-lg-12'>
                            <table id='tablapedido' class='display menutable'>
                                <thead>
                                    <tr>
@@ -44,13 +47,13 @@
                                     while ($row = mysqli_fetch_array($result)) {
                                         echo "<tr>";
                                         echo "<td>";
-                                        echo "<button id='" . $row["id"] . "'  onclick='cargaVentaDetalle(" . $row['id'] . ")' class='btnmenu'><i class='far fa-list-alt' title='Detalle'></i></button>";
+                                        echo "<button  onclick='cargaVentaDetalle(" . $row['id'] . ")' class='btnmenu'><i class='far fa-list-alt' title='Detalle'></i></button>";
                                         echo "</td>";
                                         echo "<td>";
-                                        echo "<button id='" . $row["id"] . "'  onclick='cargaVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-edit' title='modificar'></i></button>";
+                                        echo "<button  onclick='cargaVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-edit' title='modificar'></i></button>";
                                         echo "</td>";
                                         echo "<td>";
-                                        echo "<button id='" . $row["id"] . "'  onclick='eliminarVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-trash' title='Eliminar'></i></button>";
+                                        echo "<button  onclick='eliminarVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-trash' title='Eliminar'></i></button>";
                                         echo "</td>";
                                         echo "<td>";
                                         echo $row["fecha"];
@@ -78,7 +81,7 @@
                            </table>
 
                        </div>
-                       <div class='col-lg-6'>
+                       <div class='col-lg-12'>
                            <div id="sub-pagina">
 
                            </div>
@@ -103,13 +106,17 @@
                "lengthMenu": [5, 10, 25, 50, 75, 100],
                columnDefs: [{
                    orderable: false,
-                   targets: [0]
+                   targets: [0, 1, 2]
                }]
 
            });
        });
    </script>
    <script>
+   function cierreCaja()
+   {
+       subPagina('cierrecaja.php');
+   }
        $("#envio").on("submit", function(e) {
            $('#Send').attr("disabled", true);
            e.preventDefault();

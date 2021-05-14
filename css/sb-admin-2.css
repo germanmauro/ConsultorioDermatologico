@@ -605,11 +605,11 @@ h1.menutext {
 }
 
 .btnmenu:active {
-  background-color:#024b94;
+  background-color:var(--marronclaro);
 }
 
 .btnmenu:hover {
-  background-color:#024b94;
+  background-color:var(--marronmedio);
 }
 
 table.menutable th, table.menutable td {

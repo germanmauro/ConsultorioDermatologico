@@ -7,6 +7,14 @@
     if (isset($_SESSION["Venta"])) {
         $venta = unserialize($_SESSION["Venta"]);
     }
+    $fecha = "";
+    if($venta->fecha == "")
+    {
+        $hoy = new DateTime();
+        $fecha = $hoy->format('Y-m-d');
+    } else {
+        $fecha = $venta->fecha;
+    }
     ?>
    <style type="text/css">
        .wrapper {
@@ -40,7 +48,7 @@
                            <form name="envio" id="envio" role="form" action="" autocomplete="off">
                                <div class="form-group">
                                    <label>Fecha</label>
-                                   <input type="date" name="fecha" class="form-control" required value="<?= $venta->fecha ?>">
+                                   <input type="date" name="fecha" class="form-control" required value="<?= $fecha ?>">
                                </div>
                                <div class="form-group">
                                    <label>N° Factura</label>

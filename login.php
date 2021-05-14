@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $pass = trim($_POST["pass"]);
 
   // Prepare a select statement
-  $sql = "SELECT user, pass,perfil,nombre,apellido,ultimoingreso FROM usuarios WHERE baja='False' AND user ='" . $username . "'";
+  $sql = "SELECT id, user, pass,perfil,nombre,apellido,ultimoingreso FROM usuarios WHERE baja='False' AND user ='" . $username . "'";
 
   if ($result = mysqli_query($link, $sql) or die($link)) {
     if (mysqli_num_rows($result) > 0) {
@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       $_SESSION['Usuario'] = $username;
       while ($row = mysqli_fetch_array($result)) {
+        $_SESSION['Id'] = $row['id'];
         $_SESSION['Perfil'] = $row['perfil'];
         $_SESSION['Nombre'] = $row['nombre'];
         $_SESSION['Apellido'] = $row['apellido'];

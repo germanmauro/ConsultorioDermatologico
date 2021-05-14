@@ -11,8 +11,7 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     exit;
 }
 if (
-    !isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
-    !in_array($_SESSION['Perfil'], ['medico', 'secretaria', 'admin'])
+    !isset($_SESSION['Perfil']) || empty($_SESSION['Perfil'])
 ) {
     header("location: ../index.php");
     exit;
@@ -148,8 +147,9 @@ if(isset($_POST["referido"]))
                             echo "<th>Profesion</th>";
                             echo "<th>Referido</th>";
                             echo "<th>Alta</th>";
-
-                            echo "<th width='135px'>Acciones</th>";
+                            if (in_array($_SESSION['Perfil'], ['medico', 'secretaria', 'admin'])) {
+                                echo "<th width='135px'>Acciones</th>";
+                            }
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
@@ -172,12 +172,14 @@ if(isset($_POST["referido"]))
                                 echo "<td>" . $row['profesion'] . "</td>";
                                 echo "<td>" . $row['referido'] . "</td>";
                                 echo "<td>" . $row['alta'] . "</td>";
+                                if(in_array($_SESSION['Perfil'], ['medico', 'secretaria', 'admin']))
+                                {
+                                    echo "<td>";
 
-                                echo "<td>";
-
-                                echo "<a href='update.php?id=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                echo "<a href='delete.php?id=" . $row['id'] . "' title='Eliminar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                echo "</td>";
+                                    echo "<a href='update.php?id=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                    echo "<a href='delete.php?id=" . $row['id'] . "' title='Eliminar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                    echo "</td>";
+                                }
                                 echo "</tr>";
                             }
                             echo "</tbody>";

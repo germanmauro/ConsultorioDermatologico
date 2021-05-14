@@ -48,7 +48,7 @@
                                                     <th>Cod.</th>
                                                     <th>Producto</th>
                                                     <th>Cantidad</th>
-                                                    <th>Precio Un.</th>
+                                                    <th>Precio Lista</th>
                                                     <th>Total</th>
                                                 </tr>
                                             </thead>
@@ -70,7 +70,7 @@
                                         echo $item->cantidad;
                                         echo "</td>";
                                         echo "<td align='center'>";
-                                        echo $item->precioLista;
+                                        echo "<input id='" . $item->id . "' type='number' value='" . $item->precioLista . "'>";
                                         echo "</td>";
                                         echo "<td align='center'>";
                                         echo $item->cantidad * $item->precioLista;
@@ -81,13 +81,12 @@
                                     echo "  
                                                 </tbody>
                                             </table>
+                                            <label><input id='mantenerprecio' type='checkbox'" . ($venta->precioProductoIgual ? ' checked' : '') . " > Mantener precio</label>
                                             </div>";
-                                        
-                                    
                                 } else {
                                     echo "<p class='infoicono'>No agregó ningun producto</p class='infoicono'>";
                                 }
-                                echo "<a onclick=paginaPrincipal('ventatratamiento.php') class='btn btn-success pull-right pedido'>
+                                echo " <a onclick=cargaPrecio() class='btn btn-success pull-right pedido'>
                                             Siguiente</a>";
                                 ?>
 
@@ -105,3 +104,38 @@
        <!-- /.col-lg-8 -->
    </div>
    <!-- /.row -->
+   <script>
+       function cargaPrecio() {
+           var form_data = new FormData();
+           var inputs = document.getElementsByTagName("input");
+           for (var i = 0; i < inputs.length; i += 1) {
+               form_data.append(inputs[i].id, inputs[i].value);
+           }
+           if (inputs.length > 2) // Si hay un producto
+           {
+               form_data.append('mantenerPrecio', document.getElementById('mantenerprecio').checked);
+           }
+
+           $.ajax({
+               url: 'Accion/cargaPrecioProducto.php',
+               type: 'POST',
+               data: form_data,
+               cache: false,
+               dataType: 'text',
+               contentType: false,
+               processData: false,
+               success: function(r) {
+                   if (r != "") {
+                       swal(r, {
+                           buttons: false,
+                           icon: "error",
+                           timer: 3000,
+                       });
+                   } else {
+                       paginaPrincipal('ventatratamiento.php');
+                   }
+               }
+           });
+
+       }
+   </script>

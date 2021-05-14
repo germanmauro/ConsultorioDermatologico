@@ -42,69 +42,50 @@
                    <div class='row'>
 
                        <div class='col-lg-12'>
-                           <table id='tablamedicos' class='display menutable'>
-                               <thead>
-                                   <tr>
-                                       <th>Apellido</th>
-                                       <th>Nombre</th>
-                                       <th>Especialidad</th>
-                                       <th></th>
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                   <?php
-                                    $result = $link->query("select * from usuarios 
-                                    where baja='False' and perfil='medico' order by apellido");
+                           <form name="envio" id="envio" role="form" action="" autocomplete="off">
+                               <div class="form-group">
+                                   <select required name="medico" class="form-control">
 
+                                       <?php
 
-                                    while ($row = mysqli_fetch_array($result)) {
-                                        echo "<tr>";
-                                        echo "<td>";
-                                        echo $row["apellido"];
-                                        echo "</td>";
-                                        echo "<td>";
-                                        echo $row["nombre"];
-                                        echo "</td>";
-                                        echo "<td>";
-                                        echo $row["especialidad"];
-                                        echo "</td>";
-                                        echo "<td>";
-                                        echo "<button id='" . $row["id"] . "' title='Seleccionar médico'  onclick='cargaVentaMedico(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-plus'></i></button>";
-                                        echo "</td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
-                               </tbody>
-                           </table>
+                                        $result = $link->query("select * from usuarios 
+                            where baja='False' and (perfil='medico' or perfil='submedico') order by apellido");
+
+                                        foreach ($result as $row) {
+                                            $sel = "";
+                                            if ($row["id"] == $venta->medico->id) {
+                                                $sel = "selected";
+                                            }
+                                            echo "<option " . $sel . " value='" . $row['id'] . "'>" . $row["apellido"] . ", " . $row["nombre"] . "</option>";
+                                        }
+
+                                        ?>
+                                   </select>
+                               </div>
+                               <button type="submit" id="Send" name="Send" class="btn btn-success">Siguiente</button>
+                           </form>
 
                        </div>
-
                    </div>
-                   <div id="sub-pagina">
+                       <div id="sub-pagina">
 
+                       </div>
                    </div>
+                   <!-- /.row -->
+
                </div>
-               <!-- /.row -->
 
            </div>
+           <!-- /.panel -->
 
        </div>
-       <!-- /.panel -->
-
-   </div>
-   <!-- /.col-lg-8 -->
+       <!-- /.col-lg-8 -->
 
 
-   <script type="text/javascript">
-       $(document).ready(function() {
-           $('#tablamedicos').DataTable({
-               "pageLength": 5,
-               "lengthMenu": [5, 10, 25, 50, 75, 100],
-               columnDefs: [{
-                   orderable: false,
-                   targets: [3]
-               }]
-
-           });
-       });
-   </script>
+       <script type="text/javascript">
+           $("#envio").on("submit", function(e) {
+                       e.preventDefault();
+                       var medico = document.envio.medico.value;
+                       cargaVentaMedico(medico);
+                       });
+       </script>

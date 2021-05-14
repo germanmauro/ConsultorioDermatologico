@@ -17,12 +17,18 @@ class Venta
   public $interes = "";
   public $descuento = "";
   public $total = "";
-  public $medico0 = "";
+  public $medico = "";
   public $formapago = "";
   public $factura = ""; //Numero de factura
   public $observaciones = "";
   
+  public $precioProductoIgual = false;
+  public $precioTratamientoIgual = false;
+
+  
   public $listaProductos = array();
+  public $listaProductosAnterior = array();//Para matener Ok el stock
+
   public $listaTratamientos = array();
 
   function __construct()
@@ -101,12 +107,24 @@ class Venta
           $dev->flag = 1;
           throw new Exception("Error al registrar la venta");
         }
+        //Vuelvo a sumar los productos
+        foreach ($this->listaProductosAnterior as $det) {
+          //actualizo stock
+          if(!$link->query("update productos set 
+          stock = stock +" . $det->cantidad. " where id=".$det->id))
+          {
+            $dev->flag = 1;
+            $dev->mensaje = "Error al registrar producto";
+            throw new Exception("Error al registrar la venta");
+          }  
+        }
       }
+
       foreach ($this->listaProductos as $det) {
         //Insertamos el detalle de la venta
-        $query = "INSERT INTO ventasproductos (venta_id,producto_id,cantidad,preciounitario,total)
+        $query = "INSERT INTO ventasproductos (venta_id,producto_id,cantidad,preciounitario,preciolista,total)
           VALUES(" . $this->id . "," . $det->id . "," . $det->cantidad . ",
-          '" . $det->precioUnitario . "','".$det->total."')";
+          '" . $det->precioUnitario . "','".$det->precioLista."','".$det->total."')";
 
         if (!$link->query($query)) {
           $dev->flag = 1;
@@ -125,10 +143,10 @@ class Venta
       }
       foreach ($this->listaTratamientos as $det) {
         //Insertamos el detalle de la venta
-        $query = "INSERT INTO ventastratamientos (venta_id,tratamiento_id,medico_id,preciounitario,cantidad,
-        total,porcentaje,comision)
+        $query = "INSERT INTO ventastratamientos (venta_id,tratamiento_id,medico_id,preciounitario,preciolista,
+        cantidad,total,porcentaje,comision)
           VALUES(" . $this->id . "," . $det->id . "," . $this->medico->id . ",
-          '" . $det->precioUnitario . "',".$det->cantidad.",'".$det->total."',
+          '" . $det->precioUnitario . "','".$det->precioLista."',".$det->cantidad.",'".$det->total."',
           '".$det->porcentaje."','".$det->comision."')";
 
         if (!$link->query($query)) {
@@ -169,15 +187,19 @@ class Venta
     while ($item = mysqli_fetch_array($resultDetalle)) {
       $prod = new Producto($item["producto_id"]);
       $prod->precioUnitario = $item["preciounitario"];
+      $prod->precioLista = $item["preciolista"];
       $prod->total = $item["total"];
       $prod->cantidad = $item["cantidad"];
       $this->listaProductos[] = $prod;
     }
+    $this->listaProductosAnterior = $this->listaProductos;
 
     $resultDetalle = $link->query("select * from ventastratamientos where venta_id=".$id);
     while ($item = mysqli_fetch_array($resultDetalle)) {
       $prod = new Tratamiento($item["tratamiento_id"]);
-      $prod->precio = $item["precio"];
+      $prod->precioUnitario = $item["preciounitario"];
+      $prod->precioLista = $item["preciolista"];
+      $prod->total = $item["total"];
       $prod->cantidad = $item["cantidad"];
       $this->listaTratamientos[] = $prod;
     }
@@ -217,8 +239,18 @@ class Venta
     $this->total = 0;
     $this->descuento = 0;
     $this->interes = 0;
-    $porcentajeproducto = $this->formapago->porcentajeproducto;
-    $porcentajetratamiento = $this->formapago->porcentajetratamiento;
+    if($this->precioProductoIgual) {
+      $porcentajeproducto = 1;
+    } else {
+      $porcentajeproducto = $this->formapago->porcentajeproducto;
+    }
+
+    if($this->precioTratamientoIgual) {
+      $porcentajetratamiento = 1;
+    } else {
+      $porcentajetratamiento = $this->formapago->porcentajetratamiento;
+    }
+    
     //productos
     foreach ($this->listaProductos as $item) {
       if ($item->fijo) {

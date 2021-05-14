@@ -57,10 +57,16 @@ $hoy = $hoy->format("Y-m-d")
                             <div class="form-group">
                                 <label>Médico</label>
                                 <select name="medico" class='form-control'>
-                                    <option value="0">Todos</option>
+                                    <?php 
+                                    if($_SESSION['Perfil']!="submedico")
+                                    {
+                                        echo "<option value='0'>Todos</option>";
+                                    }
+                                    ?>
+                                    
                                     <?php
                                     $sql1 = "SELECT * from usuarios 
-                                    where perfil='medico' 
+                                    where (perfil='medico' or perfil='submedico')
                                     and baja='False'
                                         order by apellido";
 
@@ -68,7 +74,10 @@ $hoy = $hoy->format("Y-m-d")
                                         if (mysqli_num_rows($result1) > 0) {
                                             $sel = "";
                                             while ($row = mysqli_fetch_array($result1)) {
-                                                echo "<option value='" . $row["id"] . "'>" . $row["apellido"] . ", " . $row["nombre"] . "</option>";
+                                                if($_SESSION['Perfil'] != "submedico"|| $_SESSION['Id'] == $row["id"])
+                                                {
+                                                    echo "<option value='" . $row["id"] . "'>" . $row["apellido"] . ", " . $row["nombre"] . "</option>";
+                                                }
                                             }
                                         }
                                     }
@@ -76,7 +85,7 @@ $hoy = $hoy->format("Y-m-d")
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label>Fecha desde</label>
@@ -104,8 +113,11 @@ $hoy = $hoy->format("Y-m-d")
                      FROM turnos
                      join usuarios on usuarios.id = turnos.medico_id
                      join pacientes on pacientes.id = turnos.paciente_id
-                     join tratamientos on tratamientos.id = turnos.tratamiento_id
-                    order by turnos.fecha desc";
+                     join tratamientos on tratamientos.id = turnos.tratamiento_id";
+                    if ($_SESSION['Perfil'] == "submedico") {
+                        $sql .= " where turnos.medico_id=" . $_SESSION["Id"];
+                    }
+                    $sql .= " order by turnos.fecha desc";
                     // echo $sql;
                     if ($result = mysqli_query($link, $sql)) {
                         if (mysqli_num_rows($result) > 0) {

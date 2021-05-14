@@ -43,8 +43,8 @@
                                <tbody>
                                    <?php
                                     $result = $link->query("select * from usuarios 
-                                    where baja='False' and perfil='medico' order by apellido");
-
+                                    where baja='False' and (perfil='medico' or perfil = 'submedico')
+                                    order by apellido");
 
                                     while ($row = mysqli_fetch_array($result)) {
                                         echo "<tr>";

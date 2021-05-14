@@ -36,7 +36,11 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ) {
             });
         });
     </script>
-
+<style>
+td,th {
+    text-align: center;
+}
+</style>
 </head>
 
 
@@ -59,6 +63,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ) {
                     productos.marca as marca, productos.stock as stock
 
                      FROM productos
+                     where baja= 'False'
                    
                     order by codigo,denominacion";
                     // echo $sql;

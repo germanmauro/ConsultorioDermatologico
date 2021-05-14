@@ -16,11 +16,13 @@ if (
     exit;
 }
 
-$paciente = new Paciente();
+
 if (isset($_GET["id"])) {
+    $paciente = new Paciente();
     $paciente->cargar($_GET["id"]);
     $_SESSION["Paciente"] = serialize($paciente);
-} elseif (isset($_SESSION["Turno"])) {
+    $paciente->consulta = new Consulta();
+} elseif (isset($_SESSION["Paciente"])) {
     $paciente = unserialize($_SESSION["Paciente"]);
 }
 ?>
@@ -65,8 +67,10 @@ if (isset($_GET["id"])) {
                 <a href="index.php" class="btn btn-success">Volver</a>
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Historia Clínica</h2>
+                        <h2 class="pull-left">Historia Clínica <a href="imprimirhc.php" target="_blank" class="btn btn-danger">Imprimir HC</a></h2>
+
                     </div>
+
                     <div class="accordion">
                         <div class="accordion__item">
                             <div class="accordion__item__header">
@@ -78,6 +82,7 @@ if (isset($_GET["id"])) {
 
                                         <h4><span class="nombre">Nombre:</span> <?= $paciente->apellido . ", " . $paciente->nombre ?></h4>
                                         <h4><span class="nombre">DNI:</span> <?= $paciente->dni ?></h4>
+                                        <h4><span class="nombre">Obra Social:</span> <?= $paciente->obrasocial . "<span class='nombre'> Número:</span> " . $paciente->carnet ?></h4>
                                         <h4><span class="nombre">Dirección:</span> <?= $paciente->direccion . "<span class='nombre'> Localidad:</span> " . $paciente->localidad ?></h4>
                                         <h4><span class="nombre">Fecha de nacimiento</span> <?php
                                                                                             $fecha = new DateTime($paciente->fechanacimiento);
@@ -118,7 +123,7 @@ if (isset($_GET["id"])) {
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label>Endocrionológico</label>
+                                                            <label>Endocrinológico</label>
                                                             <textarea maxlength="2000" class="form-control" name="endocrinologico" cols="30" rows="1"><?= $paciente->historia->endocrinologico ?></textarea>
                                                         </div>
                                                     </div>
@@ -166,11 +171,11 @@ if (isset($_GET["id"])) {
                                                     </div>
 
                                                     <div class="col-md-12">
-                                                        <h4 class="subtitulo">Médicamentos</h4>
+                                                        <h4 class="subtitulo">Medicamentos</h4>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label>Antigangrenantes</label>
+                                                            <label>Antiagregantes</label>
                                                             <textarea maxlength="300" class="form-control" name="antigangrenantes" cols="30" rows="1"><?= $paciente->historia->antigangrenantes ?></textarea>
                                                         </div>
                                                     </div>
@@ -320,12 +325,12 @@ if (isset($_GET["id"])) {
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label>Tratamiento odontológica reciente</label>
+                                                            <label>Tratamiento odontológico reciente</label>
                                                             <textarea maxlength="2000" class="form-control" name="tratamientoodontologico" cols="30" rows="1"><?= $paciente->historia->tratamientoodontologico ?></textarea>
                                                         </div>
                                                     </div>
                                                     <?php
-                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin"])) {
+                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
                                                         echo "
                                                         <div class='col-md-12'>
                                                             <button type='submit' id='Send' name='Send' class='btn btn-success'>Actualizar Datos</button>
@@ -347,7 +352,9 @@ if (isset($_GET["id"])) {
                             </div>
                             <div class="accordion__item__content">
                                 <div class="col-md-12">
+
                                     <div class="item-hc">
+                                        <h2 class="pull-left"> <a href="imprimirrutina.php" target="_blank" class="btn btn-danger">Imprimir Rutina</a></h2>
 
                                         <form name="rutina" id="rutina" role="form" action="" autocomplete="off">
                                             <div class="row">
@@ -592,7 +599,7 @@ if (isset($_GET["id"])) {
                                                     </div>
 
                                                     <?php
-                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin"])) {
+                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
                                                         echo "
                                                         <div class='col-md-12'>
                                                             <button type='submit' id='SendRut' name='SendRut' class='btn btn-success'>Guardar</button>
@@ -615,11 +622,16 @@ if (isset($_GET["id"])) {
                             <div class="accordion__item__content collapse in">
                                 <div class="col-md-12">
                                     <!-- <div class="item-hc"> -->
-                                    <div class='col-lg-6'>
+                                    <div class='col-lg-12'>
                                         <table id='tabla' class='display tablagrande'>
                                             <thead>
                                                 <tr>
-                                                    <th></th>
+                                                    <?php
+                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
+                                                        echo "<th></th>";
+                                                        echo "<th></th>";
+                                                    }
+                                                    ?>
                                                     <th>Fecha</th>
                                                     <th>Motivo</th>
                                                     <th>Detalle</th>
@@ -627,7 +639,9 @@ if (isset($_GET["id"])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $result = $link->query("SELECT id,DATE_FORMAT(fecha,'%d/%m/%Y') as fecha,
+                                                $result = $link->query("SELECT id,
+                                                DATE_FORMAT(fecha,'%d/%m/%Y') as fecha,
+                                                fecha as fech,
                                                     motivo,detalle
                                                     FROM consultas
                                                     WHERE paciente_id =" . $paciente->id . "
@@ -635,17 +649,23 @@ if (isset($_GET["id"])) {
 
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     echo "<tr>";
-                                                    echo "<td>";
-                                                    echo "<button id='" . $row["id"] . "'  onclick='eliminarConsulta(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-trash'></i></button>";
-                                                    echo "</td>";
+                                                    if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
+                                                        echo "<td>";
+                                                        echo "<button id='" . $row["id"] . "'  onclick='eliminarConsulta(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-trash'></i></button>";
+                                                        echo "</td>";
+                                                        echo "<td>";
+                                                        echo "<button 
+                                                             onclick='modificarConsulta(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-pen'></i></button>";
+                                                        echo "</td>";
+                                                    }
                                                     echo "<td>";
                                                     echo $row["fecha"];
                                                     echo "</td>";
                                                     echo "<td>";
-                                                    echo $row["motivo"];
+                                                    echo str_replace("\n", "<br>", $row["motivo"]);
                                                     echo "</td>";
                                                     echo "<td>";
-                                                    echo $row["detalle"];
+                                                    echo str_replace("\n", "<br>", $row["detalle"]);
                                                     echo "</td>";
 
                                                     echo "</tr>";
@@ -656,29 +676,27 @@ if (isset($_GET["id"])) {
 
                                     </div>
                                     <?php
-                                    if (in_array($_SESSION['Perfil'], ["medico", "admin"])) {
+                                    if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
                                         echo "
-                                    <div class='col-lg-6'>
+                                    <div class='col-lg-12'>
                                         <form name='consulta' id='consulta' role='form' action='' autocomplete='off'>
 
                                             <h4 class='subtitulo'>Nueva consulta</h3>";
 
-
-                                        $hoy = new DateTime("now", new DateTimeZone("America/Argentina/Buenos_Aires"));
-                                        $hoy = $hoy->format("Y-m-d");
                                         echo "
                                                 <div class='form-group'>
                                                     <label>Fecha</label>
-                                                    <input type='date' class='form-control' name='fecha' value='" . $hoy . "'>
+                                                    <input type='date' class='form-control' name='fecha' value='" . $paciente->consulta->fecha . "'>
                                                 </div>
                                                 <div class='form-group'>
                                                     <label>Motivo</label>
-                                                    <textarea maxlength='2000' class='form-control' name='motivo' cols='30' rows='2'></textarea>
+                                                    <textarea required maxlength='2000' class='form-control' name='motivo' cols='30' rows='2'>" . $paciente->consulta->motivo . "</textarea>
                                                 </div>
                                                 <div class='form-group'>
                                                     <label>Detalle</label>
-                                                    <textarea maxlength='2000' class='form-control' name='detalle' cols='30' rows='3'></textarea>
+                                                    <textarea required maxlength='2000' class='form-control' name='detalle' cols='30' rows='3'>" . $paciente->consulta->detalle . "</textarea>
                                                 </div>
+                                                <input type='hidden' name='id' value='" . $paciente->consulta->id . "'>
                                                 <button type='submit' id='Send1' name='Send' class='btn btn-success'>Guardar consulta</button>
                                         </form>
 
@@ -740,7 +758,7 @@ if (isset($_GET["id"])) {
 
                                     </div>
                                     <?php
-                                    if (in_array($_SESSION['Perfil'], ["medico", "admin"])) {
+                                    if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
                                         echo "
                                     <div class='col-lg-6'>
                                         <form name='formarchivo' id='formarchivo' role='form' action='' autocomplete='off' enctype='multipart/form-data'>
@@ -783,7 +801,6 @@ if (isset($_GET["id"])) {
 </body>
 <script>
     $("#envio").on("submit", function(e) {
-        $('#Send').attr("disabled", true);
         e.preventDefault();
         var neurologico = document.envio.neurologico.value;
         var cardiovascular = document.envio.cardiovascular.value;
@@ -883,6 +900,8 @@ if (isset($_GET["id"])) {
                 switch (value) {
 
                     case "catch":
+                        $('#Send').attr("disabled", true);
+
                         $.ajax({
                             url: '../Accion/actualizarHistoria.php',
                             type: 'POST',
@@ -914,7 +933,6 @@ if (isset($_GET["id"])) {
     });
 
     $("#rutina").on("submit", function(e) {
-        $('#SendRut').attr("disabled", true);
         e.preventDefault();
         var fecha = document.rutina.fecha.value;
         var tipopiel = document.rutina.tipopiel.value;
@@ -990,6 +1008,8 @@ if (isset($_GET["id"])) {
                 switch (value) {
 
                     case "catch":
+                        $('#SendRut').attr("disabled", true);
+
                         $.ajax({
                             url: '../Accion/actualizarRutina.php',
                             type: 'POST',
@@ -1003,7 +1023,7 @@ if (isset($_GET["id"])) {
                                         timer: 3000,
                                     });
                                     //return r;
-                                    $('#SendRut').attr("disabled", false);
+
                                 } else {
                                     swal("Datos actualizados correctamente", {
                                         buttons: false,
@@ -1012,6 +1032,7 @@ if (isset($_GET["id"])) {
                                     });
 
                                 }
+                                $('#SendRut').attr("disabled", false);
                             }
                         });
                         break;
@@ -1022,23 +1043,22 @@ if (isset($_GET["id"])) {
 
     //Nueva consulta
     $("#consulta").on("submit", function(e) {
-        $('#Send1').attr("disabled", true);
         e.preventDefault();
 
         var fecha = document.consulta.fecha.value;
         var motivo = document.consulta.motivo.value;
         var detalle = document.consulta.detalle.value;
+        var id = document.consulta.id.value;
 
         var parametros = {
             "fecha": fecha,
             "motivo": motivo,
-            "detalle": detalle
+            "detalle": detalle,
+            "id": id
         };
         swal("¿Desea registrar la consulta?", {
                 icon: "warning",
                 buttons: {
-
-
                     catch: {
                         text: "SÍ",
                         value: "catch",
@@ -1051,6 +1071,7 @@ if (isset($_GET["id"])) {
                 switch (value) {
 
                     case "catch":
+                        $('#Send1').attr("disabled", true);
                         $.ajax({
                             url: '../Accion/registrarConsulta.php',
                             type: 'POST',
@@ -1064,17 +1085,12 @@ if (isset($_GET["id"])) {
                                         timer: 3000,
                                     });
                                     //return r;
-                                    $('#Send1').attr("disabled", false);
                                 } else {
                                     // paginaPrincipal('turnoconfirma.php');
                                     location.reload();
-                                    // swal("Consulta registrada correctamente correctamente", {
-                                    //     buttons: false,
-                                    //     icon: "success",
-                                    //     timer: 4000,
-                                    // });
-
                                 }
+                                $('#Send1').attr("disabled", false);
+
                             }
                         });
                         break;
@@ -1082,7 +1098,7 @@ if (isset($_GET["id"])) {
                 }
             });
     });
-    //Eliminar consulta
+    //eliminar cosulta
     eliminarConsulta = (id) => {
         var parametros = {
             "id": id
@@ -1128,6 +1144,34 @@ if (isset($_GET["id"])) {
 
                 }
             });
+    }
+
+    //Modificar consulta
+    modificarConsulta = (id) => {
+        var parametros = {
+            "id": id
+        };
+
+        $.ajax({
+            url: '../Accion/modificarConsulta.php',
+            type: 'POST',
+            data: parametros,
+            cache: false,
+            success: function(r) {
+                if (r != "") {
+                    swal(r, {
+                        buttons: false,
+                        icon: "error",
+                        timer: 3000,
+                    });
+                    //return r;
+                } else {
+                    // paginaPrincipal('turnoconfirma.php');
+                    location.reload();
+                    window.location = window.location.pathname+'#consulta';
+                }
+            }
+        });
     }
     //Nuevo archivo
     $("#formarchivo").on("submit", function(e) {

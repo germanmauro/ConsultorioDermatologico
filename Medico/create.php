@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Prepare an insert statement
     $sql = "INSERT INTO usuarios (nombre,apellido,dni,especialidad,matriculanacional,matriculaprovincial,
     user,pass,perfil)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'medico')";
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'submedico')";
 
     if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
         // Bind variables to the prepared statement as parameters

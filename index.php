@@ -5,6 +5,7 @@ ini_set('session.gc_probability', 0);
 session_start();
 
 require_once 'config.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,7 +30,14 @@ require_once 'config.php';
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
-<body>
+<body 
+<?php
+if(isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["venta"])) 
+{ 
+    echo "onload=cargaVenta(".$_GET["venta"].")";
+}
+       ?>
+    >
 
     <div id="wrapper">
         <div id="banner">
@@ -62,7 +70,7 @@ require_once 'config.php';
 
                     <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
                         <?php
-                        if (isset($_SESSION['Usuario']) || !empty($_SESSION['Usuario'])) {
+                        if (isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario'])) {
                             echo "
                             <span class='nombre'>" . $_SESSION["Nombre"] . " " . $_SESSION["Apellido"] . " </span>";
                         }
@@ -71,9 +79,9 @@ require_once 'config.php';
                     </a>
 
                     <ul class="dropdown-menu dropdown-user">
-                    <?php
-                    if (isset($_SESSION['Usuario']) || !empty($_SESSION['Usuario'])) {
-                        echo "
+                        <?php
+                        if (isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario'])) {
+                            echo "
                         <li>
                             <a onclick=paginaPrincipal('modificarDatos.php')><i class='fas fa-exchange-alt'></i> Modificar Datos</a>
                         </li>
@@ -81,8 +89,7 @@ require_once 'config.php';
                         <li>
                             <a href='login.php'><i class='fa fa-sign-out-alt'></i> Logout</a>
                         </li>";
-                    }
-                        else {
+                        } else {
                             echo "
                     
                         <li>
@@ -99,12 +106,12 @@ require_once 'config.php';
             <div class="navbar-collapse" role="navigation">
                 <div class="navbar-collapse pull-left">
                     <ul class="nav" id="side-menu">
-                    <?php
+                        <?php
                         if (isset($_SESSION['Usuario']) || !empty($_SESSION['Usuario'])) {
                             switch ($_SESSION["Perfil"]) {
                                 case 'admin':
                                 case 'medico':
-                                echo "
+                                    echo "
                         <li>
                             <a href='#'><i class='fas fa-cogs'></i> CONFIGURACIÓN <span class='fas fa-angle-double-right'></span></a>
                             <ul class='nav nav-second-level'>
@@ -190,9 +197,9 @@ require_once 'config.php';
                                 
                             </ul>
                         </li>";
-                        break;
-                            case 'secretaria':
-                                echo "
+                                    break;
+                                case 'secretaria':
+                                    echo "
                                 <li>
                                     <a href='#'><i class='fas fa-pills'></i> PRODUCTOS <span class='fas fa-angle-double-right'></span></a>
                                     <ul class='nav nav-second-level'>
@@ -237,19 +244,36 @@ require_once 'config.php';
                                     </ul>
                                 </li>
                                 ";
-                                break;
-                    
-                        default:
-                            # code...
-                            break;
-                        }//switch perfiles
-                            } else {
-                        echo "<li>
+                                    break;
+                                case 'submedico':
+                                 echo "
+                                    <li>
+                                        <a href='#'><i class='fas fa-user-cog'></i> PACIENTES <span class='fas fa-angle-double-right'></span></a>
+                                        <ul class='nav nav-second-level'>
+                                            <li>
+                                                <a href='Paciente/index.php'> <i class='fas fa-user-injured'></i> Administración de pacientes</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href='#'><i class='fas fa-clock'></i> TURNOS <span class='fas fa-angle-double-right'></span></a>
+                                        <ul class='nav nav-second-level'>
+                                            <li>
+                                                <a href='Turno/index.php'><i class='fas fa-calendar'></i> Agenda de turnos </span></a>
+                                            </li>
+                                        </ul>
+                                    </li>";
+                                default:
+                                    # code...
+                                    break;
+                            } //switch perfiles
+                        } else {
+                            echo "<li>
                             <a href='login.php'><i class='fas fa-exchange-alt'></i> INGRESAR</a>
                         </li>";
-                    }
-                        
-                           
+                        }
+
+
                         ?>
 
                     </ul>
@@ -282,7 +306,7 @@ require_once 'config.php';
         function paginaPrincipal(pag, param = "") {
             $("#page-wrapper").load(pag, param);
             var element = document.querySelector("#page-wrapper");
-        // scroll to element
+            // scroll to element
             element.scrollIntoView();
         }
 
@@ -322,6 +346,6 @@ require_once 'config.php';
             $("#loader").show();
         }
     </script>
-</body>
+    </body>
 
 </html>

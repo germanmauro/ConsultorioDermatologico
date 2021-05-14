@@ -106,28 +106,197 @@ function sizeOfText( $texte, $largeur )
 	return $nb_lines;
 }
 
-// Agregar titulo
-function addTitulo()
-{
-	$x1 = 10;
-	$y1 = 35;
-	//Positionnement en bas
-	$this->SetXY( $x1, $y1 );
-	$this->SetFont('Arial','B',15);
-	$length = $this->GetStringWidth( "Listado de alquileres y total de productos para la fecha" );
-	$this->Cell( $length, 2, utf8_decode("Listado de alquileres y total de productos para la fecha"));
-}
-// Agregar subtitulo
-function addSubTitulo($cliente)
-{
-	$x1 = 10;
-	$y1 = 35;
-	//Positionnement en bas
-	$this->SetXY( $x1, $y1 );
-	$this->SetFont('Arial','B',15);
-	$length = $this->GetStringWidth( "Productos del cliente:". $cliente );
-	$this->Cell( $length, 2, utf8_decode("Productos del cliente:". $cliente));
-}
+	function addAlta($date) {
+		$r1  = $this->w - 180;
+		$r2  = $r1 + 22;
+		$y1  = 26;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid, $r2, $mid);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, "ALTA", 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, $date, 0, 0, "C");
+	}
+
+	function addNombre($paciente)
+	{
+		$r1  = 53;
+		$r2  = $r1 + 55;
+		$y1  = 26;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("PACIENTE"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addDNI($paciente)
+	{
+		$r1  = 109;
+		$r2  = $r1 + 25;
+		$y1  = 26;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("DNI"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+	function addFechaNacimiento($paciente)
+	{
+		$r1  = 135;
+		$r2  = $r1 + 44;
+		$y1  = 26;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("FECHA DE NACIMIENTO"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addEdad($paciente)
+	{
+		$r1  = 180;
+		$r2  = $r1 + 23;
+		$y1  = 26;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("EDAD"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addDireccion($paciente)
+	{
+		$r1  = 10;
+		$r2  = $r1 + 100;
+		$y1  = 40;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("DIRECCIÓN"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addLocalidad($paciente)
+	{
+		$r1  = 111;
+		$r2  = $r1 + 92;
+		$y1  = 40;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("LOCALIDAD"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addTelefono($paciente)
+	{
+		$r1  = 10;
+		$r2  = $r1 + 65;
+		$y1  = 54;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("TELÉFONO"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addCorreo($paciente)
+	{
+		$r1  = 76;
+		$r2  = $r1 + 70;
+		$y1  = 54;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,
+			$r2,
+			$mid
+		);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("E-MAIL"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
+
+	function addProfesion($paciente)
+	{
+		$r1  = 147;
+		$r2  = $r1 + 56;
+		$y1  = 54;
+		$y2  = 12;
+		$mid = $y1 + ($y2 / 2);
+		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+		$this->Line($r1, $mid,$r2,$mid);
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
+		$this->SetFont("Arial", "B", 10);
+		$this->Cell(10, 0, utf8_decode("PROFESIÓN"), 0, 0, "C");
+		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
+		$this->SetFont("Arial", "", 10);
+		$this->Cell(10, 0, utf8_decode($paciente), 0, 0, "C");
+	}
 
 // Label and number of invoice/estimate
 function fact_dev()
@@ -173,46 +342,29 @@ function addFacture( $numfact )
 	$this->fact_dev( "Facture", $string );
 }
 
-function addDate( $date )
+function addTituloReporte($fecha)
 {
-	$r1  = $this->w - 180;
-	$r2  = $r1 + 30;
-	$y1  = 12;
-	$y2  = $y1 ;
-	$mid = $y1 + ($y2 / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
-	$this->Line( $r1, $mid, $r2, $mid);
-	$this->SetXY( $r1 + ($r2-$r1)/2 - 5, $y1+3 );
-	$this->SetFont( "Arial", "B", 10);
-	$this->Cell(10,0, "FECHA", 0, 0, "C");
-	$this->SetXY( $r1 + ($r2-$r1)/2 - 5, $y1+9 );
-	$this->SetFont( "Arial", "", 10);
-	$this->Cell(10,0,$date, 0,0, "C");
-}
-
-function addTituloReporte($zona)
-{
-	$r1  = 61;
-	$r2  = $r1 + 140;
+	$r1  = 81;
+	$r2  = $r1 + 120;
 	$y1  = 12;
 	$y2  = $y1;
 	$mid = $y1 + ($y2 / 2);
-	$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
+	// $this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
 	$this->Line($r1, $mid, $r2, $mid);
 	$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
 	$this->SetFont("Arial", "B", 10);
-	$this->Cell(10, 0, utf8_decode("REPORTE DE ENTREGA DIARÍA"), 0, 0, "C");
+	$this->Cell(10, 0, utf8_decode("HISTORIA CLÍNICA"), 0, 0, "C");
 	$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
 	$this->SetFont("Arial", "", 10);
-	$this->Cell(10, 0, utf8_decode($zona), 0, 0, "C");
+	$this->Cell(10, 0, utf8_decode("Fecha ".$fecha), 0, 0, "C");
 }
 
 function addPageNumber( $page )
 {
 	$r1  = $this->w - 200;
 	$r2  = $r1 + 19;
-	$y1  = 12;
-	$y2  = $y1;
+	$y1  = 26;
+	$y2  = 12;
 	$mid = $y1 + ($y2 / 2);
 	$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
 	$this->Line( $r1, $mid, $r2, $mid);
@@ -224,24 +376,6 @@ function addPageNumber( $page )
 	$this->Cell(10,0,$page, 0,0, "C");
 
 }
-// Expiry date
-function addTelefono($date)
-{
-		$r1  = 164;
-		$r2  = $r1 + 35;
-		$y1  = 12;
-		$y2  = 12;
-		$mid = $y1 + ($y2 / 2);
-		$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
-		$this->Line($r1, $mid, $r2, $mid);
-		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 3);
-		$this->SetFont("Arial", "B", 10);
-		$this->Cell(10, 0, utf8_decode("TELÉFONO"), 0, 0, "C");
-		$this->SetXY($r1 + ($r2 - $r1) / 2 - 5, $y1 + 9);
-		$this->SetFont("Arial", "", 10);
-		$this->Cell(10, 0, $date, 0, 0, "C");
-}
-
 
 //Agregar TOTAL
 function addTotal( $tot )
@@ -254,27 +388,26 @@ function addTotal( $tot )
 }
 
 
-function addCols( $tab )
-{
-	global $colonnes;
-
-	$r1  = 10;
-	$r2  = $this->w - ($r1 * 2) ;
-	$y1  = 32;
-	$y2  = $this->h - 37 - $y1;
-	$this->SetXY( $r1, $y1 );
-	$this->Rect( $r1, $y1, $r2, $y2, "D");
-	$this->Line( $r1, $y1+6, $r1+$r2, $y1+6);
-	$colX = $r1;
-	$colonnes = $tab;
-	while ( list( $lib, $pos ) = each ($tab) )
+	function addCols($tab, $altura = 57)
 	{
-		$this->SetXY( $colX, $y1+2 );
-		$this->Cell( $pos, 1, $lib, 0, 0, "C");
-		$colX += $pos;
-		$this->Line( $colX, $y1, $colX, $y1+$y2);
+		global $colonnes;
+
+		$r1  = 10;
+		$r2  = $this->w - ($r1 * 2);
+		$y1  = $altura;
+		$y2  = $this->h - 24 - $y1;
+		$this->SetXY($r1, $y1);
+		$this->Rect($r1, $y1, $r2, $y2, "D");
+		$this->Line($r1, $y1 + 6, $r1 + $r2, $y1 + 6);
+		$colX = $r1;
+		$colonnes = $tab;
+		while (list($lib, $pos) = each($tab)) {
+			$this->SetXY($colX, $y1 + 2);
+			$this->Cell($pos, 1, $lib, 0, 0, "C");
+			$colX += $pos;
+			$this->Line($colX, $y1, $colX, $y1 + $y2);
+		}
 	}
-}
 
 function addLineFormat( $tab )
 {
