@@ -199,6 +199,7 @@ class Venta
       $prod = new Tratamiento($item["tratamiento_id"]);
       $prod->precioUnitario = $item["preciounitario"];
       $prod->precioLista = $item["preciolista"];
+      $this->medico = new Medico($item["medico_id"]);
       $prod->total = $item["total"];
       $prod->cantidad = $item["cantidad"];
       $this->listaTratamientos[] = $prod;

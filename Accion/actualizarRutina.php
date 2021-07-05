@@ -4,9 +4,12 @@ require_once '../Clases/paciente.php';
 require_once '../Clases/devolucion.php';
 
 session_start();
-if(isset($_POST["fecha"])){
+if(isset($_POST["fecha"])) {
     $paciente = new Paciente();
     $paciente = unserialize($_SESSION["Paciente"]);
+
+    $paciente->rutina->paciente = $paciente->id;
+    $paciente->rutina->id = $_POST["id"];
     $paciente->rutina->fecha = $_POST["fecha"];
     $paciente->rutina->tipopiel = $_POST["tipopiel"];
     $paciente->rutina->diahigiene1 = $_POST["diahigiene1"];
@@ -38,7 +41,10 @@ if(isset($_POST["fecha"])){
     $dev = $paciente->rutina->guardar();
     if ($dev->flag == 1) {
         echo $dev->mensaje;
+    } 
+    else {
+        $paciente->rutina = new Rutina();
+        $_SESSION["Paciente"] = serialize($paciente);
     }
-    $_SESSION["Paciente"] = serialize($paciente);
 }
 ?>

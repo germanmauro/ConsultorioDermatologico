@@ -46,6 +46,7 @@
                                <div class="form-group">
                                    <label>Forma de pago</label>
                                    <select onchange="cargaFormaPago()" required name="formapago" class="form-control">
+                                       <option hidden disabled selected value='0'> -- seleccione una forma de pago -- </option>
                                        <?php
                                         $result = $link->query("select * from formaspago where baja='False' order by nombre");
                                         foreach ($result as $row) {
@@ -66,9 +67,9 @@
                                                 $descuentotratamiento = "";
                                             }
 
-                                            echo "<option ".
-                                            ($venta->formapago->id == $row["id"] ? 'selected' : '') . "
-                                            value='" . $row['id'] . "'>" . $row["nombre"] . "  " . $descuentoproducto ." ".$descuentotratamiento. "</option>";
+                                            echo "<option " .
+                                                ($venta->formapago->id == $row["id"] ? 'selected' : '') . "
+                                            value='" . $row['id'] . "'>" . $row["nombre"] . "  " . $descuentoproducto . " " . $descuentotratamiento . "</option>";
                                         }
                                         ?>
                                    </select>
@@ -80,7 +81,7 @@
 
                    </div>
                    <div id="sub-pagina">
-                     
+
                    </div>
                </div>
                <!-- /.row -->
@@ -96,14 +97,18 @@
 
    <script type="text/javascript">
        $(document).ready(function() {
-           subPagina('ventatotal.php');
            var formapago = document.envio.formapago.value;
-           cargaFormaPagoVenta(formapago);
+           if (formapago > 0) {
+                subPagina('ventatotal.php');
+                var formapago = document.envio.formapago.value;
+                cargaFormaPagoVenta(formapago);
+           }
        });
        $("#envio").on("submit", function(e) {
            $('#Send').attr("disabled", true);
            e.preventDefault();
            var formapago = document.envio.formapago.value;
+           alert(formapago);
            cargaFormaPago(formapago);
        });
 

@@ -7,7 +7,8 @@ require_once 'devolucion.php';
 *******************/
 class Rutina
 {
-  //variables
+    //variables
+    public $id = "";
     public $fecha = "";
     public $tipopiel = "";
 
@@ -38,21 +39,24 @@ class Rutina
     public $suplementacionviaoral;
     public $paciente = "";
 
-  function __construct($id)
+  function __construct()
   {
-    $this->cargar($id);
+    
   }
 
   function cargar($id)
   {
     global $link;
-    $this->paciente = $id;
+    $this->id = $id;
     $result = $link->query("select *
     from rutinas
-    where paciente_id = ".$id);
+    where id = ".$id);
     if(mysqli_num_rows($result)>0)
     {
       $row = mysqli_fetch_array($result);
+      $this->paciente = new Paciente();
+      $this->paciente->cargar($row["paciente_id"]);
+
       $this->fecha = $row["fecha"];
       $this->tipopiel = $row["tipopiel"];
 
@@ -90,32 +94,64 @@ class Rutina
     $dev = new Devolucion();
     $link->autocommit(false);
     try {
-      if (!$link->query("delete from rutinas where paciente_id =" . $this->paciente)) {
-        $dev->mensaje = "Error al registrar Rutina";
-        $dev->flag = 1;
-        throw new Exception("Error al registrar Rutina");
-      } else {
-        if ($link->query("insert into rutinas (paciente_id, fecha, tipopiel, diahigiene1, diahigiene2,
-       diacontornoojos,diabarreracutanea, diavitaminac, diaacido, diahumectante, diacuello, diaprotectorsolar,
-      diamaquillaje, nochehigiene1, nochehigiene2, nochehigiene3, nochecontornoojos, nocheserum, nocheacido,
-      nochehumectante, nochecuello, cuidadohigiene, cuidadohumectacion, cuidadoespecial,
-      suplementacionviaoral)
-      values(" . $this->paciente . ",'" . $this->fecha . "','" . $this->tipopiel . "','" . $this->diahigiene1 . "'
-      ,'" . $this->diahigiene2 . "','" . $this->diacontornoojos . "','" .
-        $this->diabarreracutanea . "','" . $this->diavitaminac . "','" . $this->diaacido . "','" . $this->diahumectante . "','" .
-        $this->diacuello . "','" . $this->diaprotectorsolar . "','" . $this->diamaquillaje . "','" . $this->nochehigiene1 . "','" .
-        $this->nochehigiene2 . "','" . $this->nochehigiene3 . "','" .$this->nochecontornoojos . "','" .  
-        $this->nocheserum . "','" .$this->nocheacido . "','" . $this->nochehumectante . "','" . 
-        $this->nochecuello . "','" . $this->cuidadohigiene . "','" .$this->cuidadohumectacion . "','" . 
-        $this->cuidadoespecial . "','" . $this->suplementacionviaoral . "')")) {
-          $link->commit();
-          return $dev;
-        } else {
-          $dev->mensaje = "Error al registrar Rutina";
-          $dev->flag = 1;
-          throw new Exception("Error al registrar Rutina");
+        if($this->id < 1)
+        {
+          if ($link->query("insert into rutinas (paciente_id, fecha, tipopiel, diahigiene1, diahigiene2,
+        diacontornoojos,diabarreracutanea, diavitaminac, diaacido, diahumectante, diacuello, diaprotectorsolar,
+        diamaquillaje, nochehigiene1, nochehigiene2, nochehigiene3, nochecontornoojos, nocheserum, nocheacido,
+        nochehumectante, nochecuello, cuidadohigiene, cuidadohumectacion, cuidadoespecial,
+        suplementacionviaoral)
+        values(" . $this->paciente . ",'" . $this->fecha . "','" . $this->tipopiel . "','" . $this->diahigiene1 . "'
+        ,'" . $this->diahigiene2 . "','" . $this->diacontornoojos . "','" .
+            $this->diabarreracutanea . "','" . $this->diavitaminac . "','" . $this->diaacido . "','" . $this->diahumectante . "','" .
+            $this->diacuello . "','" . $this->diaprotectorsolar . "','" . $this->diamaquillaje . "','" . $this->nochehigiene1 . "','" .
+            $this->nochehigiene2 . "','" . $this->nochehigiene3 . "','" . $this->nochecontornoojos . "','" .
+            $this->nocheserum . "','" . $this->nocheacido . "','" . $this->nochehumectante . "','" .
+            $this->nochecuello . "','" . $this->cuidadohigiene . "','" . $this->cuidadohumectacion . "','" .
+            $this->cuidadoespecial . "','" . $this->suplementacionviaoral . "')")) {
+            $link->commit();
+            return $dev;
+          } else {
+            $dev->mensaje = "insert into rutinas (paciente_id, fecha, tipopiel, diahigiene1, diahigiene2,
+        diacontornoojos,diabarreracutanea, diavitaminac, diaacido, diahumectante, diacuello, diaprotectorsolar,
+        diamaquillaje, nochehigiene1, nochehigiene2, nochehigiene3, nochecontornoojos, nocheserum, nocheacido,
+        nochehumectante, nochecuello, cuidadohigiene, cuidadohumectacion, cuidadoespecial,
+        suplementacionviaoral)
+        values(" . $this->paciente . ",'" . $this->fecha . "','" . $this->tipopiel . "','" . $this->diahigiene1 . "'
+        ,'" . $this->diahigiene2 . "','" . $this->diacontornoojos . "','" .
+            $this->diabarreracutanea . "','" . $this->diavitaminac . "','" . $this->diaacido . "','" . $this->diahumectante . "','" .
+            $this->diacuello . "','" . $this->diaprotectorsolar . "','" . $this->diamaquillaje . "','" . $this->nochehigiene1 . "','" .
+            $this->nochehigiene2 . "','" . $this->nochehigiene3 . "','" . $this->nochecontornoojos . "','" .
+            $this->nocheserum . "','" . $this->nocheacido . "','" . $this->nochehumectante . "','" .
+            $this->nochecuello . "','" . $this->cuidadohigiene . "','" . $this->cuidadohumectacion . "','" .
+            $this->cuidadoespecial . "','" . $this->suplementacionviaoral . "')";
+            $dev->flag = 1;
+            throw new Exception("Error al registrar Rutina");
+          }
         }
-      }
+        else
+        {
+          if ($link->query("update rutinas set fecha ='". $this->fecha . "',tipopiel='" . $this->tipopiel . "',
+          diahigiene1='" . $this->diahigiene1 . "',diahigiene2='" . $this->diahigiene2 . "',
+          diacontornoojos='" . $this->diacontornoojos . "',diabarreracutanea='" .$this->diabarreracutanea . "',
+          diavitaminac='" . $this->diavitaminac . "',diaacido='" . $this->diaacido . "',
+          diahumectante='" . $this->diahumectante . "',diacuello='" .$this->diacuello . "',
+          diaprotectorsolar='" . $this->diaprotectorsolar . "',diamaquillaje='" . $this->diamaquillaje . "',
+          nochehigiene1='" . $this->nochehigiene1 . "',nochehigiene2='" .$this->nochehigiene2 . "',
+          nochehigiene3='" . $this->nochehigiene3 . "',nochecontornoojos='" . $this->nochecontornoojos . "',
+          nocheserum='" .$this->nocheserum . "',nocheacido='" . $this->nocheacido . "',
+          nochehumectante='" . $this->nochehumectante . "',nochecuello='" .$this->nochecuello . "',
+          cuidadohigiene='" . $this->cuidadohigiene . "',cuidadohumectacion='" . $this->cuidadohumectacion . "',
+          cuidadoespecial='" .$this->cuidadoespecial . "',suplementacionviaoral='" . $this->suplementacionviaoral . "'
+          where id=".$this->id)) {
+            $link->commit();
+            return $dev;
+          } else {
+            $dev->mensaje = "Error al guardar rutina";
+            $dev->flag = 1;
+            throw new Exception("Error al registrar Rutina");
+          }
+        } 
     } catch (\Throwable $th) {
       $link->rollback();
       return $dev;

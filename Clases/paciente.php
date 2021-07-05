@@ -52,7 +52,7 @@ class Paciente
     $this->alta = $row["alta"];
     $this->id = $id;
     $this->historia = new Historia($id);
-    $this->rutina = new Rutina($id);
+    $this->rutina = new Rutina();
   }
 
   function guardar()
@@ -103,6 +103,12 @@ class Paciente
   {
     global $link;
     $link->query("delete from consultas where id=".$id);
+  }
+
+  function eliminarRutina($id)
+  {
+    global $link;
+    $link->query("delete from rutinas where id=".$id);
   }
 
   function registrarArchivo($fecha,$descripcion,$archivo)

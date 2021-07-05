@@ -264,6 +264,7 @@ CREATE table archivos(
     primary key(id));
 
     CREATE table rutinas(
+    id int AUTO_INCREMENT not null,
     paciente_id int not null,
     fecha date not null,
     tipopiel varchar(100),

@@ -10,15 +10,17 @@ if(!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])){
   exit;
 }
 
-if (isset($_SESSION["Paciente"])) {
-  $paciente = unserialize($_SESSION["Paciente"]);
+if (isset($_GET["id"])) {
+  $paciente = new Paciente();
+  $paciente->rutina = new Rutina();
+  $paciente->rutina->cargar($_GET["id"]);
   $pdf =  $pdf = new PDF_Invoice('P', 'mm', 'A4');
   $pagina = 0;
 
   $pagina += 1;
   $pdf->AddPage();
   $pdf->Image('images/rutina.jpg', 10, 10, 190, 280);
-  $pdf->addNombre($paciente->apellido . " " . $paciente->nombre);
+  $pdf->addNombre($paciente->rutina->paciente->apellido . " " . $paciente->rutina->paciente->nombre);
   $pdf->addFecha(date_format(date_create($paciente->rutina->fecha), "d/m/Y"));
 
   $pdf->addTipoPiel($paciente->rutina->tipopiel);
@@ -60,7 +62,7 @@ if (isset($_SESSION["Paciente"])) {
 
   
   
-  $pdf->Output("",'rutina - '.$paciente->nombre.' '.$paciente->apellido.'.pdf');
+  $pdf->Output("",'rutina - ' . $paciente->rutina->paciente->apellido . " " . $paciente->rutina->paciente->nombre.'.pdf');
 } else {
 
   echo "Error";

@@ -7,7 +7,7 @@
         $turno = unserialize($_SESSION["Turno"]);
     }
     $codigo = $nombre = $apellido = $telefono = $email = $dni = $direccion =
-        $obrasocial = $carnet = $localidad = $fechanacimiento = $profesion = $referido = "";
+        $obrasocial = $carnet = $localidad = $fechanacimiento = $profesion = $referido = $alta = "";
     if (isset($_POST["Id"])) {
         $result = $link->query("SELECT * from pacientes
         where pacientes.baja='False' and id=" . $_POST["Id"]);
@@ -25,6 +25,7 @@
         $fechanacimiento = $row["fechanacimiento"];
         $profesion = $row["profesion"];
         $referido = $row["referido"];
+        $alta = $row["alta"];
     }
 
     ?>
@@ -59,6 +60,7 @@
                                        <th>Fecha de nacimiento</th>
                                        <th>Profesión</th>
                                        <th>Referido</th>
+                                       <th>Alta</th>
 
                                    </tr>
                                </thead>
@@ -68,7 +70,7 @@
                                         obrassociales.nombre as obrasocial,pacientes.carnet, pacientes.telefono,
                                         pacientes.email,pacientes.direccion, pacientes.localidad, 
                                         DATE_FORMAT(pacientes.fechanacimiento,'%d/%m/%Y') as fechanacimiento,
-                                        pacientes.profesion, pacientes.referido
+                                        pacientes.profesion, pacientes.referido,alta
                                         FROM pacientes
                                         join obrassociales on obrassociales.id = pacientes.obrasocial_id
                                         where pacientes.baja='False' 
@@ -118,6 +120,9 @@
                                         echo "</td>";
                                         echo "<td>";
                                         echo $row["referido"];
+                                        echo "</td>";
+                                        echo "<td>";
+                                        echo $row["alta"];
                                         echo "</td>";
 
                                         echo "</tr>";
@@ -190,6 +195,10 @@
                                    <label>Referido</label>
                                    <input type="text" name="referido" required maxlength=200 class="form-control" value="<?php echo $referido; ?>">
                                </div>
+                               <!-- <div class="form-group">
+                                   <label>Alta</label>
+                                   <input type="date" name="alta" class="form-control" value="<?php echo $alta; ?>">
+                               </div> -->
 
 
                                <button type="submit" id="Send" name="Send" class="btn btn-success">Generar Turno</button>

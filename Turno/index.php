@@ -131,8 +131,9 @@ $hoy = $hoy->format("Y-m-d")
                             echo "<th>Tratamiento</th>";
                             echo "<th>Duración</th>";
                             echo "<th>Observaciones</th>";
+                            if ($_SESSION['Perfil'] != "submedico") {
                             echo "<th></th>";
-
+                            }
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
@@ -145,9 +146,12 @@ $hoy = $hoy->format("Y-m-d")
                                 echo "<td>" . $row['tratamiento'] . "</td>";
                                 echo "<td>" . $row['duracion'] . "</td>";
                                 echo "<td>" . $row['observaciones'] . "</td>";
+                                if ($_SESSION['Perfil'] != "submedico") {
                                 echo "<td>
                                         <a onclick=eliminarTurno(" . $row['id'] . ") title='Cancelar Turno' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>
-                                    </td>";
+                                     <a href='update.php?id=" . $row['id'] . "' title='Modificar' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>
+                                        </td>";
+                                }
                                 echo "</tr>";
                             }
                             echo "</tbody>";

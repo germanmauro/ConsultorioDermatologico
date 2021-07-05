@@ -49,6 +49,11 @@ if (isset($_GET["id"])) {
                 "lengthMenu": [5, 10, 25, 50, 75, 100],
                 "order": []
             });
+            $('#tablarutina').DataTable({
+                "pageLength": 5,
+                "lengthMenu": [5, 10, 25, 50, 75, 100],
+                "order": []
+            });
             $('#tablaarchivo').DataTable({
                 "pageLength": 5,
                 "lengthMenu": [5, 10, 25, 50, 75, 100],
@@ -350,11 +355,58 @@ if (isset($_GET["id"])) {
                             <div class="accordion__item__header">
                                 <h3 class="titulo">RUTINA DE CUIDADO FACIAL</h3>
                             </div>
-                            <div class="accordion__item__content">
+                            <div class="accordion__item__content collapse in">
+                                <div class='col-lg-12'>
+                                    <table id='tablarutina' class='display tablagrande'>
+                                        <thead>
+                                            <tr>
+                                                <?php
+                                                if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
+                                                    echo "<th></th>";
+                                                    echo "<th></th>";
+                                                    echo "<th></th>";
+                                                }
+                                                ?>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $result = $link->query("SELECT id,
+                                                DATE_FORMAT(fecha,'%d/%m/%Y') as fecha,
+                                                fecha as fech
+                                                    FROM rutinas
+                                                    WHERE paciente_id =" . $paciente->id . "
+                                                    order by rutinas.fecha desc,id desc");
+
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                echo "<tr>";
+                                                if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
+                                                    echo "<td>";
+                                                    echo "<button id='" . $row["id"] . "'  onclick='eliminarRutina(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-trash'></i></button>";
+                                                    echo "</td>";
+                                                    echo "<td>";
+                                                    echo "<button 
+                                                             onclick='modificarRutina(" . $row['id'] . ")' class='btnmenu'><i class='fas fa-pen'></i></button>";
+                                                    echo "</td>";
+                                                    echo "<td>";
+                                                    echo "<a href='imprimirrutina.php?id=".$row["id"]."' target='_blank' class='btn btn-danger'>Imprimir Rutina</a>";
+                                                    echo "</td>";
+                                                }
+                                                echo "<td>";
+                                                echo $row["fecha"];
+                                                echo "</td>";
+
+                                                echo "</tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+
+                                </div>
                                 <div class="col-md-12">
 
                                     <div class="item-hc">
-                                        <h2 class="pull-left"> <a href="imprimirrutina.php" target="_blank" class="btn btn-danger">Imprimir Rutina</a></h2>
 
                                         <form name="rutina" id="rutina" role="form" action="" autocomplete="off">
                                             <div class="row">
@@ -597,7 +649,7 @@ if (isset($_GET["id"])) {
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                                    <input type='hidden' name='id' value="<?=$paciente->rutina->id ?> ">
                                                     <?php
                                                     if (in_array($_SESSION['Perfil'], ["medico", "admin", "submedico"])) {
                                                         echo "
@@ -934,6 +986,7 @@ if (isset($_GET["id"])) {
 
     $("#rutina").on("submit", function(e) {
         e.preventDefault();
+        var id = document.rutina.id.value;
         var fecha = document.rutina.fecha.value;
         var tipopiel = document.rutina.tipopiel.value;
 
@@ -964,6 +1017,7 @@ if (isset($_GET["id"])) {
         var suplementacionviaoral = document.rutina.suplementacionviaoral.value;
 
         var parametros = {
+            "id": id,
             "fecha": fecha,
             "tipopiel": tipopiel,
 
@@ -1030,7 +1084,7 @@ if (isset($_GET["id"])) {
                                         icon: "success",
                                         timer: 4000,
                                     });
-
+                                    window.location.reload();
                                 }
                                 $('#SendRut').attr("disabled", false);
                             }
@@ -1133,7 +1187,6 @@ if (isset($_GET["id"])) {
                                         timer: 3000,
                                     });
                                     //return r;
-                                    $('#Send1').attr("disabled", false);
                                 } else {
                                     // paginaPrincipal('turnoconfirma.php');
                                     location.reload();
@@ -1168,11 +1221,86 @@ if (isset($_GET["id"])) {
                 } else {
                     // paginaPrincipal('turnoconfirma.php');
                     location.reload();
-                    window.location = window.location.pathname+'#consulta';
+                    window.location = window.location.pathname + '#consulta';
                 }
             }
         });
     }
+    //eliminar rutina
+    eliminarRutina = (id) => {
+        var parametros = {
+            "id": id
+        };
+        swal("¿Desea eliminar la rutina?", {
+                icon: "warning",
+                buttons: {
+
+
+                    catch: {
+                        text: "SÍ",
+                        value: "catch",
+                    },
+                    cancel: "NO",
+
+                },
+            })
+            .then((value) => {
+                switch (value) {
+
+                    case "catch":
+                        $.ajax({
+                            url: '../Accion/eliminarRutina.php',
+                            type: 'POST',
+                            data: parametros,
+                            cache: false,
+                            success: function(r) {
+                                if (r != "") {
+                                    swal(r, {
+                                        buttons: false,
+                                        icon: "error",
+                                        timer: 3000,
+                                    });
+                                    //return r;
+                                } else {
+                                    // paginaPrincipal('turnoconfirma.php');
+                                    location.reload();
+                                }
+                            }
+                        });
+                        break;
+
+                }
+            });
+    }
+
+    //Modificar consulta
+    modificarRutina = (id) => {
+        var parametros = {
+            "id": id
+        };
+
+        $.ajax({
+            url: '../Accion/modificarRutina.php',
+            type: 'POST',
+            data: parametros,
+            cache: false,
+            success: function(r) {
+                if (r != "") {
+                    swal(r, {
+                        buttons: false,
+                        icon: "error",
+                        timer: 3000,
+                    });
+                    //return r;
+                } else {
+                    // paginaPrincipal('turnoconfirma.php');
+                    location.reload();
+                    window.location = window.location.pathname + '#rutina';
+                }
+            }
+        });
+    }
+
     //Nuevo archivo
     $("#formarchivo").on("submit", function(e) {
         // $('#Send2').attr("disabled", true);

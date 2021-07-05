@@ -169,9 +169,10 @@ if (isset($_POST["desde"])) {
 
                     $sql =
                     "SELECT ventas.id as id,fecha as fech, DATE_FORMAT(ventas.fecha,'%d/%m/%Y') as fecha,factura,
-                    CONCAT(pacientes.codigo, ' - ',pacientes.nombre,' ',pacientes.apellido) as paciente, pacientes.dni as dni,
+                    pacientes.codigo as pacientecodigo, pacientes.nombre as pacientenombre,
+                    pacientes.apellido as pacienteapellido, pacientes.dni as dni,
                     CONCAT(usuarios.nombre,' ',usuarios.apellido) as medico,
-                    CONCAT(tratamientos.codigo, ' - ',tratamientos.denominacion) as item,
+                    tratamientos.codigo as itemcodigo, tratamientos.denominacion as itemdenominacion,
                     cantidad,ventastratamientos.total,formaspago.nombre as formapago,comision,observaciones
                      FROM ventas
                      join ventastratamientos on ventastratamientos.venta_id = ventas.id
@@ -185,9 +186,10 @@ if (isset($_POST["desde"])) {
                       UNION
 
                       SELECT ventas.id as Id,fecha as fech,DATE_FORMAT(ventas.fecha,'%d/%m/%Y') as fecha,factura,
-                    CONCAT(pacientes.codigo, ' - ',pacientes.nombre,' ',pacientes.apellido) as paciente,pacientes.dni as dni,
+                    pacientes.codigo as pacientecodigo, pacientes.nombre as pacientenombre,
+                    pacientes.apellido as pacienteapellido, pacientes.dni as dni,
                     '' as medico,
-                    CONCAT(productos.codigo, ' - ',productos.denominacion) as item,
+                    productos.codigo as itemcodigo, productos.denominacion as itemdenominacion,
                     cantidad,ventasproductos.total,formaspago.nombre as formapago,0 as comision,observaciones
                      FROM ventas
                      join ventasproductos on ventasproductos.venta_id = ventas.id
@@ -207,8 +209,11 @@ if (isset($_POST["desde"])) {
 
                             echo "<th>Fecha</th>";
                             echo "<th>N°FC</th>";
-                            echo "<th>Paciente</th>";
+                            echo "<th>Cód Paciente</th>";
+                            echo "<th>Apellido</th>";
+                            echo "<th>Nombre</th>";
                             echo "<th>DNI</th>";
+                            echo "<th>Código</th>";
                             echo "<th>Tratamiento/Producto</th>";
                             echo "<th>Cantidad</th>";
                             echo "<th>Monto</th>";
@@ -225,9 +230,12 @@ if (isset($_POST["desde"])) {
 
                                 echo "<td>" . $row['fecha'] . "</td>";
                                 echo "<td>" . $row['factura'] . "</td>";
-                                echo "<td>" . $row['paciente'] . "</td>";
+                                echo "<td>" . $row['pacientecodigo'] . "</td>";
+                                echo "<td>" . $row['pacienteapellido'] . "</td>";
+                                echo "<td>" . $row['pacientenombre'] . "</td>";
                                 echo "<td>" . $row['dni'] . "</td>";
-                                echo "<td>" . $row['item'] . "</td>";
+                                echo "<td>" . $row['itemcodigo'] . "</td>";
+                                echo "<td>" . $row['itemdenominacion'] . "</td>";
                                 echo "<td>" . $row['cantidad'] . "</td>";
                                 echo "<td>" . $row['total'] . "</td>";
                                 echo "<td>" . $row['formapago'] . "</td>";
@@ -235,7 +243,8 @@ if (isset($_POST["desde"])) {
                                 echo "<td>" . $row['comision'] . "</td>";
                                 echo "<td>" . $row['observaciones'] . "</td>";
                                 echo "<td>";
-                                echo "<a href='../index.php?venta=" . $row['id'] . "' title='Actualizar Registro' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                echo "<a href='../index.php?venta=" . $row['id'] . "' title='Actualizar Venta' data-toggle='tooltip'><span class='glyphicon glyphicon-plus'></span></a>";
+                                echo " <a href='update.php?venta=" . $row['id'] . "' title='Modificar Fecha' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                                 echo "</td>";
                                 
 
