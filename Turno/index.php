@@ -113,7 +113,7 @@ $hoy = $hoy->format("Y-m-d")
                      FROM turnos
                      join usuarios on usuarios.id = turnos.medico_id
                      join pacientes on pacientes.id = turnos.paciente_id
-                     join tratamientos on tratamientos.id = turnos.tratamiento_id";
+                     left join tratamientos on tratamientos.id = turnos.tratamiento_id";
                     if ($_SESSION['Perfil'] == "submedico") {
                         $sql .= " where turnos.medico_id=" . $_SESSION["Id"];
                     }
@@ -128,7 +128,7 @@ $hoy = $hoy->format("Y-m-d")
                             echo "<th>Fecha</th>";
                             echo "<th>Médico</th>";
                             echo "<th>Paciente</th>";
-                            echo "<th>Tratamiento</th>";
+                            // echo "<th>Tratamiento</th>";
                             echo "<th>Duración</th>";
                             echo "<th>Observaciones</th>";
                             if ($_SESSION['Perfil'] != "submedico") {
@@ -143,7 +143,7 @@ $hoy = $hoy->format("Y-m-d")
                                 echo "<td>" . $row['fecha'] . "</td>";
                                 echo "<td>" . $row['medico'] . "</td>";
                                 echo "<td>" . $row['paciente'] . "</td>";
-                                echo "<td>" . $row['tratamiento'] . "</td>";
+                                // echo "<td>" . $row['tratamiento'] . "</td>";
                                 echo "<td>" . $row['duracion'] . "</td>";
                                 echo "<td>" . $row['observaciones'] . "</td>";
                                 if ($_SESSION['Perfil'] != "submedico") {

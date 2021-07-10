@@ -5,21 +5,10 @@ session_start();
 if(isset($_POST["hora"])){
     $turno = new Turno();
     $turno = unserialize($_SESSION["Turno"]);
-    $val = $turno->verificarHora($_POST["hora"]);
-    if($val == 0)
-    {
-        $turno->hora = $_POST["hora"];
-        $_SESSION["Turno"] = serialize($turno);
-    }
-    elseif($val==1)
-    {
-        echo "El turno se solapa con otros turnos";
-    }
-    elseif($val==3)
-    {
-        echo "El turno se solapa con bloqueos";
-    } else {
-        echo "El turno excede la agenda del profesional";
-    }
+    $listahoras = $_POST["hora"];
+    
+    $turno->hora = $listahoras[0];
+    $turno->duracion = 15 * count($listahoras);
+    $_SESSION["Turno"] = serialize($turno);
 }
 ?>

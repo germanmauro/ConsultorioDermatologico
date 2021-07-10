@@ -40,7 +40,7 @@ function cargaMedico(id) {
             type: 'post',
             cache: false,
             success: function (r) {
-               paginaPrincipal('turnosduracion.php');
+               paginaPrincipal('turnosfecha.php');
             }
         });
 }
@@ -108,7 +108,7 @@ function setHora(hor) {
                     });
                 }
                 else {
-                    paginaPrincipal('turnostratamiento.php');
+                    paginaPrincipal('turnospaciente.php');
                 }
                 
             }
@@ -130,7 +130,7 @@ function cargapacientetratamiento(id) {
     paginaPrincipal('tratamientopaciente.php', param);
 }
 
-//Borrar Producto del pedido
+//Eliminar Turno
 function eliminarTurno(id) {
     swal("¿Desea cancelar el turno?", {
         icon: "warning",
@@ -152,6 +152,46 @@ function eliminarTurno(id) {
                         ({
                             url: 'Accion/eliminarTurno.php',
                             data: { id: id },
+                            type: 'post',
+                            cache: false,
+                            success: function (r) {
+                                if (r != "") {
+                                    alert(r);
+                                    //return r;
+                                }
+                                else {
+                                        paginaPrincipal('turnosfecha.php');
+                                    }
+                                }
+                        });
+                    break;
+
+            }
+        });
+}
+
+//Eliminar Turno
+function bloquearTurno(fecha) {
+    swal("¿Desea bloquear el turno?", {
+        icon: "warning",
+        buttons: {
+
+
+            catch: {
+                text: "SI",
+                value: "catch",
+            },
+            cancel: "NO",
+        },
+    })
+        .then((value) => {
+            switch (value) {
+
+                case "catch":
+                    $.ajax
+                        ({
+                            url: 'Accion/bloquearTurno.php',
+                            data: { fecha: fecha },
                             type: 'post',
                             cache: false,
                             success: function (r) {

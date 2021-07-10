@@ -27,17 +27,15 @@ if (isset($_POST["actualizar"])) {
 
     $id = $_POST["id"];
     $observaciones = $_POST["observaciones"];
-    $tratamiento = $_POST["tratamiento"];
 
-    $sql = "UPDATE turnos SET observaciones = ?, tratamiento_id = ? WHERE id=?";
+    $sql = "UPDATE turnos SET observaciones = ? WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sss", $p1, $p2, $param_id);
+        mysqli_stmt_bind_param($stmt, "ss", $p1, $param_id);
 
         // Set parameters
         $p1 = $observaciones;
-        $p2 = $tratamiento;
 
         $param_id = $id;
 
@@ -83,7 +81,6 @@ if (isset($_POST["actualizar"])) {
 
                     // Retrieve individual field value
                     $observaciones = $row["observaciones"];
-                    $tratamiento = $row["tratamiento_id"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -127,16 +124,6 @@ if (isset($_POST["actualizar"])) {
                         <h2>Actualizar Observaciones y/o Tratamiento</h2>
                     </div>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-                        <label>Tratamiento</label>
-                        <select required name="tratamiento" class="form-control">
-                            <?php
-                            $result = $link->query("select * from tratamientos where baja='False'");
-                            foreach ($result as $row) {
-                                $sel = ($row["id"] == $tratamiento?" selected":"");
-                                echo "<option ".$sel." value='" . $row['id'] . "'>" . $row["codigo"] . " - " . $row["denominacion"] . "</option>";
-                            }
-                            ?>
-                        </select>
                         <div class="form-group">
                             <label>Observaciones</label>
                             <textarea class="form-control" name="observaciones" maxlength="300" rows="3"><?=$observaciones?></textarea>

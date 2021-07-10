@@ -112,7 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <?php
                                     for ($i = 0; $i < 24; $i++) {
                                         echo "<option value='" . $i . ":00'>" . $i . ":00</option>";
+                                        echo "<option value='" . $i . ":15'>" . $i . ":15</option>";
                                         echo "<option value='" . $i . ":30'>" . $i . ":30</option>";
+                                        echo "<option value='" . $i . ":45'>" . $i . ":45</option>";
                                     }
                                     ?>
                                 </select>
@@ -123,10 +125,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label>Hasta</label>
                                 <select required name="hasta" class="form-control">
                                     <?php
+                                    echo "<option value='0:15'>0:15</option>";
                                     echo "<option value='0:30'>0:30</option>";
+                                    echo "<option value='0:45'>0:45</option>";
                                     for ($i = 1; $i < 24; $i++) {
                                         echo "<option value='" . $i . ":00'>" . $i . ":00</option>";
+                                        echo "<option value='" . $i . ":15'>" . $i . ":15</option>";
                                         echo "<option value='" . $i . ":30'>" . $i . ":30</option>";
+                                        echo "<option value='" . $i . ":45'>" . $i . ":45</option>";
                                     }
                                     echo "<option value='24:00'>24:00</option>";
                                     ?>

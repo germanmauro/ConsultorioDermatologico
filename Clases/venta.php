@@ -256,7 +256,12 @@ class Venta
     foreach ($this->listaProductos as $item) {
       if ($item->fijo) {
         $item->precioUnitario = $item->precioLista;
-      } else {
+      } 
+      elseif($this->formapago->nombre == "Efectivo" || $this->formapago->nombre == "EFECTIVO")
+      {
+        $item->precioUnitario = round($item->precioLista * $item->porcentajeefectivo/100);
+      } 
+      else {
         $item->precioUnitario = round($item->precioLista * $porcentajeproducto);
       }
       
@@ -267,7 +272,12 @@ class Venta
     foreach ($this->listaTratamientos as $item) {
       if ($item->fijo) {
         $item->precioUnitario = $item->precioLista;
-      } else {
+      } 
+      elseif ($this->formapago->nombre == "Efectivo" || $this->formapago->nombre == "EFECTIVO") {
+        $item->precioUnitario = round($item->precioLista * $item->porcentajeefectivo / 100);
+      } 
+      else 
+      {
         $item->precioUnitario = round($item->precioLista * $porcentajetratamiento);
       }
       $item->total = round($item->precioUnitario * $item->cantidad);
@@ -304,7 +314,7 @@ class Venta
     $porcentajeEfectivo = $row["porcentajetratamiento"];
     //tratamiento
     foreach ($this->listaTratamientos as $item) {
-      $item->comision = round($item->precioLista * $item->cantidad * $porcentajeEfectivo * $item->porcentaje /10000);
+      $item->comision = round($item->precioLista * $item->cantidad * $item->porcentaje /100);
     }
   }
 
@@ -386,6 +396,7 @@ class Producto
   public $total = "";
   public $cantidad = 0;
   public $fijo = "";
+  public $porcentajeefectivo = "";
   
   function __construct($id)
   {
@@ -397,6 +408,7 @@ class Producto
     $this->denominacion = $row["denominacion"];
     $this->marca = $row["marca"];
     $this->precioLista = $row["precioventa"];
+    $this->porcentajeefectivo = $row["porcentajeefectivo"];
     $this->fijo = $row["fijo"];
   }
 }
@@ -412,6 +424,7 @@ class Tratamiento
   public $total = "";
   public $precioLista = "";
   public $porcentaje = "";
+  public $porcentajeefectivo = "";
   public $comision = "";
   public $fijo = "";
   
@@ -425,6 +438,7 @@ class Tratamiento
     $this->denominacion = $row["denominacion"];
     $this->porcentaje = $row["porcentajemedico"];
     $this->precioLista = $row["precioventa"];
+    $this->porcentajeefectivo = $row["porcentajeefectivo"];
     $this->fijo = $row["fijo"];
   }
 }

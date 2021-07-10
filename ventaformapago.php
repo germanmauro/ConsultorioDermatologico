@@ -66,6 +66,10 @@
                                             } else {
                                                 $descuentotratamiento = "";
                                             }
+                                            if($row["nombre"]=="Efectivo" || $row["nombre"] == "EFECTIVO")
+                                            {
+                                                $descuentotratamiento = $descuentoproducto = "";
+                                            }
 
                                             echo "<option " .
                                                 ($venta->formapago->id == $row["id"] ? 'selected' : '') . "

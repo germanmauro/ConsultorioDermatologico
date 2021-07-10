@@ -53,7 +53,7 @@ body {
 }
 /*Horarios*/
 .horario {
-  padding: 30px;
+  padding: 15px;
   margin: 10px 0px;
   width: 100%;
   background-color: #024b94;
@@ -63,23 +63,35 @@ body {
   font-size: 16px;
 }
 .horarioocupado {
-  padding: 30px;
+  padding: 3px 15px;
   margin: 10px 0px;
   width: 100%;
   background-color: #424446;
   text-align: center;
   font-weight: bold;
-  color: white;
+  color: #fff;
+  font-size: 16px;
+}
+
+.horarioseleccionado {
+  padding: 15px;
+  margin: 10px 0px;
+  width: 100%;
+  background-color: #059742;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  border: #fff 4px solid;
   font-size: 16px;
 }
 
 .horario:hover {
-  border: black 4px solid;
+  border: #000 4px solid;
   background-color: #0db453;
   cursor: pointer;
 }
 .horarioocupado:hover {
-  border: black 4px solid;
+  border: #000 4px solid;
   cursor: pointer;
 }
 

@@ -20,15 +20,15 @@
        <?php
         $listaDias = $link->query("select distinct dia from dias where medico_id=" . $turno->medico->id);
         $listaBloqueo = $link->query("select distinct dia from bloqueos where medico_id=" . $turno->medico->id);
-        $disponibilidad = $link->query("select date_format(turnos.fecha,'%Y-%m-%d') as day,sum(duracion/30) as cantidad,
+        $disponibilidad = $link->query("select date_format(turnos.fecha,'%Y-%m-%d') as day,sum(duracion/15) as cantidad,
                                         max(tabla.turnos) as turnos,IFNULL(max(bloqueo.bloqueos),0) as bloqueos from
-                                        (SELECT dia, SUM(TIME_TO_SEC(TIMEDIFF(horahasta,horadesde))/1800) as turnos
+                                        (SELECT dia, SUM(TIME_TO_SEC(TIMEDIFF(horahasta,horadesde))/900) as turnos
                                         from dias
-                                        where medico_id =" . $turno->medico->id ."
+                                        where medico_id =" . $turno->medico->id . "
                                         group by dia) as tabla
                                         join turnos on tabla.dia = DATE_FORMAT(turnos.fecha,'%w')
                                         left join
-                                        (SELECT dia, SUM(TIME_TO_SEC(TIMEDIFF(horahasta,horadesde))/1800) as bloqueos
+                                        (SELECT dia, SUM(TIME_TO_SEC(TIMEDIFF(horahasta,horadesde))/900) as bloqueos
                                         from bloqueosparciales
                                         where medico_id =" . $turno->medico->id . "
                                         group by dia) as bloqueo
@@ -80,11 +80,9 @@
        <div class='col-lg-12'>
 
            <div class='panel panel-default'>
-               <a onclick="paginaPrincipal('turnosduracion.php')" class="btn btn-success pull-right">Atrás</a>
+               <a onclick="paginaPrincipal('turnos.php')" class="btn btn-success pull-right">Atrás</a>
                <h3 class="menu-text">Turnos del médico <?= $turno->medico->apellido . ", " . $turno->medico->nombre; ?></h3>
-               <h4 class="menu-text">Duración del tratamiento <?= $turno->duracion . " minutos"; ?></h4>
                <!-- /.panel-heading -->
-
                <div class='panel-body'>
                    <div class='row'>
 
@@ -110,59 +108,64 @@
                                     dia=" . $dia . " order by CONVERT(horadesde,TIME)");
 
                                     foreach ($horarios as $item) {
+                                        $idDiv = 0;
                                         $hora = new DateTime($fecha . ' ' . $item["horadesde"]);
                                         $hora2 = new DateTime($fecha . ' ' . $item["horahasta"]);
 
                                         while ($hora->format("H:i") < $hora2->format("H:i")) {
-                                            $resultbloq = $link->query("select * from bloqueosparciales where dia='".$diaFecha."'
-                                            and TIME('". $hora->format("H:i")."') >= TIME(horadesde) AND
+                                            $resultbloq = $link->query("select * from bloqueosparciales where dia='" . $diaFecha . "'
+                                            and TIME('" . $hora->format("H:i") . "') >= TIME(horadesde) AND
                                             TIME('" . $hora->format("H:i") . "') < TIME(horahasta) AND 
-                                            medico_id=".$turno->medico->id);
-                            
+                                            medico_id=" . $turno->medico->id);
+
                                             if (mysqli_num_rows($resultbloq) == 0) {
                                                 $result = $link->query("select fecha,turnos.id as id, pacientes.nombre as nombre,duracion,
-                                                    pacientes.apellido as apellido, tratamientos.codigo as codigo, tratamientos.denominacion
+                                                    pacientes.apellido as apellido, observaciones
                                                     from turnos
                                                     join pacientes on pacientes.id = turnos.paciente_id
-                                                    join tratamientos on tratamientos.id = turnos.tratamiento_id
                                                     where medico_id =" . $turno->medico->id . "
                                                     and fecha='" . $hora->format("Y-m-d H:i:00") . "'");
                                                 if (mysqli_num_rows($result) > 0) {
                                                     $row = mysqli_fetch_array($result);
                                                     $hasta = new DateTime($row["fecha"]);
-                                                    $hasta = $hasta->add(new DateInterval("PT".$row["duracion"]."M"));
+                                                    $hasta = $hasta->add(new DateInterval("PT" . $row["duracion"] . "M"));
                                                     echo "<div class='horarioocupado' onclick=eliminarTurno(" . $row['id'] . ")>
-                                                        ".$row["apellido"] . ', ' . $row["nombre"] . " - "
-                                                        .$row["denominacion"] . ' (' . $row["codigo"] . ")<br>
-                                                        de ". $hora->format("H:i")." a ". $hasta->format("H:i")
+                                                        " . $row["apellido"] . ', ' . $row["nombre"] . " - "
+                                                        . $row["observaciones"]."<br> 
+                                                        de " . $hora->format("H:i") . " a " . $hasta->format("H:i")
                                                         . "</div>";
-                                                    $hora->add(new DateInterval("PT".$row["duracion"]."M"));
+                                                    $hora->add(new DateInterval("PT" . $row["duracion"] . "M"));
                                                 } else {
-                                                    echo "<div class='horario' onclick=registroHora('" . $hora->format('H:i') . "')>"
+                                                    echo "<div>";
+                                                    if(in_array($_SESSION['Perfil'], ['medico', 'admin']))
+                                                    {
+                                                      echo "<button onclick=bloquearTurno('".$hora->format("H:i") ."') title='Bloquear Turno' class='btn btn-danger pull-right'><span class='fas fa-ban'></span></button>";
+                                                    }
+                                                    echo "<div data-numero='" . $idDiv . "' id='" . $hora->format("H:i") . "'  class='horario' onclick=setTurno('" . $hora->format('H:i') . "')>"
                                                         . $hora->format("H:i")
-                                                        . "</div>";
-                                                    $hora->add(new DateInterval("PT30M"));
+                                                        . "</div>
+                                                        </div>";
+                                                    $hora->add(new DateInterval("PT15M"));
+                                                    
                                                 }
-                                            }
-                                            else
-                                            { 
+                                            } else {
                                                 $rowb = mysqli_fetch_array($resultbloq);
                                                 echo "
-                                                <div class='horarioocupado'>
-                                                
-                                                        <p>".$hora->format("H:i")." 
-                                                        Bloqueado por: ".$rowb['motivo']."</p>
-                                                        </div>";
-                                                $hora->add(new DateInterval("PT30M"));
-                                            }
+                                                <div class='horarioocupado'>" .
 
-                                            
+                                                    $hora->format("H:i") . " 
+                                                        Bloqueado por: " . $rowb['motivo'] . "
+                                                        </div>";
+                                                $hora->add(new DateInterval("PT15M"));
+                                            }
+                                            $idDiv++;
                                         }
                                     }
 
 
                                     ?>
                                </div>
+                               <button onclick="cargarTurno();" class="btn btn-success">Siguiente</button>
                            </div>
                        </div>
                        <div id="sub-pagina">
@@ -181,14 +184,51 @@
    <!-- /.col-lg-8 -->
 
    <script>
-       cambio = () => {
+       var listaTurnos = [];
+
+       function cambio() {
            var fec = $("#datepicker").datepicker({
                dateFormat: 'dd,MM,yyyy'
            }).val()
            setFecha(fec);
+           listaTurnos = [];
        }
 
-       function registroHora(fec) {
-           setHora(fec);
+       function setTurno(turno) {
+           //Si hay mas de un turno me fijo si es correlativo al último
+           let elemento = document.getElementById(turno);
+           if(elemento.className == "horario")
+           {
+               if (listaTurnos.length > 0) {
+                   let numeroAnterior = listaTurnos[listaTurnos.length - 1];
+                   let numeroActual = elemento.dataset.numero - 1;
+                   if (numeroAnterior.numero != numeroActual) {
+                       swal("Los horarios seleccionados deben ser correlativos", {
+                           buttons: false,
+                           icon: "error",
+                           timer: 3000,
+                       });
+                       return;
+                   }
+               }
+               //Lo agrego al array
+               elemento.className = 'horarioseleccionado';
+               listaTurnos.push({
+                   id: turno,
+                   numero: elemento.dataset.numero
+               });
+           }
+       }
+
+       function cargarTurno() {
+           if (listaTurnos.length > 0) {
+               setHora(listaTurnos.map(e=>e.id));
+           } else {
+               swal("Debe elegir al menos una fecha", {
+                   buttons: false,
+                   icon: "error",
+                   timer: 3000,
+               });
+           }
        }
    </script>

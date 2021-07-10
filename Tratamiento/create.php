@@ -7,8 +7,10 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
-    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
+if (
+    !isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])
+) {
     header("location: index.php");
     exit;
 }
@@ -18,7 +20,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$denominacion = $codigo = $precioventa = $porcentajemedico = $fijo = "";
+$denominacion = $codigo = $precioventa = $porcentajemedico = $fijo = $porcentajeefectivo = "";
 
 //Cargar filtro
 
@@ -29,19 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $porcentajemedico = $_POST["porcentajemedico"];
     $codigo = trim($_POST["codigo"]);
     $fijo = isset($_POST["fijo"]);
+    $porcentajeefectivo = $_POST["porcentajeefectivo"];
     if (mysqli_num_rows($link->query("select * from tratamientos where codigo='" . $codigo . "' and baja = 'False'")) > 0) {
         echo "
             <div class='alert alert-warning' role='alert'>
             El código <b>" . $codigo . "</b> ya está utilizado
             </div>  ";
-    } else 
-    {
+    } else {
         // Prepare an insert statement
-        $sql = "INSERT INTO tratamientos (codigo, denominacion,precioventa,porcentajemedico,fijo) VALUES (?, ?, ?, ?,?)";
+        $sql = "INSERT INTO tratamientos (codigo, denominacion,precioventa,porcentajemedico,fijo,porcentajeefectivo)
+         VALUES (?, ?, ?, ?, ?, ?)";
 
         if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssss", $p1, $p2, $p3, $p4, $p5);
+            mysqli_stmt_bind_param($stmt, "ssssss", $p1, $p2, $p3, $p4, $p5, $p6);
 
             // Set parameters
             $p1 = $codigo;
@@ -49,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $p3 = $precioventa;
             $p4 = $porcentajemedico;
             $p5 = $fijo;
+            $p6 = $porcentajeefectivo;
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
@@ -112,6 +116,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-group">
                             <label>Porcentaje Médico % (Decimales separados por .)</label>
                             <input type="number" step="any" required min=0 max=100 name="porcentajemedico" maxlength=50 class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Porcentaje Efectivo (Decimales separados por .)</label>
+                            <input type="number" step="any" required min=1 max=100000000 name="porcentajeefectivo" maxlength=50 class="form-control" value="<?php echo $porcentajeefectivo; ?>">
                         </div>
                         <div class="form-group">
                             <label>

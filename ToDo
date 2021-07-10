@@ -1,48 +1,21 @@
-Crear medicos OK
+1.1 Cambio en formas de pago OK
+• Para tratamientos y productos en efectivo el valor del porcentaje lo tomará del 
+mismo registro del producto.
+• Se agregar un campo porcentaje en efectivo tanto en productos como en tratamientos.
 
-Crear productos OK
-
-Crear menu medicos Ok
-
-Crear proveedores solo sería agenda. OK
-
-Nombre,Contacto, Email, Telefono, Dirección, Datos bancarios, Comentarios OK
-
-Para la comisión de los médicos tomar el precio efectivo por mas que pague con otro medio
-
-Carga de pacientes lo hace la secretaria y la esposa OK
-
-Ver la parte de gestión de turnos OK
-    Elegir médico Ok
-        Elegir paciente Ok
-    Carga días disponibles de c/médico Ok
-    Agregar tratamiento OK
-    Mostrar días con y sin turnos disponibles (verde y rojo). OK
-
-    Ver cargar pacientes, codigo automatico (mayor + 1) si se deja vacío OK
-    No repetir codigos en pacientes, productos y tratamientos OK
-
-    Agregar tratamiento al turnos OK
-
-    Falta crear las consultas y eliminarlas. OK
-
-    Registro de compras: OK
-    
-    Crear los registros de tratamientos y ventas de productos ok
-        Seleccion d paciente. ok
-        Seleccion tratamientos y productos.ok
-        seleccion forma de pago ok
-
-    Descontar del stock en las ventas. OK
-
-    Agregar el nuevo formulario a HC. OK
-        Exportarlo PDF OK
-        Exportar HC OK
-    
-    Agregar agenda para submedicos perfil
-
-    Agregar dni a planilla
-
-    Poner fecha del dia en venta
-
-    Ver que más Falta
+1.2 Cambio en tunos
+• Los turnos serán fraccionados cada 15 minutos.OK
+• Reducción del cuadro de turnos. OK
+• Cambio de orden: --> OK
+    o Seleccionar profesional. OK 
+    o Seleccionar día. OK
+    o Seleccionar varios horarios a la vez. ok
+    o Cargar paciente. OK
+    o Cuadro de observaciones. OK
+• Sacar listado de tratamientos. OK
+• Impresión de turnos, mostrar:
+    o Fecha.
+    o Horario.
+    o Médico.
+    o Observaciones.
+Poder bloquear turnos desde la pantalla de selección de turnos. OK

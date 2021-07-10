@@ -21,7 +21,7 @@ require_once 'config.php';
     <title>Clínica Dematológica</title>
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css?v=13" rel="stylesheet">
-    <link href="css/sb-admin-2.css?v=42" rel="stylesheet">
+    <link href="css/sb-admin-2.css?v=43" rel="stylesheet">
     <link rel="shortcut icon" href="image/logo.png" />
     <link href="css/font-awesome/css/all.css" rel="stylesheet" type="text/css">
     <!-- Slide Categorías -->
@@ -334,7 +334,7 @@ if(isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["v
     <!-- jQuery -->
     <script src="js/jquery.min.js"></script>
     <!-- Acciones para pedidos -->
-    <script src="js/Acciones/acciones.js?v=15"></script>
+    <script src="js/Acciones/acciones.js?v=16"></script>
     <script src="Tables/jquery.dataTables.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

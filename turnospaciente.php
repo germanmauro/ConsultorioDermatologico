@@ -34,10 +34,12 @@
        <div class='col-lg-12'>
 
            <div class='panel panel-default'>
-               <a onclick="paginaPrincipal('turnostratamiento.php')" class="btn btn-success pull-right">Atrás</a>
+               <a onclick="paginaPrincipal('turnosfecha.php')" class="btn btn-success pull-right">Atrás</a>
                <h3 class="menu-text">Selección de Paciente</h3>
-               <h4 class="menu-text">Dr/a: <?= $turno->medico->apellido . ', ' . $turno->medico->nombre ?> Fecha: <?= date_format(date_create($turno->fecha . ' ' . $turno->hora), "d/m/Y H:i") ?></h4>
-               <h4 class="menu-text">Tratamiento: <?= $turno->tratamiento->codigo . ' - ' . $turno->tratamiento->denominacion ?> </h4>
+               <h4 class="menu-text">Dr/a: <?= $turno->medico->apellido . ', ' . $turno->medico->nombre?>
+                Fecha: <?= date_format(date_create($turno->fecha . ' ' . $turno->hora), "d/m/Y H:i") ?>
+                Duracion: <?=$turno->duracion?> min
+            </h4>
                <!-- /.panel-heading -->
                <div class='panel-body'>
                    <div class='row'>
@@ -195,13 +197,8 @@
                                    <label>Referido</label>
                                    <input type="text" name="referido" required maxlength=200 class="form-control" value="<?php echo $referido; ?>">
                                </div>
-                               <!-- <div class="form-group">
-                                   <label>Alta</label>
-                                   <input type="date" name="alta" class="form-control" value="<?php echo $alta; ?>">
-                               </div> -->
 
-
-                               <button type="submit" id="Send" name="Send" class="btn btn-success">Generar Turno</button>
+                               <button type="submit" id="Send" name="Send" class="btn btn-success">Siguiente</button>
                            </form>
 
                        </div>
@@ -266,52 +263,23 @@
                "profesion": profesion,
                "referido": referido
            };
-           if (nombre != "") {
-               swal("¿Desea generar el turno?", {
-                       icon: "warning",
-                       buttons: {
-
-
-                           catch: {
-                               text: "SÍ",
-                               value: "catch",
-                           },
-                           cancel: "NO",
-
-                       },
-                   })
-                   .then((value) => {
-                       switch (value) {
-
-                           case "catch":
-                               $.ajax({
-                                   url: 'Accion/generarTurno.php',
-                                   type: 'POST',
-                                   data: parametros,
-                                   cache: false,
-                                   success: function(r) {
-                                       if (r != "") {
-                                           swal(r, {
-                                               buttons: false,
-                                               icon: "error",
-                                               timer: 3000,
-                                           });
-                                           //return r;
-                                       } else {
-                                           paginaPrincipal('turnoconfirma.php');
-                                           swal("Turno generado con éxito", {
-                                               buttons: false,
-                                               icon: "success",
-                                               timer: 4000,
-                                           });
-
-                                       }
-                                   }
-                               });
-                               break;
-
-                       }
-                   });
-           }
+           $.ajax({
+               url: 'Accion/turnoPaciente.php',
+               type: 'POST',
+               data: parametros,
+               cache: false,
+               success: function(r) {
+                   if (r != "") {
+                       swal(r, {
+                           buttons: false,
+                           icon: "error",
+                           timer: 3000,
+                       });
+                       //return r;
+                   } else {
+                       paginaPrincipal('turnostratamiento.php');
+                   }
+               }
+           });
        });
    </script>

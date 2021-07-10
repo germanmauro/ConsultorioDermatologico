@@ -6,8 +6,10 @@ if (!isset($_SESSION['Usuario']) || empty($_SESSION['Usuario'])) {
     header("location: ../login.php");
     exit;
 }
-if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
-    !in_array($_SESSION['Perfil'], ['medico', 'admin'])) {
+if (
+    !isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
+    !in_array($_SESSION['Perfil'], ['medico', 'admin'])
+) {
     header("location: index.php");
     exit;
 }
@@ -17,7 +19,8 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$codigo = $denominacion = $stock = $marca = $preciocompra = $precioventa = $precioefectivo = $fijo = "";
+$codigo = $denominacion = $stock = $marca = $preciocompra = $precioventa =
+ $precioefectivo = $porcentajeefectivo = $fijo = "";
 
 // Processing form data when form is submitted
 if (isset($_POST["actualizar"])) {
@@ -31,13 +34,14 @@ if (isset($_POST["actualizar"])) {
     $preciocompra = $_POST["preciocompra"];
     $precioventa = $_POST["precioventa"];
     $fijo = isset($_POST["fijo"]);
+    $porcentajeefectivo = $_POST["porcentajeefectivo"];
 
     $sql = "UPDATE productos SET codigo=?, denominacion=?, marca=?, stock = ?, preciocompra = ?,
-     precioventa = ?, fijo = ?  WHERE id=?";
+     precioventa = ?, fijo = ?, porcentajeefectivo = ?  WHERE id=?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ssssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7, $param_id);
+        mysqli_stmt_bind_param($stmt, "sssssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7,$p8, $param_id);
 
         // Set parameters
         $p1 = $codigo;
@@ -47,6 +51,7 @@ if (isset($_POST["actualizar"])) {
         $p5 = $preciocompra;
         $p6 = $precioventa;
         $p7 = $fijo;
+        $p8 = $porcentajeefectivo;
 
         $param_id = $id;
 
@@ -98,6 +103,7 @@ if (isset($_POST["actualizar"])) {
                     $preciocompra = $row["preciocompra"];
                     $precioventa = $row["precioventa"];
                     $fijo = $row["fijo"];
+                    $porcentajeefectivo = $row["porcentajeefectivo"];
                 } else {
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -168,10 +174,14 @@ if (isset($_POST["actualizar"])) {
                                 <input type="number" step="any" required min=1 max=100000000 name="precioventa" maxlength=50 class="form-control" value="<?php echo $precioventa; ?>">
                             </div>
                             <div class="form-group">
-                            <label>
-                                <input type="checkbox" name="fijo" <?= $fijo ? ' checked' : '' ?>>
-                                Precio Fijo
-                            </label>
+                                <label>Porcentaje Efectivo (Decimales separados por .)</label>
+                                <input type="number" step="any" required min=1 max=100000000 name="porcentajeefectivo" maxlength=50 class="form-control" value="<?php echo $porcentajeefectivo; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="fijo" <?= $fijo ? ' checked' : '' ?>>
+                                    Precio Fijo
+                                </label>
                             </div>
 
                             <input type="hidden" name="id" value="<?php echo $id; ?>" />

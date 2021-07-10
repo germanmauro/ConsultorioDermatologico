@@ -15,7 +15,7 @@ class Turno
   public $hora = "";
   public $paciente = "";
   public $medico = "";
-  public $duracion = "";
+  public $duracion = "15";
   public $tratamiento = "";
   public $observaciones = "";
   
@@ -51,10 +51,12 @@ class Turno
       $link->autocommit(false);
       $this->paciente->guardar();
       //Insertamos la venta
-      if (!$link->query("INSERT INTO turnos (paciente_id,fecha,medico_id,tratamiento_id,observaciones,duracion)
+      if (!$link->query("INSERT INTO turnos (paciente_id,fecha,medico_id,observaciones,duracion)
         VALUES(" . $this->paciente->id . ",'" . $this->fecha .' '.$this->hora.
-        "'," . $this->medico->id.",".$this->tratamiento->id.",'".$this->observaciones."',".$this->duracion.")")) {
-        $dev->mensaje = "Error al registrar el turno";
+        "'," . $this->medico->id.",'".$this->observaciones."',".$this->duracion.")")) {
+        $dev->mensaje = "INSERT INTO turnos (paciente_id,fecha,medico_id,observaciones,duracion)
+        VALUES(" . $this->paciente->id . ",'" . $this->fecha . ' ' . $this->hora .
+          "'," . $this->medico->id . ",'" . $this->observaciones . "'," . $this->duracion.")";
         $dev->flag = 1;
         throw new Exception("Error al registrar el turno");
       }
@@ -79,6 +81,32 @@ class Turno
         $dev->mensaje = "Error al cancelar el turno";
         $dev->flag = 1;
         throw new Exception("Error al cancelar el turno");
+      }
+      $link->commit(); //Insertamos todos los query
+
+      return $dev;
+    } catch (Exception $e) {
+      // return  $e;
+      $link->rollback();
+      return $dev;
+    }
+  }
+
+  //Bloquear Turno
+  public function bloquear($fecha)
+  {
+    $dev = new Devolucion();
+    global $link;
+    try {
+      $link->autocommit(false);
+      $fecha = date_create($this->fecha.' ' .$fecha);
+      $horadesde = $fecha->format("H:i");
+      $horahasta = $fecha->add(new DateInterval("PT15M"))->format("H:i");
+      if (!$link->query("INSERT INTO bloqueosparciales (medico_id,horadesde,horahasta,dia,motivo)
+      VALUES (".$this->medico->id.",'".$horadesde."','".$horahasta."','".$this->fecha."','Bloqueo')")) {
+        $dev->mensaje = "Error al bloquear el turno";
+        $dev->flag = 1;
+        throw new Exception("Error al bloquear el turno");
       }
       $link->commit(); //Insertamos todos los query
 
@@ -143,7 +171,7 @@ class TurnoListado
                      FROM turnos
                      join usuarios on usuarios.id = turnos.medico_id
                      join pacientes on pacientes.id = turnos.paciente_id
-                     join tratamientos on tratamientos.id = turnos.tratamiento_id
+                     left join tratamientos on tratamientos.id = turnos.tratamiento_id
                      where (usuarios.id =".$medico." or 0 = ".$medico.")
                      and turnos.fecha between '".$desde. " 00:00:00' and '".$hasta." 23:59:59'
                      order by medico,fecha");

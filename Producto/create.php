@@ -18,7 +18,8 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$codigo = $denominacion = $stock = $marca = $preciocompra = $precioventa = $precioefectivo = $fijo = "";
+$codigo = $denominacion = $stock = $marca = $preciocompra = $precioventa =
+ $precioefectivo = $porcentajeefectivo = $fijo = "";
 
 //Cargar filtro
 
@@ -30,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stock = $_POST["stock"];
     $preciocompra = $_POST["preciocompra"];
     $precioventa = $_POST["precioventa"];
+    $porcentajeefectivo = $_POST["porcentajeefectivo"];
     $fijo = isset($_POST["fijo"]);
     if (mysqli_num_rows($link->query("select * from productos where codigo='" . $codigo . "' and baja = 'False'")) > 0) {
         echo "
@@ -38,12 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>  ";
     } else {
         // Prepare an insert statement
-        $sql = "INSERT INTO productos (codigo,denominacion,marca,stock,preciocompra,precioventa,fijo)
-     VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO productos (codigo,denominacion,marca,stock,preciocompra,precioventa,fijo,porcentajeefectivo)
+     VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
         if ($stmt = mysqli_prepare($link, $sql) or die(mysqli_error($link))) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7);
+            mysqli_stmt_bind_param($stmt, "ssssssss", $p1, $p2, $p3, $p4, $p5, $p6, $p7, $p8);
 
             // Set parameters
             $p1 = $codigo;
@@ -53,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $p5 = $preciocompra;
             $p6 = $precioventa;
             $p7 = $fijo;
+            $p8 = $porcentajeefectivo;
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
@@ -124,6 +127,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-group">
                             <label>Precio Lista (Decimales separados por .)</label>
                             <input type="number" step="any" required min=1 max=100000000 name="precioventa" maxlength=50 class="form-control" value="<?php echo $precioventa; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Porcentaje Efectivo (Decimales separados por .)</label>
+                            <input type="number" step="any" required min=1 max=100000000 name="porcentajeefectivo" maxlength=50 class="form-control" value="<?php echo $porcentajeefectivo; ?>">
                         </div>
                         <div class="form-group">
                             <label>

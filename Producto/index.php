@@ -74,6 +74,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
                             echo "<th>Stock</th>";
                             echo "<th>Precio Compra + Imp.</th>";
                             echo "<th>Precio Lista</th>";
+                            echo "<th>Porcentaje Efectivo</th>";
                             echo "<th>Fijo</th>";
 
                             echo "<th width='135px'>Acciones</th>";
@@ -89,6 +90,7 @@ if (!isset($_SESSION['Perfil']) || empty($_SESSION['Perfil']) ||
                                 echo "<td>" . $row['stock'] . "</td>";
                                 echo "<td>" . $row['preciocompra'] . "</td>";
                                 echo "<td>" . $row['precioventa'] . "</td>";
+                                echo "<td>" . $row['porcentajeefectivo'] . "%</td>";
                                 echo "<td>"; 
                                 echo $row['fijo'] ?"Si":"No"; 
                                 echo "</td>";

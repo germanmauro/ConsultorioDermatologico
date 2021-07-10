@@ -38,8 +38,7 @@ if(isset($_POST["medico"])&& isset($_POST["desde"])&& isset($_POST["hasta"]))
         "TURNO"    => 32,
         "MEDICO"    => 35,
         "PACIENTE"  => 35,
-        "TRATAMIENTO"  => 44,
-        "OBSERVACIONES"  => 44
+        "OBSERVACIONES"  => 88
       );
 
       $pdf->addCols($cols, 30);
@@ -47,23 +46,20 @@ if(isset($_POST["medico"])&& isset($_POST["desde"])&& isset($_POST["hasta"]))
         "TURNO"    => "C",
         "MEDICO"    => "C",
         "PACIENTE"  => "C",
-        "TRATAMIENTO"  => "C",
-        "OBSERVACIONES"  => "C"
+        "OBSERVACIONES"  => "L"
       );
     } else {
       $cols = array(
         "TURNO"    => 32,
         "PACIENTE"  => 40,
-        "TRATAMIENTO"  => 64,
-        "OBSERVACIONES"  => 54
+        "OBSERVACIONES"  => 118
       );
 
       $pdf->addCols($cols, 30);
       $cols = array(
         "TURNO"    => "C",
         "PACIENTE"  => "C",
-        "TRATAMIENTO"  => "C",
-        "OBSERVACIONES"  => "C"
+        "OBSERVACIONES"  => "L"
       );
     }
     
@@ -80,7 +76,7 @@ if(isset($_POST["medico"])&& isset($_POST["desde"])&& isset($_POST["hasta"]))
             "TURNO"    => 32,
             "MEDICO"    => 45,
             "PACIENTE"  => 45,
-            "TRATAMIENTO"  => 68
+            "OBSERVACIONES"  => 68
           );
 
           $pdf->addCols($cols, 30);
@@ -88,20 +84,20 @@ if(isset($_POST["medico"])&& isset($_POST["desde"])&& isset($_POST["hasta"]))
             "TURNO"    => "C",
             "MEDICO"    => "C",
             "PACIENTE"  => "C",
-            "TRATAMIENTO"  => "C"
+            "OBSERVACIONES"  => "L"
           );
         } else {
           $cols = array(
             "TURNO"    => 32,
             "PACIENTE"  => 50,
-            "TRATAMIENTO"  => 108
+            "OBSERVACIONES"  => 108
           );
 
           $pdf->addCols($cols, 30);
           $cols = array(
             "TURNO"    => "C",
             "PACIENTE"  => "C",
-            "TRATAMIENTO"  => "C"
+            "OBSERVACIONES"  => "L"
           );
         }
         $pdf->addLineFormat($cols);
@@ -111,10 +107,9 @@ if(isset($_POST["medico"])&& isset($_POST["desde"])&& isset($_POST["hasta"]))
       $fechahasta = new DateTime($det->fecha);
       $fechahasta = $fechahasta->add(new DateInterval("PT".$det->duracion."M"));
         $line = array(
-          "TURNO"    => $fecha->format("d/m/Y H:i")." a ".$fechahasta->format("H:i"),
+          "TURNO"    => $fecha->format("d/m/Y")."\n". $fecha->format("H:i")." a ".$fechahasta->format("H:i"),
           "MEDICO"    => utf8_decode($det->medico),
           "PACIENTE"  => utf8_decode($det->paciente),
-          "TRATAMIENTO"  => utf8_decode($det->tratamiento),
           "OBSERVACIONES"  => utf8_decode($det->observaciones==""?" ":$det->observaciones));
       $size = $pdf->addLine( $y, $line );
       $y   += $size + 4;
