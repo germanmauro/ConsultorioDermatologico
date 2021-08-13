@@ -37,7 +37,8 @@
                                    <?php
                                     $result = $link->query("SELECT ventas.id as id,CONCAT(pacientes.nombre, ' ',pacientes.apellido) AS paciente,
                                         DATE_FORMAT(ventas.fecha,'%d/%m/%Y') as fecha,
-                                        total, formaspago.nombre as formapago,factura,observaciones
+                                        total, formaspago.nombre as formapago,factura,observaciones,
+                                        ventas.usuario_id as usuario
                                         FROM ventas
                                         join pacientes on pacientes.id = ventas.paciente_id
                                         join formaspago on formaspago.id = ventas.formapago_id
@@ -50,10 +51,19 @@
                                         echo "<button  onclick='cargaVentaDetalle(" . $row['id'] . ")' class='btnmenu'><i class='far fa-list-alt' title='Detalle'></i></button>";
                                         echo "</td>";
                                         echo "<td>";
-                                        echo "<button  onclick='cargaVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-edit' title='modificar'></i></button>";
+                                        if(in_array($_SESSION['Perfil'], ['medico', 'admin']) ||
+                                        $_SESSION["Id"] == $row["usuario"])
+                                        {
+                                            echo "<button  onclick='cargaVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-edit' title='modificar'></i></button>";
+                                        }
                                         echo "</td>";
                                         echo "<td>";
-                                        echo "<button  onclick='eliminarVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-trash' title='Eliminar'></i></button>";
+                                        if (
+                                            in_array($_SESSION['Perfil'], ['medico', 'admin']) ||
+                                            $_SESSION["Id"] == $row["usuario"]
+                                        ) {
+                                            echo "<button  onclick='eliminarVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-trash' title='Eliminar'></i></button>";
+                                        }
                                         echo "</td>";
                                         echo "<td>";
                                         echo $row["fecha"];

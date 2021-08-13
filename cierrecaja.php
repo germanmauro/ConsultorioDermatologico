@@ -53,6 +53,8 @@
                                     from ventas
                                     join formaspago on formaspago.id = ventas.formapago_id
                                     where fecha='".$fecha."'
+                                    and (ventas.usuario_id =".$_SESSION["Id"]." or '".$_SESSION["Perfil"]."'
+                                    in ('medico','medicoadmin'))
                                     group by formapago
                                     having total > 0");
                                 

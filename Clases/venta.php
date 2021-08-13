@@ -71,12 +71,14 @@ class Venta
       //Insertamos la venta
       if($this->id == "")
       {
-        if (!$link->query("INSERT INTO ventas (paciente_id,fecha,formapago_id,porcentajeproducto,porcentajetratamiento,factura,observaciones,total)
+        if (!$link->query("INSERT INTO ventas (paciente_id,fecha,formapago_id,
+        porcentajeproducto,porcentajetratamiento,factura,observaciones,total,usuario_id)
           VALUES(" . $this->paciente->id . ",'" . $this->fecha . "'," . $this->formapago->id . ",
           '" . $this->formapago->porcentajeproducto . "',
           '" . $this->formapago->porcentajetratamiento . "',
           '" . $this->factura . "','".$this->observaciones."',
-          '" . $this->total . "')")) {
+          '" . $this->total . "',"
+          .$_SESSION["Id"].")")) {
           $dev->mensaje = "Error al registrar la venta";
           $dev->flag = 1;
           throw new Exception("Error al registrar la venta");

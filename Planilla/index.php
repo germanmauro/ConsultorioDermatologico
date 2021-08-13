@@ -172,6 +172,7 @@ if (isset($_POST["desde"])) {
                     pacientes.codigo as pacientecodigo, pacientes.nombre as pacientenombre,
                     pacientes.apellido as pacienteapellido, pacientes.dni as dni,
                     CONCAT(usuarios.nombre,' ',usuarios.apellido) as medico,
+                    CONCAT(vendedor.nombre,' ',vendedor.apellido) as vendedor,
                     tratamientos.codigo as itemcodigo, tratamientos.denominacion as itemdenominacion,
                     cantidad,ventastratamientos.total,formaspago.nombre as formapago,comision,observaciones
                      FROM ventas
@@ -180,6 +181,7 @@ if (isset($_POST["desde"])) {
                      join tratamientos on tratamientos.id = ventastratamientos.tratamiento_id
                      join formaspago on formaspago.id = ventas.formapago_id
                      join usuarios on usuarios.id = ventastratamientos.medico_id
+                     join usuarios as vendedor on vendedor.id = ventas.usuario_id
                      WHERE ventas.fecha between '" . $desde . "' and '" . $hasta . "'
                      AND ('0' = '" . $medico . "' OR ventastratamientos.medico_id=" . $medico . ")
                      AND ('0' = '" . $tratamiento . "' OR ventastratamientos.tratamiento_id=" . $tratamiento . ")
@@ -189,6 +191,7 @@ if (isset($_POST["desde"])) {
                     pacientes.codigo as pacientecodigo, pacientes.nombre as pacientenombre,
                     pacientes.apellido as pacienteapellido, pacientes.dni as dni,
                     '' as medico,
+                    CONCAT(vendedor.nombre,' ',vendedor.apellido) as vendedor,
                     productos.codigo as itemcodigo, productos.denominacion as itemdenominacion,
                     cantidad,ventasproductos.total,formaspago.nombre as formapago,0 as comision,observaciones
                      FROM ventas
@@ -196,6 +199,7 @@ if (isset($_POST["desde"])) {
                      join pacientes on pacientes.id = ventas.paciente_id
                      join productos on productos.id = ventasproductos.producto_id
                      join formaspago on formaspago.id = ventas.formapago_id
+                     join usuarios as vendedor on vendedor.id = ventas.usuario_id
                      WHERE ventas.fecha between '" . $desde . "' and '" . $hasta . "'
                      AND ('0' = '" . $producto . "' OR ventasproductos.producto_id=" . $producto . ")
                       order by fech desc";
@@ -213,6 +217,7 @@ if (isset($_POST["desde"])) {
                             echo "<th>Apellido</th>";
                             echo "<th>Nombre</th>";
                             echo "<th>DNI</th>";
+                            echo "<th>Vendedor</th>";
                             echo "<th>Código</th>";
                             echo "<th>Tratamiento/Producto</th>";
                             echo "<th>Cantidad</th>";
@@ -234,6 +239,7 @@ if (isset($_POST["desde"])) {
                                 echo "<td>" . $row['pacienteapellido'] . "</td>";
                                 echo "<td>" . $row['pacientenombre'] . "</td>";
                                 echo "<td>" . $row['dni'] . "</td>";
+                                echo "<td>" . $row['vendedor'] . "</td>";
                                 echo "<td>" . $row['itemcodigo'] . "</td>";
                                 echo "<td>" . $row['itemdenominacion'] . "</td>";
                                 echo "<td>" . $row['cantidad'] . "</td>";
