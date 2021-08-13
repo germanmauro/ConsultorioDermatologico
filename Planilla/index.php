@@ -217,7 +217,6 @@ if (isset($_POST["desde"])) {
                             echo "<th>Apellido</th>";
                             echo "<th>Nombre</th>";
                             echo "<th>DNI</th>";
-                            echo "<th>Vendedor</th>";
                             echo "<th>Código</th>";
                             echo "<th>Tratamiento/Producto</th>";
                             echo "<th>Cantidad</th>";
@@ -226,6 +225,7 @@ if (isset($_POST["desde"])) {
                             echo "<th>Médica</th>";
                             echo "<th>Comisión</th>";
                             echo "<th>Observaciones</th>";
+                            echo "<th>Vendedor</th>";
                             echo "<th width='135px'>Acciones</th>";
                             echo "</tr>";
                             echo "</thead>";
@@ -239,7 +239,6 @@ if (isset($_POST["desde"])) {
                                 echo "<td>" . $row['pacienteapellido'] . "</td>";
                                 echo "<td>" . $row['pacientenombre'] . "</td>";
                                 echo "<td>" . $row['dni'] . "</td>";
-                                echo "<td>" . $row['vendedor'] . "</td>";
                                 echo "<td>" . $row['itemcodigo'] . "</td>";
                                 echo "<td>" . $row['itemdenominacion'] . "</td>";
                                 echo "<td>" . $row['cantidad'] . "</td>";
@@ -248,6 +247,7 @@ if (isset($_POST["desde"])) {
                                 echo "<td>" . $row['medico'] . "</td>";
                                 echo "<td>" . $row['comision'] . "</td>";
                                 echo "<td>" . $row['observaciones'] . "</td>";
+                                echo "<td>" . $row['vendedor'] . "</td>";
                                 echo "<td>";
                                 echo "<a href='../index.php?venta=" . $row['id'] . "' title='Actualizar Venta' data-toggle='tooltip'><span class='glyphicon glyphicon-plus'></span></a>";
                                 echo " <a href='update.php?venta=" . $row['id'] . "' title='Modificar Fecha' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
