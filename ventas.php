@@ -51,9 +51,10 @@
                                         echo "<button  onclick='cargaVentaDetalle(" . $row['id'] . ")' class='btnmenu'><i class='far fa-list-alt' title='Detalle'></i></button>";
                                         echo "</td>";
                                         echo "<td>";
-                                        if(in_array($_SESSION['Perfil'], ['medico', 'admin']) ||
-                                        $_SESSION["Id"] == $row["usuario"])
-                                        {
+                                        if (
+                                            in_array($_SESSION['Perfil'], ['medico', 'admin']) ||
+                                            $_SESSION["Id"] == $row["usuario"]
+                                        ) {
                                             echo "<button  onclick='cargaVenta(" . $row['id'] . ")' class='btnmenu'><i class='fa fa-edit' title='modificar'></i></button>";
                                         }
                                         echo "</td>";
@@ -111,22 +112,23 @@
 
    <script>
        $(document).ready(function() {
+           $.fn.dataTable.moment('DD/MM/YYYY');
            $('#tablapedido').DataTable({
+               columnDefs: [{
+                   targets: [0,1,2],
+                   orderable: false,
+                   sorting: false
+               }],
                "pageLength": 5,
                "lengthMenu": [5, 10, 25, 50, 75, 100],
-               columnDefs: [{
-                   orderable: false,
-                   targets: [0, 1, 2]
-               }]
 
            });
        });
    </script>
    <script>
-   function cierreCaja()
-   {
-       subPagina('cierrecaja.php');
-   }
+       function cierreCaja() {
+           subPagina('cierrecaja.php');
+       }
        $("#envio").on("submit", function(e) {
            $('#Send').attr("disabled", true);
            e.preventDefault();

@@ -54,10 +54,10 @@
                                     join formaspago on formaspago.id = ventas.formapago_id
                                     where fecha='".$fecha."'
                                     and (ventas.usuario_id =".$_SESSION["Id"]." or '".$_SESSION["Perfil"]."'
-                                    in ('medico','medicoadmin'))
+                                    in ('medico','admin'))
                                     group by formapago
                                     having total > 0");
-                                
+                      
                                     while($row = mysqli_fetch_array($result)){
 
                                         echo "<tr>";

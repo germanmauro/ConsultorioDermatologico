@@ -150,7 +150,7 @@
                                </div>
                                <div class="form-group">
                                    <label>DNI</label>
-                                   <input type="text" name="dni" required maxlength=20 class="form-control" value="<?php echo $dni; ?>">
+                                   <input type="text" name="dni" maxlength=20 class="form-control" value="<?php echo $dni; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Obra Social</label>
@@ -167,7 +167,7 @@
                                </div>
                                <div class="form-group">
                                    <label>Número Carnet</label>
-                                   <input type="text" name="carnet" required maxlength=30 class="form-control" value="<?php echo $carnet; ?>">
+                                   <input type="text" name="carnet"  maxlength=30 class="form-control" value="<?php echo $carnet; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Teléfono</label>
@@ -179,11 +179,11 @@
                                </div>
                                <div class="form-group">
                                    <label>Dirección</label>
-                                   <input type="text" name="direccion" required maxlength=200 class="form-control" value="<?php echo $direccion; ?>">
+                                   <input type="text" name="direccion" maxlength=200 class="form-control" value="<?php echo $direccion; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Localidad</label>
-                                   <input type="text" name="localidad" required maxlength=100 class="form-control" value="<?php echo $localidad; ?>">
+                                   <input type="text" name="localidad" maxlength=100 class="form-control" value="<?php echo $localidad; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Fecha de Nacimiento</label>
@@ -191,11 +191,11 @@
                                </div>
                                <div class="form-group">
                                    <label>Profesion</label>
-                                   <input type="text" name="profesion" required maxlength=100 class="form-control" value="<?php echo $profesion; ?>">
+                                   <input type="text" name="profesion" maxlength=100 class="form-control" value="<?php echo $profesion; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Referido</label>
-                                   <input type="text" name="referido" required maxlength=200 class="form-control" value="<?php echo $referido; ?>">
+                                   <input type="text" name="referido" maxlength=200 class="form-control" value="<?php echo $referido; ?>">
                                </div>
 
                                <button type="submit" id="Send" name="Send" class="btn btn-success">Siguiente</button>

@@ -142,7 +142,7 @@
                                </div>
                                <div class="form-group">
                                    <label>DNI</label>
-                                   <input type="text" name="dni" required maxlength=20 class="form-control" value="<?php echo $venta->paciente->dni; ?>">
+                                   <input type="text" name="dni" maxlength=20 class="form-control" value="<?php echo $venta->paciente->dni; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Obra Social</label>
@@ -159,7 +159,7 @@
                                </div>
                                <div class="form-group">
                                    <label>Número Carnet</label>
-                                   <input type="text" name="carnet" required maxlength=30 class="form-control" value="<?php echo $venta->paciente->carnet; ?>">
+                                   <input type="text" name="carnet" maxlength=30 class="form-control" value="<?php echo $venta->paciente->carnet; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Teléfono</label>
@@ -171,11 +171,11 @@
                                </div>
                                <div class="form-group">
                                    <label>Dirección</label>
-                                   <input type="text" name="direccion" required maxlength=200 class="form-control" value="<?php echo $venta->paciente->direccion; ?>">
+                                   <input type="text" name="direccion" maxlength=200 class="form-control" value="<?php echo $venta->paciente->direccion; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Localidad</label>
-                                   <input type="text" name="localidad" required maxlength=100 class="form-control" value="<?php echo $venta->paciente->localidad; ?>">
+                                   <input type="text" name="localidad" maxlength=100 class="form-control" value="<?php echo $venta->paciente->localidad; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Fecha de Nacimiento</label>
@@ -183,11 +183,11 @@
                                </div>
                                <div class="form-group">
                                    <label>Profesion</label>
-                                   <input type="text" name="profesion" required maxlength=100 class="form-control" value="<?php echo $venta->paciente->profesion; ?>">
+                                   <input type="text" name="profesion" maxlength=100 class="form-control" value="<?php echo $venta->paciente->profesion; ?>">
                                </div>
                                <div class="form-group">
                                    <label>Referido</label>
-                                   <input type="text" name="referido" required maxlength=200 class="form-control" value="<?php echo $venta->paciente->referido; ?>">
+                                   <input type="text" name="referido" maxlength=200 class="form-control" value="<?php echo $venta->paciente->referido; ?>">
                                </div>
 
                                <button type="submit" id="Send" name="Send" class="btn btn-success">Siguiente</button>

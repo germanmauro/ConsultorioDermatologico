@@ -30,14 +30,11 @@ require_once 'config.php';
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
-<body 
-<?php
-if(isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["venta"])) 
-{ 
-    echo "onload=cargaVenta(".$_GET["venta"].")";
-}
-       ?>
-    >
+<body <?php
+        if (isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["venta"])) {
+            echo "onload=cargaVenta(" . $_GET["venta"] . ")";
+        }
+        ?>>
 
     <div id="wrapper">
         <div id="banner">
@@ -246,7 +243,7 @@ if(isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["v
                                 ";
                                     break;
                                 case 'submedico':
-                                 echo "
+                                    echo "
                                     <li>
                                         <a href='#'><i class='fas fa-user-cog'></i> PACIENTES <span class='fas fa-angle-double-right'></span></a>
                                         <ul class='nav nav-second-level'>
@@ -336,6 +333,8 @@ if(isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["v
     <!-- Acciones para pedidos -->
     <script src="js/Acciones/acciones.js?v=16"></script>
     <script src="Tables/jquery.dataTables.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.25/sorting/datetime-moment.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/sb-admin-2.js?v=2"></script>
@@ -346,6 +345,6 @@ if(isset($_SESSION['Usuario']) && !empty($_SESSION['Usuario']) && isset($_GET["v
             $("#loader").show();
         }
     </script>
-    </body>
+</body>
 
 </html>
